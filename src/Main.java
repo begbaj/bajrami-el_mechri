@@ -1,5 +1,8 @@
+import gui.MainFrame;
+
 public class Main {
     public static void main(String[] args) {
-        int LOLLO = 0;
+    MainFrame Frame=new MainFrame();
     }
+
 }
