@@ -1,3 +1,6 @@
+package umidity;
+import umidity.PlaceInfo;
+
 import java.sql.Time;
 
 public class WeatherInfo {

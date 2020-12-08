@@ -1,3 +1,5 @@
+package umidity;
+
 public class APIManager {
     String appid;
     String apiURL;

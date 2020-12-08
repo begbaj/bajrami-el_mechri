@@ -615,7 +615,7 @@
 											"top": 279,
 											"width": 151,
 											"height": 13,
-											"text": "Main"
+											"text": "umidity.Main"
 										},
 										{
 											"_type": "LabelView",
@@ -1028,7 +1028,7 @@
 											"top": 238,
 											"width": 375,
 											"height": 13,
-											"text": "gui"
+											"text": "umidity.gui"
 										},
 										{
 											"_type": "LabelView",
@@ -1185,7 +1185,7 @@
 											"top": 583,
 											"width": 167,
 											"height": 13,
-											"text": "PlaceInfo"
+											"text": "umidity.PlaceInfo"
 										},
 										{
 											"_type": "LabelView",
@@ -1511,7 +1511,7 @@
 											"top": 487,
 											"width": 167,
 											"height": 13,
-											"text": "WeatherInfo"
+											"text": "umidity.WeatherInfo"
 										},
 										{
 											"_type": "LabelView",
@@ -1621,7 +1621,7 @@
 											"top": -51,
 											"width": 391,
 											"height": 13,
-											"text": "+PlaceInfo",
+											"text": "+umidity.PlaceInfo",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2138,7 +2138,7 @@
 											"top": 519,
 											"width": 391,
 											"height": 13,
-											"text": "APIManager"
+											"text": "umidity.APIManager"
 										},
 										{
 											"_type": "LabelView",
@@ -2289,7 +2289,7 @@
 											"top": 580,
 											"width": 391,
 											"height": 13,
-											"text": "+getByCity(String city): WeatherInfo",
+											"text": "+getByCity(String city): umidity.WeatherInfo",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2310,7 +2310,7 @@
 											"top": 595,
 											"width": 391,
 											"height": 13,
-											"text": "+getByCoordinates(float long, float lat): WeatherInfo",
+											"text": "+getByCoordinates(float long, float lat): umidity.WeatherInfo",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2331,7 +2331,7 @@
 											"top": 610,
 											"width": 391,
 											"height": 13,
-											"text": "+getByZip(String zipCode): WeatherInfo",
+											"text": "+getByZip(String zipCode): umidity.WeatherInfo",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2464,7 +2464,7 @@
 											"top": 231,
 											"width": 391,
 											"height": 13,
-											"text": "StatsCreator"
+											"text": "umidity.StatsCreator"
 										},
 										{
 											"_type": "LabelView",
@@ -2571,7 +2571,7 @@
 											"top": 264,
 											"width": 391,
 											"height": 13,
-											"text": "+max(Vector WeatherInfo)",
+											"text": "+max(Vector umidity.WeatherInfo)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2592,7 +2592,7 @@
 											"top": 279,
 											"width": 391,
 											"height": 13,
-											"text": "+min(Vector WeatherInfo)",
+											"text": "+min(Vector umidity.WeatherInfo)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2613,7 +2613,7 @@
 											"top": 294,
 											"width": 391,
 											"height": 13,
-											"text": "+avg(Vector WeatherInfo)",
+											"text": "+avg(Vector umidity.WeatherInfo)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2634,7 +2634,7 @@
 											"top": 309,
 											"width": 391,
 											"height": 13,
-											"text": "+variance(Vector WeatherInfo)",
+											"text": "+variance(Vector umidity.WeatherInfo)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2787,7 +2787,7 @@
 											"top": -184,
 											"width": 121.3544921875,
 											"height": 13,
-											"text": "(from gui)"
+											"text": "(from umidity.gui)"
 										},
 										{
 											"_type": "LabelView",
@@ -3006,7 +3006,7 @@
 											"top": -152,
 											"width": 121.3544921875,
 											"height": 13,
-											"text": "(from gui)"
+											"text": "(from umidity.gui)"
 										},
 										{
 											"_type": "LabelView",
@@ -3225,7 +3225,7 @@
 											"top": -312,
 											"width": 121.3544921875,
 											"height": 13,
-											"text": "(from gui)"
+											"text": "(from umidity.gui)"
 										},
 										{
 											"_type": "LabelView",
@@ -5944,7 +5944,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2KQ15zKVjyuY="
 							},
-							"name": "APIManager",
+							"name": "umidity.APIManager",
 							"attributes": [
 								{
 									"_type": "UMLAttribute",
@@ -6131,7 +6131,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2KQ15zKVjyuY="
 							},
-							"name": "PlaceInfo",
+							"name": "umidity.PlaceInfo",
 							"attributes": [
 								{
 									"_type": "UMLAttribute",
@@ -6357,7 +6357,7 @@
 											"top": 919,
 											"width": 151,
 											"height": 13,
-											"text": "Main"
+											"text": "umidity.Main"
 										},
 										{
 											"_type": "LabelView",
@@ -7704,7 +7704,7 @@
 											"top": 863,
 											"width": 399,
 											"height": 13,
-											"text": "APIManager"
+											"text": "umidity.APIManager"
 										},
 										{
 											"_type": "LabelView",
@@ -8684,7 +8684,7 @@
 											"top": 911,
 											"width": 119,
 											"height": 13,
-											"text": "PlaceInfo"
+											"text": "umidity.PlaceInfo"
 										},
 										{
 											"_type": "LabelView",
@@ -12052,7 +12052,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2PIKPfCLNhTo="
 							},
-							"name": "Main",
+							"name": "umidity.Main",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -12177,7 +12177,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2PIKPfCLNhTo="
 							},
-							"name": "gui",
+							"name": "umidity.gui",
 							"ownedElements": [
 								{
 									"_type": "UMLClass",
@@ -12294,7 +12294,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2PIKPfCLNhTo="
 							},
-							"name": "PlaceInfo",
+							"name": "umidity.PlaceInfo",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -12433,7 +12433,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2PIKPfCLNhTo="
 							},
-							"name": "WeatherInfo",
+							"name": "umidity.WeatherInfo",
 							"attributes": [
 								{
 									"_type": "UMLAttribute",
@@ -12449,7 +12449,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF2PJrHli0mqag="
 									},
-									"name": "PlaceInfo"
+									"name": "umidity.PlaceInfo"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -12476,7 +12476,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2PIKPfCLNhTo="
 							},
-							"name": "APIManager",
+							"name": "umidity.APIManager",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -12634,7 +12634,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2PIKPfCLNhTo="
 							},
-							"name": "StatsCreator",
+							"name": "umidity.StatsCreator",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -12679,7 +12679,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF2PM5Cye/oFHE="
 											},
-											"name": "Vector WeatherInfo"
+											"name": "Vector umidity.WeatherInfo"
 										}
 									]
 								},
@@ -12697,7 +12697,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF2PM5LxvB+3Ww="
 											},
-											"name": "Vector WeatherInfo"
+											"name": "Vector umidity.WeatherInfo"
 										}
 									]
 								},
@@ -12715,7 +12715,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF2PM7DG/PYEAs="
 											},
-											"name": "Vector WeatherInfo"
+											"name": "Vector umidity.WeatherInfo"
 										}
 									]
 								},
@@ -12733,7 +12733,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF2PM8dpfTd0bY="
 											},
-											"name": "Vector WeatherInfo"
+											"name": "Vector umidity.WeatherInfo"
 										}
 									]
 								}

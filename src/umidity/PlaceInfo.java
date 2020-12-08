@@ -1,3 +1,5 @@
+package umidity;
+
 public class PlaceInfo {
     String city;
     String state;
