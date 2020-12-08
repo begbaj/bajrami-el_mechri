@@ -1,4 +1,4 @@
-package umidity;
+package umidity.database;
 
 public class DatabaseManager {
 }

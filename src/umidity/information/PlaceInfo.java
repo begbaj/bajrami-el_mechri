@@ -1,4 +1,4 @@
-package umidity;
+package umidity.information;
 
 public class PlaceInfo {
     String city;

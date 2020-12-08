@@ -1,4 +1,6 @@
-package umidity;
+package umidity.api;
+
+import umidity.information.WeatherInfo;
 
 public class APIManager {
     String appid;

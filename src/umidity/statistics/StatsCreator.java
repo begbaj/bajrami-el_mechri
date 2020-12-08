@@ -1,4 +1,6 @@
-package umidity;
+package umidity.statistics;
+
+import umidity.information.WeatherInfo;
 
 import java.util.Vector;
 

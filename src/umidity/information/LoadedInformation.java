@@ -1,4 +1,4 @@
-package umidity;
+package umidity.information;
 
 import java.util.Vector;
 

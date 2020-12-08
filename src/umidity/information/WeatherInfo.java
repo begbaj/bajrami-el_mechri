@@ -1,5 +1,5 @@
-package umidity;
-import umidity.PlaceInfo;
+package umidity.information;
+import umidity.information.PlaceInfo;
 
 import java.sql.Time;
 
