@@ -1,25 +1,26 @@
 package umidity.api;
 
 import umidity.information.WeatherInfo;
+import java.security.NoSuchAlgorithmException;
 
-import java.util.Map;
 
-
+/**
+ * Api call manager. This class handles every api call made to openweather returning the related object to every request
+ */
 public class ApiManager {
-    private final String appid;
+    private ApiCalls caller;
 
-    public ApiManager(String appid){
-        this.appid = appid;
+    public ApiManager(String appid) {
+        try {
+            caller = new ApiCalls(appid);
+        }catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+            //l'eccezione può essere causata per via del settaggio del contesto SSL... devo capire meglio cosa significhi
+        }
     }
 
-    //TODO: file contenente le stringhe di contatto all'api in formato json
-
-    private String getAppid() {
-        return appid;
-    }
-
-    public WeatherInfo getByCity(String city){
-
+    public WeatherInfo getByCity(String city, String stateCode, String countryCode){
+        //caller.getByCityName(city, stateCode, countryCode);
         WeatherInfo humidity=new WeatherInfo();
         return humidity;
     }
@@ -35,4 +36,10 @@ public class ApiManager {
     }
 
 
+    //GETTERS AND SETTERS
+
+    private String getAppid() {
+        //caller
+        return "";
+    }
 }

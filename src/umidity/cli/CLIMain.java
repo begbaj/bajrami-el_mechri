@@ -1,4 +1,4 @@
-package cli;
+package umidity.cli;
 
 public class CLIMain {
 }
