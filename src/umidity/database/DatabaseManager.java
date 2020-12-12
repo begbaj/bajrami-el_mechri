@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class DatabaseManager {
-    public void saveHumidity(WeatherInfo record){
+    public void addHumidity(WeatherInfo record){
         try {
             //i have WI object
 
