@@ -1,17 +1,22 @@
 package umidity.information;
 import java.sql.Time;
+import java.time.LocalDate;
 
 public class WeatherInfo implements Information{
-    Double humidity;
-    Time timestamp;
+    double humidity;
+    LocalDate timestamp;
     PlaceInfo location;
 
-
+    public WeatherInfo(double humidity, LocalDate timestamp, PlaceInfo location){
+        this.humidity=humidity;
+        this.timestamp=timestamp;
+        this.location=location;
+    }
     public Double getHumidity() {
         return humidity;
     }
 
-    public Time getTimestamp() {
+    public LocalDate getTimestamp() {
         return timestamp;
     }
 
