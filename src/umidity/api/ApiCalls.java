@@ -1,15 +1,9 @@
 package umidity.api;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
-import java.net.ProxySelector;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.util.concurrent.Executors;
+import com.fasterxml.jackson.databind.*;
+
 /**
  * This class handles every connection to the apis.
  */
@@ -20,21 +14,9 @@ public class ApiCalls {
      * Api key used for making api calls
      */
     private String appid;
-    private HttpClient client;
-
 
     public ApiCalls(String appid) throws NoSuchAlgorithmException {
-        client = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_2) //Versione di http utilizzata
-                .proxy(ProxySelector.getDefault()) //Usa il proxy di sistema, se impostato
-                .followRedirects(HttpClient.Redirect.NEVER) //Non seguire redirects
-                .executor(Executors.newFixedThreadPool(2)) //?
-                .priority(1) //?
-                .sslContext(SSLContext.getDefault()) //?
-                .sslParameters(new SSLParameters()) //?
-                .connectTimeout(Duration.ofSeconds(1)) //Timeout
-                .build();
-        //Creo un nuovo client che verrà usato per ogni chiamata all'api. è davvero il modo migliore per farlo?
+
     }
 
      public String getByCityName(String cityName, String stateCode, String countryCode) throws URISyntaxException {
@@ -44,10 +26,9 @@ public class ApiCalls {
                 + (!countryCode.equals("") ? "," + countryCode : "")
                 + "&appid=" + appid;
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(url))
-                .header("Accept", "application/json")
-                .build();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.readValue(url, );
+
 
         return "";
     }
