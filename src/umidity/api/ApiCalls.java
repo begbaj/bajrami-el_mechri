@@ -2,7 +2,7 @@ package umidity.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import umidity.information.api.ApiResponse;
+import umidity.api.response.ApiResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,7 +39,7 @@ public class ApiCalls {
     public Mode getMode(){return mode;}
     public Unit getUnit(){return unit;}
 
-    //private String getFinalParams(){return "appid=%s&mode=%s&units=%s"}
+    private String getFinalParams(){return "appid=%s&mode=%s&units=%s";}
     /**
      * Get ApiResponse by city name
      * @param cityName REQUIRED: city name
@@ -51,7 +51,7 @@ public class ApiCalls {
         String url = "https://api.openweathermap.org/data/2.5/weather?q="
                 + cityName
                 + (!stateCode.equals("") ? "," + stateCode : "")
-                + (!countryCode.equals("") ? "," + countryCode : "")
+                + (!countryCode.equals("") ? "," + countryCode : "");
 
         return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
