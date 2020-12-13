@@ -1,10 +1,32 @@
 package umidity.information;
-import umidity.information.PlaceInfo;
-
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 public class WeatherInfo implements Information{
-    Double Humidity;
-    Time Timestamp;
-    PlaceInfo Location;
+    double humidity;
+    SimpleDateFormat timestamp;
+    PlaceInfo location;
+
+    public WeatherInfo(double humidity, SimpleDateFormat timestamp, PlaceInfo location){
+        this.humidity=humidity;
+        this.timestamp=timestamp;
+        this.location=location;
+    }
+    public Double getHumidity() {
+        return humidity;
+    }
+
+    public SimpleDateFormat getTimestamp() {
+        return timestamp;
+    }
+
+    public PlaceInfo getLocation() {
+        return location;
+    }
+
+    public String toString(){
+        return "Humidity:" + humidity + "  Time:" + timestamp + " " +location.toString();
+    }
+
 }
