@@ -1,5 +1,6 @@
 package umidity.information;
 
+@Deprecated
 public class PlaceInfo implements Information{
     String city;
     String state;

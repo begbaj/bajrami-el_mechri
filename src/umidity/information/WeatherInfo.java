@@ -3,6 +3,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
+@Deprecated
 public class WeatherInfo implements Information{
     double humidity;
     SimpleDateFormat timestamp;

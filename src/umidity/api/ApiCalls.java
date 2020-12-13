@@ -32,9 +32,9 @@ public class ApiCalls {
 
     /**
      * Get ApiResponse by city name
-     * @param cityName city name
-     * @param stateCode state code
-     * @param countryCode country code
+     * @param cityName REQUIRED: city name
+     * @param stateCode OPTIONAL: state code
+     * @param countryCode OPTIONAL: country code
      */
     public ApiResponse getByCityName(String cityName, String stateCode, String countryCode)
             throws JsonProcessingException, MalformedURLException, IOException {
