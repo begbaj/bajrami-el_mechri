@@ -2,6 +2,8 @@ package umidity.cli;
 
 
 import umidity.api.ApiCalls;
+import umidity.api.Mode;
+import umidity.api.Unit;
 import umidity.information.ApiResponse;
 
 import java.util.Scanner;
@@ -26,7 +28,7 @@ public class CLIMain {
         );
         String input = userPrompt(UserPromptTypes.Integer);
         if(input.equals("1")){
-            ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b");
+            ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b", Mode.JSON, Unit.Metric);
             System.out.println("City name: ");
             ApiResponse response;
             try {

@@ -1,4 +1,4 @@
-package umidity.information;
+package umidity.information.api;
 
 public class MainResponse {
     public float temp;

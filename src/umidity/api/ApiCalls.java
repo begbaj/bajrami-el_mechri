@@ -2,34 +2,44 @@ package umidity.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import umidity.information.*;
+import umidity.information.api.ApiResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
  * This class handles every connection to the apis.
  */
 public class ApiCalls {
-//questa classe contiene il necessario per effettuare le chiamate alle api di OpenWeather
 
     /**
      * Api key used for making api calls
      */
     private final String appid;
+    private Mode mode;
+    private Unit unit;
+
     //TODO: Lista di appid, in modo da utilizzarne diverse per non rischiare di saturare la connessione
     //TODO: potrebbe essere sensato rendere la classe statica?
+
     /**
      * Api caller
      * @param appid Api key
      */
-    public ApiCalls(String appid){
+    public ApiCalls(String appid, Mode mode, Unit unit){
         this.appid = appid;
+        this.mode = mode;
+        this.unit = unit;
     }
 
+    public String getAppid(){ return appid;}
+    public void setMode(Mode value){ mode = value;}
+    public void setUnit(Unit value){ unit = value;}
+    public Mode getMode(){return mode;}
+    public Unit getUnit(){return unit;}
+
+    //private String getFinalParams(){return "appid=%s&mode=%s&units=%s"}
     /**
      * Get ApiResponse by city name
      * @param cityName REQUIRED: city name
@@ -42,7 +52,6 @@ public class ApiCalls {
                 + cityName
                 + (!stateCode.equals("") ? "," + stateCode : "")
                 + (!countryCode.equals("") ? "," + countryCode : "")
-                + "&appid=" + appid;
 
         return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
@@ -99,7 +108,7 @@ public class ApiCalls {
         return new ObjectMapper().readValue(url, ApiResponse.class);
     }
 
-//    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo ueseremo mai
+//    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo useremo mai
 //        return = "api.openweathermap.org/data/2.5/box/city?bbox={bbox}&appid={API key}";
 //        return apicall;
 //    }
@@ -107,7 +116,5 @@ public class ApiCalls {
 //        String apicall = "api.openweathermap.org/data/2.5/box/city?bbox=%s&appid=%s";
 //        return apicall;
 //    }
-    //Getters and setters
 
-    public String getAppid(){ return appid;}
 }
