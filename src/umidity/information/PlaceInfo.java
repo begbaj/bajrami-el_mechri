@@ -1,6 +1,6 @@
 package umidity.information;
 
-public class PlaceInfo implements Information, Coordinates{
+public class PlaceInfo implements Information{
     String city;
     String state;
     String zipcode;

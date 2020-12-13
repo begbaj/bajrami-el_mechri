@@ -1,6 +1,6 @@
 package umidity.information;
 
-public interface Coordinates {
-    float lat = 0;
-    float lon = 0;
+public class Coordinates {
+    public float lat;
+    public float lon;
 }
