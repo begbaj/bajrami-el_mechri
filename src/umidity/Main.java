@@ -12,13 +12,13 @@ import java.util.Date;
 //TODO: SCEGLIERE CIFRE DOPO LA VIRGOLA
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         MainFrame Frame=new MainFrame();
         Date time=new Date();
         Coordinates location=new Coordinates();
         location.lat=3;
         location.lon=3;
-        HumidityRecord record = new HumidityRecord(5, time, 4, location);
+        HumidityRecord record = new HumidityRecord(2, time, 78, location);
         DatabaseManager DBSM=new DatabaseManager();
         DBSM.addHumidity(record);
         StatsCreator statsCreator=new StatsCreator();
