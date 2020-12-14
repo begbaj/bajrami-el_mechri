@@ -1,23 +1,23 @@
 package umidity.statistics;
 
-import umidity.information.WeatherInfo;
+import umidity.database.HumidityRecord;
 
 import java.util.Vector;
 
 public class StatsCreator {
-    public double min(Vector<WeatherInfo> weather_vector){
+    public double min(Vector<HumidityRecord> weather_vector){
         return 0;
     }
 
-    public double max(Vector<WeatherInfo> weather_vector){
+    public double max(Vector<HumidityRecord> weather_vector){
         return 0;
     }
 
-    public double avg(Vector<WeatherInfo> weather_vector){
+    public double avg(Vector<HumidityRecord> weather_vector){
         return 0;
     }
 
-    public double variance(Vector<WeatherInfo> weather_vector){
+    public double variance(Vector<HumidityRecord> weather_vector){
         return 0;
     }
 }
