@@ -4,10 +4,12 @@ import umidity.api.response.*;
 import umidity.database.DatabaseManager;
 import umidity.database.HumidityRecord;
 import umidity.gui.MainFrame;
+import umidity.statistics.StatsCreator;
 
 import java.io.IOException;
 import java.util.Date;
 
+//TODO: SCEGLIERE CIFRE DOPO LA VIRGOLA
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -16,10 +18,14 @@ public class Main {
         Coordinates location=new Coordinates();
         location.lat=3;
         location.lon=3;
-        HumidityRecord record = new HumidityRecord(13, time, 4, location);
+        HumidityRecord record = new HumidityRecord(5, time, 4, location);
         DatabaseManager DBSM=new DatabaseManager();
         DBSM.addHumidity(record);
-        DBSM.getHumidity(record.getCity_id());
+        StatsCreator statsCreator=new StatsCreator();
+        System.out.println(statsCreator.min(DBSM.getHumidity(record.getCity_id())));
+        System.out.println(statsCreator.max(DBSM.getHumidity(record.getCity_id())));
+        System.out.println(statsCreator.avg(DBSM.getHumidity(record.getCity_id())));
+        System.out.println(statsCreator.variance(DBSM.getHumidity(record.getCity_id())));
     }
 
 }
