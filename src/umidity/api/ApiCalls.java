@@ -19,6 +19,7 @@ public class ApiCalls {
     private final String appid;
     private Mode mode;
     private Unit unit;
+    private String endParams;
 
     //TODO: Lista di appid, in modo da utilizzarne diverse per non rischiare di saturare la connessione
     //TODO: potrebbe essere sensato rendere la classe statica?
@@ -31,15 +32,24 @@ public class ApiCalls {
         this.appid = appid;
         this.mode = mode;
         this.unit = unit;
+        setEndParams();
     }
 
-    public String getAppid(){ return appid;}
-    public void setMode(Mode value){ mode = value;}
-    public void setUnit(Unit value){ unit = value;}
+    public String getAppid()
+    {
+        return appid;
+    }
+    public void setMode(Mode value){ mode = value; setEndParams();}
+    public void setUnit(Unit value){ unit = value; setEndParams();}
     public Mode getMode(){return mode;}
     public Unit getUnit(){return unit;}
 
-    private String getFinalParams(){return "appid=%s&mode=%s&units=%s";}
+    private void setEndParams(){
+        this.endParams = "&appid=" + appid;
+        if(mode != Mode.JSON) this.endParams += "&mode=" + mode;
+        if(unit != Unit.Standard) this.endParams += "&units=" + unit;
+    }
+
     /**
      * Get ApiResponse by city name
      * @param cityName REQUIRED: city name
@@ -51,7 +61,8 @@ public class ApiCalls {
         String url = "https://api.openweathermap.org/data/2.5/weather?q="
                 + cityName
                 + (!stateCode.equals("") ? "," + stateCode : "")
-                + (!countryCode.equals("") ? "," + countryCode : "");
+                + (!countryCode.equals("") ? "," + countryCode : "")
+                + endParams;
 
         return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
@@ -62,7 +73,7 @@ public class ApiCalls {
      */
     public ApiResponse getByCityId(String cityId)
             throws JsonProcessingException {
-        String url = "api.openweathermap.org/data/2.5/weather?id=" + cityId + "&appid=" + appid;
+        String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
         return new ObjectMapper().readValue(url, ApiResponse.class);
     }
 
@@ -72,14 +83,14 @@ public class ApiCalls {
      */
     public ApiResponse getByCityIds(String[] cityIds)
             throws JsonProcessingException {
-        StringBuilder url = new StringBuilder("api.openweathermap.org/data/2.5/weather?id=");
+        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/weather?id=");
         boolean first = true;
         for(String s:cityIds){
             if(!first) url.append(",");
             url.append(s);
             first = false;
         }
-        url.append("&appid=").append(appid);
+        url.append(endParams);
         return new ObjectMapper().readValue(url.toString(), ApiResponse.class);
     }
 
@@ -90,7 +101,7 @@ public class ApiCalls {
      */
     public ApiResponse getByCoordinates(float lat, float lon)
             throws JsonProcessingException {
-        String url =  "api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + appid;
+        String url =  "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + endParams;
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(url, ApiResponse.class);
     }
@@ -102,9 +113,9 @@ public class ApiCalls {
      */
     public ApiResponse getByZipCode(String zipCode, String countryCode)
             throws JsonProcessingException {
-        String url = "api.openweathermap.org/data/2.5/weather?zip=" + zipCode
+        String url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
-                + "&appid=" + appid;
+                + endParams;
         return new ObjectMapper().readValue(url, ApiResponse.class);
     }
 

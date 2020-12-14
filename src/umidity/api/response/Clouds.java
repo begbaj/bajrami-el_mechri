@@ -1,4 +1,4 @@
-package umidity.information.api;
+package umidity.api.response;
 
 public class Clouds {
     public int all;

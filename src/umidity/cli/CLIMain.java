@@ -4,18 +4,32 @@ package umidity.cli;
 import umidity.api.ApiCalls;
 import umidity.api.Mode;
 import umidity.api.Unit;
-import umidity.information.ApiResponse;
+import umidity.api.response.ApiResponse;
 
 import java.util.Scanner;
 
 public class CLIMain {
+
     String prompt = ">";
     private Scanner inputScanner;
+
+
+
     public CLIMain(){
         inputScanner = new Scanner(System.in);
-        System.out.println("umidity version: 0.0.1");
-        while(mainMenu() != 0);
+        //ProcessBuilder cls = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
+        do{
+//            try {
+//                cls.start().waitFor();
+//            }catch (Exception e){
+//                System.out.println("--------------------------------------------");
+//            }
+            System.out.println("---------------- umidity version: 0.0.1 -----------------");
+        }while(mainMenu() != 0);
     }
+
+
+
 
     private int mainMenu(){
         System.out.println(
