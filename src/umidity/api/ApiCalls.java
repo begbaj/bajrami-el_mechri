@@ -72,9 +72,9 @@ public class ApiCalls {
      * @param cityId city id
      */
     public ApiResponse getByCityId(String cityId)
-            throws JsonProcessingException {
+            throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
-        return new ObjectMapper().readValue(url, ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
 
     /**
@@ -82,7 +82,7 @@ public class ApiCalls {
      * @param cityIds String array of city ids
      */
     public ApiResponse getByCityIds(String[] cityIds)
-            throws JsonProcessingException {
+            throws JsonProcessingException, MalformedURLException, IOException  {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/weather?id=");
         boolean first = true;
         for(String s:cityIds){
@@ -91,7 +91,7 @@ public class ApiCalls {
             first = false;
         }
         url.append(endParams);
-        return new ObjectMapper().readValue(url.toString(), ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url.toString()), ApiResponse.class);
     }
 
     /**
@@ -100,10 +100,10 @@ public class ApiCalls {
      * @param lon longitude
      */
     public ApiResponse getByCoordinates(float lat, float lon)
-            throws JsonProcessingException {
+            throws JsonProcessingException, MalformedURLException, IOException  {
         String url =  "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + endParams;
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(url, ApiResponse.class);
+        return mapper.readValue(new URL(url), ApiResponse.class);
     }
 
     /**
@@ -112,11 +112,11 @@ public class ApiCalls {
      * @param countryCode OPTIONAL: let this empty if no countryCode is needed
      */
     public ApiResponse getByZipCode(String zipCode, String countryCode)
-            throws JsonProcessingException {
+            throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;
-        return new ObjectMapper().readValue(url, ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
 
 //    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo useremo mai
