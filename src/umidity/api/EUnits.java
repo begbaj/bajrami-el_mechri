@@ -1,6 +1,6 @@
 package umidity.api;
 
-public enum Unit {
+public enum EUnits {
     Standard(""), Metric("metric"), Imperial("imperial");
 
     private final String action;
@@ -8,7 +8,7 @@ public enum Unit {
     {
         return this.action;
     }
-    private Unit(String action)
+    EUnits(String action)
     {
         this.action = action;
     }

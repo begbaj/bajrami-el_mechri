@@ -1,6 +1,5 @@
 package umidity.api;
 
-import umidity.information.WeatherInfo;
 import java.security.NoSuchAlgorithmException;
 
 

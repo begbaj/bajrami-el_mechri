@@ -2,8 +2,8 @@ package umidity.cli;
 
 
 import umidity.api.ApiCalls;
-import umidity.api.Mode;
-import umidity.api.Unit;
+import umidity.api.EMode;
+import umidity.api.EUnits;
 import umidity.api.response.ApiResponse;
 
 import java.util.Scanner;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class CLIMain {
 
     String prompt = ">";
-    ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b", Mode.JSON, Unit.Metric);
+    ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
     private Scanner inputScanner;
 
 

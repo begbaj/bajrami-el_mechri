@@ -5,7 +5,7 @@ import umidity.database.HumidityRecord;
 import java.util.*;
 
 
-public class StatsCreator {
+public class StatsCalculator {
     //TODO: DECIDERE COMPORTAMENTO FILTRI
     public double min(List<HumidityRecord> records, Date afterthisDate){
         HumidityRecord minimum_record =records.stream().filter(x -> x.getDate().after(afterthisDate)).min(Comparator.comparing(HumidityRecord::getHumidity)).orElseThrow(NoSuchElementException::new);

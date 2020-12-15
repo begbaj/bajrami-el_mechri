@@ -17,8 +17,8 @@ public class ApiCalls {
      * Api key used for making api calls
      */
     private final String appid;
-    private Mode mode;
-    private Unit unit;
+    private EMode EMode;
+    private EUnits EUnits;
     private String endParams;
 
     //TODO: Lista di appid, in modo da utilizzarne diverse per non rischiare di saturare la connessione
@@ -28,10 +28,10 @@ public class ApiCalls {
      * Api caller
      * @param appid Api key
      */
-    public ApiCalls(String appid, Mode mode, Unit unit){
+    public ApiCalls(String appid, EMode EMode, EUnits EUnits){
         this.appid = appid;
-        this.mode = mode;
-        this.unit = unit;
+        this.EMode = EMode;
+        this.EUnits = EUnits;
         setEndParams();
     }
 
@@ -39,15 +39,15 @@ public class ApiCalls {
     {
         return appid;
     }
-    public void setMode(Mode value){ mode = value; setEndParams();}
-    public void setUnit(Unit value){ unit = value; setEndParams();}
-    public Mode getMode(){return mode;}
-    public Unit getUnit(){return unit;}
+    public void setMode(EMode value){ EMode = value; setEndParams();}
+    public void setUnit(EUnits value){ EUnits = value; setEndParams();}
+    public EMode getMode(){return EMode;}
+    public EUnits getUnit(){return EUnits;}
 
     private void setEndParams(){
         this.endParams = "&appid=" + appid;
-        if(mode != Mode.JSON) this.endParams += "&mode=" + mode;
-        if(unit != Unit.Standard) this.endParams += "&units=" + unit;
+        if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
+        if(EUnits != EUnits.Standard) this.endParams += "&units=" + EUnits;
     }
 
     /**

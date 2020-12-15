@@ -1,6 +1,6 @@
 package umidity.api;
 
-public enum Mode {
+public enum EMode {
     JSON(""), XML("xml"), HTML("html");
     
     private final String action;
@@ -8,7 +8,7 @@ public enum Mode {
     {
         return this.action;
     }
-    private Mode(String action)
+    EMode(String action)
     {
         this.action = action;
     }

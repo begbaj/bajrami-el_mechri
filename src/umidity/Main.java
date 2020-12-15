@@ -4,9 +4,8 @@ import umidity.api.response.*;
 import umidity.database.DatabaseManager;
 import umidity.database.HumidityRecord;
 import umidity.gui.MainFrame;
-import umidity.statistics.StatsCreator;
+import umidity.statistics.StatsCalculator;
 
-import java.io.IOException;
 import java.util.Date;
 
 //TODO: SCEGLIERE CIFRE DOPO LA VIRGOLA
@@ -21,11 +20,11 @@ public class Main {
         HumidityRecord record = new HumidityRecord(2, time, 78, location);
         DatabaseManager DBSM=new DatabaseManager();
         DBSM.addHumidity(record);
-        StatsCreator statsCreator=new StatsCreator();
-        System.out.println(statsCreator.min(DBSM.getHumidity(record.getCity_id()), time));
-        System.out.println(statsCreator.max(DBSM.getHumidity(record.getCity_id()), time));
-        System.out.println(statsCreator.avg(DBSM.getHumidity(record.getCity_id()), time));
-        System.out.println(statsCreator.variance(DBSM.getHumidity(record.getCity_id()), time));
+        StatsCalculator statsCalculator =new StatsCalculator();
+        System.out.println(statsCalculator.min(DBSM.getHumidity(record.getCity_id()), time));
+        System.out.println(statsCalculator.max(DBSM.getHumidity(record.getCity_id()), time));
+        System.out.println(statsCalculator.avg(DBSM.getHumidity(record.getCity_id()), time));
+        System.out.println(statsCalculator.variance(DBSM.getHumidity(record.getCity_id()), time));
     }
 
 }
