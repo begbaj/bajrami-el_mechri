@@ -16,6 +16,10 @@ import java.util.List;
 
 public class DatabaseManager {
 
+    /**
+     *
+     * @param humidityRecord
+     */
         public void addHumidity(HumidityRecord humidityRecord){
         try {
                 final ObjectMapper objectMapper=new ObjectMapper();

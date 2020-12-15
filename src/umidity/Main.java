@@ -22,10 +22,10 @@ public class Main {
         DatabaseManager DBSM=new DatabaseManager();
         DBSM.addHumidity(record);
         StatsCreator statsCreator=new StatsCreator();
-        System.out.println(statsCreator.min(DBSM.getHumidity(record.getCity_id())));
-        System.out.println(statsCreator.max(DBSM.getHumidity(record.getCity_id())));
-        System.out.println(statsCreator.avg(DBSM.getHumidity(record.getCity_id())));
-        System.out.println(statsCreator.variance(DBSM.getHumidity(record.getCity_id())));
+        System.out.println(statsCreator.min(DBSM.getHumidity(record.getCity_id()), time));
+        System.out.println(statsCreator.max(DBSM.getHumidity(record.getCity_id()), time));
+        System.out.println(statsCreator.avg(DBSM.getHumidity(record.getCity_id()), time));
+        System.out.println(statsCreator.variance(DBSM.getHumidity(record.getCity_id()), time));
     }
 
 }
