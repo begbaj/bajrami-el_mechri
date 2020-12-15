@@ -20,7 +20,7 @@ public class DatabaseManager {
      *
      * @param humidityRecord
      */
-        public void addHumidity(HumidityRecord humidityRecord){
+    public void addHumidity(HumidityRecord humidityRecord){
         try {
                 final ObjectMapper objectMapper=new ObjectMapper();
                 List<HumidityRecord> records=getHumidity(humidityRecord.getCity_id());
@@ -48,8 +48,6 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
-
     public List<HumidityRecord> getHumidity(int city_id){
         List<HumidityRecord> records=new ArrayList<>();
             try {
@@ -75,5 +73,16 @@ public class DatabaseManager {
             }
         //records.forEach(x -> System.out.println(x.toString()));
         return records;
+    }
+
+    //TODO: Gestione delle preferenze del utente
+    public void loadUserSettings(String username){
+        //Carica preferenze utente nella classe statica UserSettings
+    }
+    //TODO: per ogni utente, salvare le relative statistiche in una cartella rinominata con l'identificatore di esso
+    /**
+     * Get a list of the saved users
+     */
+    public void getUsersList(){
     }
 }

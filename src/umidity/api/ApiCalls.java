@@ -2,6 +2,7 @@ package umidity.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
+import umidity.UserSettings;
 import umidity.api.response.ApiResponse;
 
 import java.io.IOException;

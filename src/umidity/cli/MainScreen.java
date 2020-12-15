@@ -8,15 +8,15 @@ import umidity.api.response.ApiResponse;
 
 import java.util.Scanner;
 
-public class CLIMain {
+public class MainScreen {
 
-    String prompt = ">";
-    ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
+    protected String prompt = ">"; //TODO: personalizzabile da un file per il tema
+    protected ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
+    //TODO: prendere appid da un file di configurazione
+
     private Scanner inputScanner;
 
-
-
-    public CLIMain(){
+    public MainScreen(){
         inputScanner = new Scanner(System.in);
         //ProcessBuilder cls = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
         do{
