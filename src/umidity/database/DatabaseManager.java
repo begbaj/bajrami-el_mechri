@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import umidity.Main;
 import umidity.UserSettings;
 
 import java.io.*;
@@ -41,7 +42,6 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
     public List<HumidityRecord> getHumidity(int city_id, String username){
         List<HumidityRecord> records=new ArrayList<>();
             try {
@@ -81,9 +81,9 @@ public class DatabaseManager {
                 yourFile.createNewFile();
                 FileWriter myWriter = new FileWriter("users/"+username+"config.properties");
                 myWriter.write(
-                        "guiUserTheme="+UserSettings.interfaceSettings.guiUserTheme+"\n"
-                        +"cliUserTheme="+UserSettings.interfaceSettings.cliUserTheme+"\n"
-                        +"guiEnabled="+UserSettings.interfaceSettings.guiEnabled);
+                        "guiUserTheme="+Main.userSettings.interfaceSettings.guiUserTheme+"\n"
+                        +"cliUserTheme="+Main.userSettings.interfaceSettings.cliUserTheme+"\n"
+                        +"guiEnabled="+Main.userSettings.interfaceSettings.guiEnabled);
                 myWriter.close();
                 FileInputStream config= new FileInputStream("users" +"/"+username+"/config.properties");
                 prop.load(config);
@@ -94,17 +94,18 @@ public class DatabaseManager {
         catch (Exception ex){
             ex.printStackTrace();
         }
-        UserSettings.interfaceSettings.guiUserTheme=prop.getProperty("guiUserTheme");
-        UserSettings.interfaceSettings.cliUserTheme=prop.getProperty("cliUserTheme");
-        UserSettings.interfaceSettings.guiEnabled=Boolean.parseBoolean(prop.getProperty("guiEnabled"));
-        System.out.println(UserSettings.interfaceSettings.guiUserTheme);
-        System.out.println(UserSettings.interfaceSettings.cliUserTheme);
-        System.out.println(UserSettings.interfaceSettings.guiEnabled);
+        Main.userSettings.interfaceSettings.guiUserTheme=prop.getProperty("guiUserTheme");
+        Main.userSettings.interfaceSettings.cliUserTheme=prop.getProperty("cliUserTheme");
+        Main.userSettings.interfaceSettings.guiEnabled=Boolean.parseBoolean(prop.getProperty("guiEnabled"));
+        System.out.println(Main.userSettings.interfaceSettings.guiUserTheme);
+        System.out.println(Main.userSettings.interfaceSettings.cliUserTheme);
+        System.out.println(Main.userSettings.interfaceSettings.guiEnabled);
     }
     //TODO: per ogni utente, salvare le relative statistiche in una cartella rinominata con l'identificatore di esso
     /**
      * Get a list of the saved users
      */
-    public void getUsersList(){ //LEGGI I NOMI DELLE CARTELLE PRESENTI
+    public void getUsersList(){
+        //LEGGI I NOMI DELLE CARTELLE PRESENTI
     }
 }

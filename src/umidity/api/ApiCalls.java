@@ -36,15 +36,15 @@ public class ApiCalls {
         setEndParams();
     }
 
-    public String getAppid()
-    {
-        return appid;
-    }
-    public void setMode(EMode value){ EMode = value; setEndParams();}
-    public void setUnit(EUnits value){ EUnits = value; setEndParams();}
-    public EMode getMode(){return EMode;}
-    public EUnits getUnit(){return EUnits;}
+    public String getAppid(){ return appid; }
+    public void setMode(EMode value){ EMode = value; setEndParams(); }
+    public void setUnit(EUnits value){ EUnits = value; setEndParams(); }
+    public EMode getMode(){ return EMode; }
+    public EUnits getUnit(){ return EUnits; }
 
+    /**
+     * automatically returns end parameters such as units, mode and appid
+     */
     private void setEndParams(){
         this.endParams = "&appid=" + appid;
         if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
