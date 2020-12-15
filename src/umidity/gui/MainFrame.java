@@ -13,5 +13,9 @@ public class MainFrame extends JFrame {
         this.getContentPane().setBackground(new Color(50,200,255));
         ImageIcon icon= new ImageIcon("icon.png");
         this.setIconImage(icon.getImage());
+        Button b1=new Button();
+        this.add(b1);
+        b1.setVisible(true);
+
     }
 }

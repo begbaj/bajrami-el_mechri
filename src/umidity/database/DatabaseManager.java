@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 
 
 public class DatabaseManager {
@@ -42,6 +43,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public List<HumidityRecord> getHumidity(int city_id, String username){
         List<HumidityRecord> records=new ArrayList<>();
             try {
@@ -81,7 +83,7 @@ public class DatabaseManager {
                 yourFile.createNewFile();
                 FileWriter myWriter = new FileWriter("users/"+username+"config.properties");
                 myWriter.write(
-                        "guiUserTheme="+Main.userSettings.interfaceSettings.guiUserTheme+"\n"
+                        "guiUserTheme="+ Main.userSettings.interfaceSettings.guiUserTheme+"\n"
                         +"cliUserTheme="+Main.userSettings.interfaceSettings.cliUserTheme+"\n"
                         +"guiEnabled="+Main.userSettings.interfaceSettings.guiEnabled);
                 myWriter.close();
@@ -101,11 +103,17 @@ public class DatabaseManager {
         System.out.println(Main.userSettings.interfaceSettings.cliUserTheme);
         System.out.println(Main.userSettings.interfaceSettings.guiEnabled);
     }
-    //TODO: per ogni utente, salvare le relative statistiche in una cartella rinominata con l'identificatore di esso
+
     /**
-     * Get a list of the saved users
+     *Gets a list of all users
+     * @return A vector with all usernames in String format
      */
-    public void getUsersList(){
-        //LEGGI I NOMI DELLE CARTELLE PRESENTI
+    public Vector<String> getUsersList(){ //LEGGI I NOMI DELLE CARTELLE PRESENTI
+        File[] directories = new File("users/").listFiles(File::isDirectory);
+        Vector<String> names=new Vector<String>();
+        for (File x:directories) {
+            names.add(x.getName());
+        }
+        return names;
     }
 }
