@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import umidity.UserSettings;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Properties;
 
 
 public class DatabaseManager {
@@ -20,25 +19,19 @@ public class DatabaseManager {
      *
      * @param humidityRecord
      */
-    public void addHumidity(HumidityRecord humidityRecord){
+    public void addHumidity(HumidityRecord humidityRecord, String username){
+        final ObjectMapper objectMapper=new ObjectMapper();
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
         try {
-                final ObjectMapper objectMapper=new ObjectMapper();
-                List<HumidityRecord> records=getHumidity(humidityRecord.getCity_id());
+                List<HumidityRecord> records=getHumidity(humidityRecord.getCity_id(), username);
                 records.add(humidityRecord);
-                //records.forEach(x -> System.out.println(x.toString()));
-                ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
-                System.out.println("ORA SCRIVO SUL FILE PERCHE' HO TROVATO!");
-                writer.writeValue(Paths.get(humidityRecord.getCity_id()+".json").toFile(), records);
+                writer.writeValue(Paths.get("users/"+username+"/"+humidityRecord.getCity_id()+".json").toFile(), records);
         }
-        catch (MismatchedInputException e){
+        catch (MismatchedInputException e){ //Il file era vuoto
             try {
-                System.out.println("Non ho trovato nessun record, CREO LA LISTA");
                 List<HumidityRecord> records = new ArrayList<>();
                 records.add(humidityRecord);
-                final ObjectMapper objectMapper = new ObjectMapper();
-                ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
-                System.out.println("Ora LA SCRIVO");
-                writer.writeValue(Paths.get(humidityRecord.getCity_id() + ".json").toFile(), records);
+                writer.writeValue(Paths.get("users/"+username+"/"+humidityRecord.getCity_id() + ".json").toFile(), records);
             }
             catch (Exception ex){
                 ex.printStackTrace();
@@ -48,21 +41,20 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-    public List<HumidityRecord> getHumidity(int city_id){
+
+    public List<HumidityRecord> getHumidity(int city_id, String username){
         List<HumidityRecord> records=new ArrayList<>();
             try {
                 final ObjectMapper objectMapper=new ObjectMapper();
-                records=objectMapper.readValue(new File(city_id+".json"), new TypeReference<List<HumidityRecord>>(){});
+                records=objectMapper.readValue(new File("users/"+username+"/"+city_id+".json"), new TypeReference<List<HumidityRecord>>(){});
             }
-            catch (MismatchedInputException e){
-            System.out.println("Non ho trovato nessun record, RITORNO UNA LISTA VUOTA!");
+            catch (MismatchedInputException e){ //Non trova alcun json(File vuoto)
             return records;
             }
-            catch (FileNotFoundException e){
+            catch (FileNotFoundException e){ //Non trova alcun file
                 try {
-                    System.out.println("Non ho trovato NE FILE, NE LISTA, CREO IL FILE E RITORNO UNA LISTA VUOTA!");
-                    File yourFile = new File(city_id + ".txt");
-                    yourFile.createNewFile();
+                    File yourFile = new File("users/"+username +"/"+city_id + ".json");
+                    yourFile.createNewFile(); //Perciò crea il file
                     return records;
                 }catch (Exception ex){
                     e.printStackTrace();
@@ -78,11 +70,41 @@ public class DatabaseManager {
     //TODO: Gestione delle preferenze del utente
     public void loadUserSettings(String username){
         //Carica preferenze utente nella classe statica UserSettings
+        Properties prop=new Properties();
+        try {
+            FileInputStream config= new FileInputStream("users" +"/"+username+"/config.properties");
+            prop.load(config);
+        }
+        catch (FileNotFoundException e){
+            File yourFile = new File("users/"+username+"config.properties");
+            try{
+                yourFile.createNewFile();
+                FileWriter myWriter = new FileWriter("users/"+username+"config.properties");
+                myWriter.write(
+                        "guiUserTheme="+UserSettings.interfaceSettings.guiUserTheme+"\n"
+                        +"cliUserTheme="+UserSettings.interfaceSettings.cliUserTheme+"\n"
+                        +"guiEnabled="+UserSettings.interfaceSettings.guiEnabled);
+                myWriter.close();
+                FileInputStream config= new FileInputStream("users" +"/"+username+"/config.properties");
+                prop.load(config);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        UserSettings.interfaceSettings.guiUserTheme=prop.getProperty("guiUserTheme");
+        UserSettings.interfaceSettings.cliUserTheme=prop.getProperty("cliUserTheme");
+        UserSettings.interfaceSettings.guiEnabled=Boolean.parseBoolean(prop.getProperty("guiEnabled"));
+        System.out.println(UserSettings.interfaceSettings.guiUserTheme);
+        System.out.println(UserSettings.interfaceSettings.cliUserTheme);
+        System.out.println(UserSettings.interfaceSettings.guiEnabled);
     }
     //TODO: per ogni utente, salvare le relative statistiche in una cartella rinominata con l'identificatore di esso
     /**
      * Get a list of the saved users
      */
-    public void getUsersList(){
+    public void getUsersList(){ //LEGGI I NOMI DELLE CARTELLE PRESENTI
     }
 }
