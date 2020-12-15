@@ -16,10 +16,10 @@ import java.util.Vector;
 
 
 public class DatabaseManager {
-
     /**
-     *
-     * @param humidityRecord
+     * Adds a humidity record to the given user's database
+     * @param humidityRecord record to save
+     * @param username given user's username
      */
     public void addHumidity(HumidityRecord humidityRecord, String username){
         final ObjectMapper objectMapper=new ObjectMapper();
@@ -44,6 +44,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Return all humidity record of the city(with *city_id* as id) that a certain user saved
+     * @param city_id city's id
+     * @param username given user's username
+     * @return list of all wanted record
+     */
     public List<HumidityRecord> getHumidity(int city_id, String username){
         List<HumidityRecord> records=new ArrayList<>();
             try {
@@ -69,7 +75,10 @@ public class DatabaseManager {
         return records;
     }
 
-    //TODO: Gestione delle preferenze del utente
+    /**
+     * Loads given user's settings
+     * @param username user's username
+     */
     public void loadUserSettings(String username){
         //Carica preferenze utente nella classe statica UserSettings
         Properties prop=new Properties();
