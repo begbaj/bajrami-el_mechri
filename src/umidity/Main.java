@@ -10,12 +10,13 @@ import java.util.Date;
 
 public class Main {
     public static UserSettings userSettings;
+
     public static void main(String[] args){
         Debugger.setActive(true); //TODO: da rimuovere in release
         DatabaseManager dbms =new DatabaseManager();
         Date time=new Date();
 
-        if(Main.userSettings.interfaceSettings.guiEnabled){
+        if(userSettings.interfaceSettings.guiEnabled){
             MainFrame Frame=new MainFrame();
         }else{
             MainScreen main = new MainScreen();

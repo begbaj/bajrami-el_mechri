@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.util.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import umidity.Main;
-import umidity.UserSettings;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -25,15 +24,15 @@ public class DatabaseManager {
         final ObjectMapper objectMapper=new ObjectMapper();
         ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
         try {
-                List<HumidityRecord> records=getHumidity(humidityRecord.getCity_id(), username);
+                List<HumidityRecord> records=getHumidity(humidityRecord.getCityId(), username);
                 records.add(humidityRecord);
-                writer.writeValue(Paths.get("users/"+username+"/"+humidityRecord.getCity_id()+".json").toFile(), records);
+                writer.writeValue(Paths.get("users/"+username+"/"+humidityRecord.getCityId()+".json").toFile(), records);
         }
         catch (MismatchedInputException e){ //Il file era vuoto
             try {
                 List<HumidityRecord> records = new ArrayList<>();
                 records.add(humidityRecord);
-                writer.writeValue(Paths.get("users/"+username+"/"+humidityRecord.getCity_id() + ".json").toFile(), records);
+                writer.writeValue(Paths.get("users/"+username+"/"+humidityRecord.getCityId() + ".json").toFile(), records);
             }
             catch (Exception ex){
                 ex.printStackTrace();
@@ -54,7 +53,8 @@ public class DatabaseManager {
         List<HumidityRecord> records=new ArrayList<>();
             try {
                 final ObjectMapper objectMapper=new ObjectMapper();
-                records=objectMapper.readValue(new File("users/"+username+"/"+city_id+".json"), new TypeReference<List<HumidityRecord>>(){});
+                records=objectMapper.readValue(new File("users/"+username+"/"+city_id+".json"),
+                        new TypeReference<List<HumidityRecord>>(){});
             }
             catch (MismatchedInputException e){ //Non trova alcun json(File vuoto)
             return records;

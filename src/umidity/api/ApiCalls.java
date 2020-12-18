@@ -50,7 +50,6 @@ public class ApiCalls {
         if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
         if(EUnits != EUnits.Standard) this.endParams += "&units=" + EUnits;
     }
-
     /**
      * Get ApiResponse by city name
      * @param cityName REQUIRED: city name
@@ -67,7 +66,6 @@ public class ApiCalls {
 
         return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
-
     /**
      * Get ApiResponse by a single city id
      * @param cityId city id
@@ -77,7 +75,6 @@ public class ApiCalls {
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
         return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
-
     /**
      * Get ApiResponse by a list of city ids
      * @param cityIds String array of city ids
@@ -94,7 +91,6 @@ public class ApiCalls {
         url.append(endParams);
         return new ObjectMapper().readValue(new URL(url.toString()), ApiResponse.class);
     }
-
     /**
      * Get ApiResponse by Coordinates
      * @param lat latitude
@@ -106,7 +102,6 @@ public class ApiCalls {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new URL(url), ApiResponse.class);
     }
-
     /**
      * Get ApiResponse by Zip Code
      * @param zipCode REQUIRED: zip code
@@ -129,4 +124,6 @@ public class ApiCalls {
 //        return apicall;
 //    }
 
+
+    
 }
