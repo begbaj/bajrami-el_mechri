@@ -9,8 +9,6 @@ import java.util.*;
  */
 public class StatsCalculator {
 
-    //TODO: DECIDERE COMPORTAMENTO FILTRI
-
     /**
      * Get HumidityRecord with the lowest humidity between from and to
      * @param records List of records to scan
@@ -131,7 +129,7 @@ public class StatsCalculator {
                 return avg / records.size();
             }
             else {
-                return -1; //TODO: SCEGLIERE COME GESTIRE LISTA VUOTA
+                return -1;
             }
     }
     /**
@@ -151,7 +149,7 @@ public class StatsCalculator {
             return avg / records.size();
         }
         else {
-            return -1; //TODO: SCEGLIERE COME GESTIRE LISTA VUOTA
+            return -1;
         }
     }
 
@@ -173,7 +171,7 @@ public class StatsCalculator {
 //            return sum / records.size();
 //        }
 //        else{
-//            return -1; //TODO: SCEGLIERE COME GESTIRE LISTA VUOTA
+//            return -1;
 //        }
 
         double avg = avg(records, date, inverse);
@@ -190,7 +188,7 @@ public class StatsCalculator {
             return sum / records.size();
         }
         else{
-            return -1; //TODO: SCEGLIERE COME GESTIRE LISTA VUOTA
+            return -1;
         }
     }
     /**
@@ -211,7 +209,7 @@ public class StatsCalculator {
             return sum / records.size();
         }
         else{
-            return -1; //TODO: SCEGLIERE COME GESTIRE LISTA VUOTA
+            return -1;
         }
     }
 }

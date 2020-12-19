@@ -5,15 +5,17 @@ import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
 import umidity.api.response.ApiResponse;
+import umidity.cli.forms.prompt.UserPromptTypes;
+import umidity.database.DatabaseManager;
 
 import java.util.Scanner;
+import java.util.Vector;
 
 public class MainScreen {
-
+    protected DatabaseManager dbmanager = new DatabaseManager();
     protected String prompt = ">"; //TODO: personalizzabile da un file per il tema
     protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
     //TODO: prendere appid da un file di configurazione
-
     private Scanner inputScanner;
 
     public MainScreen(){
@@ -99,14 +101,41 @@ public class MainScreen {
             return 0;
         return 1;
     }
-
+    private int newUser(){
+        return -1;
+    }
+    private int UserSelection(){
+        Vector<String> userlist = dbmanager.getUsersList();
+        if(userlist.size() > 0){
+            do{
+                System.out.println("Sono stati trovati " + userlist.size() + " utenti. Selezionarne uno o crearne uno nuovo");
+                int count = 0;
+                for(String s:userlist){
+                    System.out.println(++count + ") " + s);
+                }
+                System.out.println("0) Crea nuovo utente");
+                String input = userPrompt(UserPromptTypes.Integer);
+                if(input == "0"){
+                    newUser();
+                    return 0;
+                }
+                else {
+                    try{
+                        dbmanager.loadUserSettings(userlist.elementAt(Integer.parseInt(input)));
+                    }catch (IndexOutOfBoundsException e){
+                        System.out.println("Elemento non valido! Riprovare");
+                    }
+                }
+            }while(true);
+        }
+        return -1;
+    }
     public String userPrompt(){
         System.out.print("string::" + prompt);
         String returns = inputScanner.nextLine();
         System.out.println();
         return returns;
     }
-
     public String userPrompt(UserPromptTypes promptType){
         String returns = "";
         if(promptType == UserPromptTypes.Integer){

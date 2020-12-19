@@ -10,10 +10,11 @@ import java.util.Date;
 
 public class Main {
     public static UserSettings userSettings;
+    protected DatabaseManager dbms =new DatabaseManager();
+
 
     public static void main(String[] args){
         Debugger.setActive(true); //TODO: da rimuovere in release
-        DatabaseManager dbms =new DatabaseManager();
         Date time=new Date();
 
         if(userSettings.interfaceSettings.guiEnabled){
