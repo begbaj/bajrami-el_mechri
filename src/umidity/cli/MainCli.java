@@ -1,42 +1,31 @@
 package umidity.cli;
 
-
+import umidity.Debugger;
+import umidity.Main;
 import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
 import umidity.api.response.ApiResponse;
+import umidity.cli.forms.FormManager;
 import umidity.cli.forms.prompt.UserPromptTypes;
-import umidity.database.DatabaseManager;
 
 import java.util.Scanner;
 import java.util.Vector;
 
-public class MainScreen {
-    protected DatabaseManager dbmanager = new DatabaseManager();
+public class MainCli extends FormManager {
+
     protected String prompt = ">"; //TODO: personalizzabile da un file per il tema
     protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
     //TODO: prendere appid da un file di configurazione
     private Scanner inputScanner;
 
-    public MainScreen(){
-        inputScanner = new Scanner(System.in);
-        do{
-//            try {
-//                cls.start().waitFor();
-//            }catch (Exception e){
-//                System.out.println("--------------------------------------------");
-//            }
-            clearScreen();
-            System.out.println("---------------- umidity version: 0.0.1 -----------------");
-        }while(mainMenu() != 0);
+    @Override
+    protected void update(){
+        System.out.println("prova");
     }
 
 
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
 
     private int mainMenu(){
         System.out.println(
@@ -109,7 +98,7 @@ public class MainScreen {
         return -1;
     }
     private int UserSelection(){
-        Vector<String> userlist = dbmanager.getUsersList();
+        Vector<String> userlist = Main.dbms.getUsersList();
         if(userlist.size() > 0){
             do{
                 System.out.println("Sono stati trovati " + userlist.size() + " utenti. Selezionarne uno o crearne uno nuovo");
@@ -125,7 +114,7 @@ public class MainScreen {
                 }
                 else {
                     try{
-                        dbmanager.loadUserSettings(userlist.elementAt(Integer.parseInt(input)));
+                        Main.dbms.loadUserSettings(userlist.elementAt(Integer.parseInt(input)));
                     }catch (IndexOutOfBoundsException e){
                         System.out.println("Elemento non valido! Riprovare");
                     }
@@ -166,4 +155,5 @@ public class MainScreen {
         //TODO: etc, etc (userPrompt tempalte types)
         return returns;
     }
+
 }
