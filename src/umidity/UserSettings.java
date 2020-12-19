@@ -29,8 +29,8 @@ public class UserSettings {
         public umidity.api.EUnits units;
     }
 
-    public InterfaceSettings interfaceSettings;
-    public ApiSettings apiSettings;
+    public InterfaceSettings interfaceSettings = new InterfaceSettings();
+    public ApiSettings apiSettings = new ApiSettings();
     /**
      * Username, only used to identify different settings on the same pc.
      * Its an identifier.

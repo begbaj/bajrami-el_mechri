@@ -20,19 +20,23 @@ public class MainScreen {
 
     public MainScreen(){
         inputScanner = new Scanner(System.in);
-        //ProcessBuilder cls = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
         do{
 //            try {
 //                cls.start().waitFor();
 //            }catch (Exception e){
 //                System.out.println("--------------------------------------------");
 //            }
+            clearScreen();
             System.out.println("---------------- umidity version: 0.0.1 -----------------");
         }while(mainMenu() != 0);
     }
 
 
 
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 
     private int mainMenu(){
         System.out.println(
