@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import umidity.UserSettings;
 import umidity.api.response.ApiResponse;
+import umidity.api.response.ForecastResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -12,7 +13,7 @@ import java.net.URL;
 /**
  * This class handles every connection to the apis.
  */
-public class ApiCalls {
+public class ApiCaller {
 
     /**
      * Api key used for making api calls
@@ -29,7 +30,7 @@ public class ApiCalls {
      * Api caller
      * @param appid Api key
      */
-    public ApiCalls(String appid, EMode EMode, EUnits EUnits){
+    public ApiCaller(String appid, EMode EMode, EUnits EUnits){
         this.appid = appid;
         this.EMode = EMode;
         this.EUnits = EUnits;
@@ -37,10 +38,10 @@ public class ApiCalls {
     }
 
     public String getAppid(){ return appid; }
-    public void setMode(EMode value){ EMode = value; setEndParams(); }
-    public void setUnit(EUnits value){ EUnits = value; setEndParams(); }
     public EMode getMode(){ return EMode; }
     public EUnits getUnit(){ return EUnits; }
+    public void setMode(EMode value){ EMode = value; setEndParams(); }
+    public void setUnit(EUnits value){ EUnits = value; setEndParams(); }
 
     /**
      * automatically returns end parameters such as units, mode and appid
@@ -114,6 +115,72 @@ public class ApiCalls {
                 + endParams;
         return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
     }
+
+    /**
+     * Get ForecastResponse by city name
+     * @param cityName REQUIRED: city name
+     * @param stateCode OPTIONAL: state code
+     * @param countryCode OPTIONAL: country code
+     */
+    public ForecastResponse getForecastByCityName(String cityName, String stateCode, String countryCode)
+            throws JsonProcessingException, MalformedURLException, IOException {
+        String url = "https://api.openweathermap.org/data/2.5/forecast?q="
+                + cityName
+                + (!stateCode.equals("") ? "," + stateCode : "")
+                + (!countryCode.equals("") ? "," + countryCode : "")
+                + endParams;
+
+        return new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+    }
+    /**
+     * Get ForecastResponse by a single city id
+     * @param cityId city id
+     */
+    public ForecastResponse getForecastByCityId(String cityId)
+            throws JsonProcessingException, MalformedURLException, IOException  {
+        String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + endParams;
+        return new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+    }
+    /**
+     * Get ForecastResponse by a list of city ids
+     * @param cityIds String array of city ids
+     */
+    public ForecastResponse getForecastByCityIds(String[] cityIds)
+            throws JsonProcessingException, MalformedURLException, IOException  {
+        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/forecast?id=");
+        boolean first = true;
+        for(String s:cityIds){
+            if(!first) url.append(",");
+            url.append(s);
+            first = false;
+        }
+        url.append(endParams);
+        return new ObjectMapper().readValue(new URL(url.toString()), ForecastResponse.class);
+    }
+    /**
+     * Get ForecastResponse by Coordinates
+     * @param lat latitude
+     * @param lon longitude
+     */
+    public ForecastResponse getForecastByCoordinates(float lat, float lon)
+            throws JsonProcessingException, MalformedURLException, IOException  {
+        String url =  "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + endParams;
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(new URL(url), ForecastResponse.class);
+    }
+    /**
+     * Get ForecastResponse by Zip Code
+     * @param zipCode REQUIRED: zip code
+     * @param countryCode OPTIONAL: let this empty if no countryCode is needed
+     */
+    public ForecastResponse getForecastByZipCode(String zipCode, String countryCode)
+            throws JsonProcessingException, MalformedURLException, IOException  {
+        String url = "https://api.openweathermap.org/data/2.5/forecast?zip=" + zipCode
+                + (!countryCode.equals("")? "," + countryCode : "" )
+                + endParams;
+        return new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+    }
+
 
 //    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo useremo mai
 //        return = "api.openweathermap.org/data/2.5/box/city?bbox={bbox}&appid={API key}";

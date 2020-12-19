@@ -1,7 +1,7 @@
 package umidity.cli;
 
 
-import umidity.api.ApiCalls;
+import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
 import umidity.api.response.ApiResponse;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class MainScreen {
 
     protected String prompt = ">"; //TODO: personalizzabile da un file per il tema
-    protected ApiCalls caller = new ApiCalls("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
+    protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
     //TODO: prendere appid da un file di configurazione
 
     private Scanner inputScanner;
