@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class HumidityRecord {
 
-    private float humidity;
+    private double humidity;
     private int cityId;
 
     private Date date;
@@ -19,13 +19,13 @@ public class HumidityRecord {
     //TODO: Documentazione
 
 
-    public float getHumidity() { return humidity; }
+    public double getHumidity() { return humidity; }
     public Date getDate() { return date; }
     public Coordinates getLocation() { return location; }
     public int getCityId() { return cityId; }
 
     @JsonCreator //JSON creator?? cosa fa?
-    public HumidityRecord(@JsonProperty("humidity") float humidity,
+    public HumidityRecord(@JsonProperty("humidity") double humidity,
                           @JsonProperty("date") Date date,
                           @JsonProperty("city_id") int cityId,
                           @JsonProperty("location") Coordinates location) {

@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * This class provides the user settings
  */
-public class UserSettings {
+public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE PRE CONFIGURATI PER EVITARE ERRORI
 
     public class InterfaceSettings{
         /**

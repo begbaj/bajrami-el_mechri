@@ -1,5 +1,7 @@
 package umidity.api.response;
 
+
+
 public class ApiResponse {
     //TODO: documentazione necessaria
     public Coordinates  coord;
@@ -20,6 +22,6 @@ public class ApiResponse {
 
     @Override
     public String toString(){
-        return "TEMPORARY:\n cityName: " + name + "\n Humidity: " + main.humidity;
+        return "TEMPORARY:\n cityName: " + name + "\n Humidity: " + main.humidity + " " + coord.lat + " " + coord.lon;
     }
 }
