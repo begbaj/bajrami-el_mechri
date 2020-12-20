@@ -2,7 +2,7 @@ package umidity.api.response;
 
 
 
-public class ApiResponse {
+public class ApiIResponse implements IResponse, ICoordinates, IHumidity {
     //TODO: documentazione necessaria
     public Coordinates  coord;
     public Weather[]    weather;
@@ -21,7 +21,12 @@ public class ApiResponse {
     public int          visibility;
 
     @Override
-    public String toString(){
-        return "TEMPORARY:\n cityName: " + name + "\n Humidity: " + main.humidity + " " + coord.lat + " " + coord.lon;
+    public Coordinates getCoord() {
+        return coord.getCoord();
+    }
+
+    @Override
+    public int getHumidity() {
+        return main.humidity;
     }
 }

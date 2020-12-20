@@ -1,6 +1,6 @@
 package umidity.api.response;
 
-public class MainResponse {
+public class MainResponse implements IHumidity {
     public float temp;
     public float feels_like;
     public float pressure;
@@ -9,4 +9,10 @@ public class MainResponse {
     public float temp_max;
     public float sea_level;
     public float grnd_level;
+
+
+    @Override
+    public int getHumidity() {
+        return humidity;
+    }
 }

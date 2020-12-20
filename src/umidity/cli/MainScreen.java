@@ -4,7 +4,7 @@ package umidity.cli;
 import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
-import umidity.api.response.ApiResponse;
+import umidity.api.response.ApiIResponse;
 import umidity.cli.forms.prompt.UserPromptTypes;
 import umidity.database.DatabaseManager;
 
@@ -50,7 +50,7 @@ public class MainScreen {
         String input = userPrompt(UserPromptTypes.Integer);
         if(input.equals("1")){
             System.out.println("City name: ");
-            ApiResponse response;
+            ApiIResponse response;
             try {
                 String cityName = userPrompt();
                 response = caller.getByCityName(cityName, "", "");
@@ -64,7 +64,7 @@ public class MainScreen {
             }
         }
         else if(input.equals("2")){
-            ApiResponse response;
+            ApiIResponse response;
 
             System.out.println("Latitude:");
             float lat = Float.parseFloat(userPrompt(UserPromptTypes.Float));
@@ -86,7 +86,7 @@ public class MainScreen {
         }
         else if(input.equals("3")){
             System.out.println("City Id:");
-            ApiResponse response;
+            ApiIResponse response;
             try{
                 String cityid = userPrompt(UserPromptTypes.Integer);
                 response = caller.getByCityId(cityid);

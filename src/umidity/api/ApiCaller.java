@@ -2,13 +2,15 @@ package umidity.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import umidity.UserSettings;
-import umidity.api.response.ApiResponse;
-import umidity.api.response.ForecastResponse;
+import umidity.api.response.ApiIResponse;
+import umidity.api.response.EExclude;
+import umidity.api.response.ForecastIResponse;
+import umidity.api.response.OneCallIResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.EnumSet;
 
 /**
  * This class handles every connection to the apis.
@@ -44,11 +46,55 @@ public class ApiCaller {
     public void setUnit(EUnits value){ EUnits = value; setEndParams(); }
 
     /**
+     * make a "one call" call to api
+     */
+    public OneCallIResponse oneCall(float lat, float lon, EnumSet<EExclude> excludes)
+            throws JsonProcessingException, MalformedURLException, IOException{
+
+        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
+        url.append("lat=" + lat + "&lon=" + lon);
+        if(excludes.size() > 0){
+            url.append("&exclude=");
+            boolean first = true;
+            if(excludes.contains(EExclude.current)){ url.append("current"); first = false;}
+            if(excludes.contains(EExclude.minutely)){ if(!first) url.append(","); url.append("minutely"); first = false;}
+            if(excludes.contains(EExclude.hourly)){ if(!first) url.append(","); url.append("hourly"); first = false;}
+            if(excludes.contains(EExclude.daily)){ if(!first) url.append(","); url.append("daily"); first = false;}
+            if(excludes.contains(EExclude.alerts)){ if(!first) url.append(","); url.append("alerts"); first = false;}
+        }
+        url.append(endParams);
+
+        return new ObjectMapper().readValue(new URL(url.toString()), OneCallIResponse.class);
+    }
+
+    /**
+     * make a "one call" call to api
+     */
+    public OneCallIResponse oneCall(float lat, float lon, long dt, EnumSet<EExclude> excludes)
+            throws JsonProcessingException, MalformedURLException, IOException{
+
+        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
+        url.append("lat=" + lat + "&lon=" + lon + "&dt=" + dt);
+        if(excludes.size() > 0){
+            url.append("&exclude=");
+            boolean first = true;
+            if(excludes.contains(EExclude.current)){ url.append("current"); first = false;}
+            if(excludes.contains(EExclude.minutely)){ if(!first) url.append(","); url.append("minutely"); first = false;}
+            if(excludes.contains(EExclude.hourly)){ if(!first) url.append(","); url.append("hourly"); first = false;}
+            if(excludes.contains(EExclude.daily)){ if(!first) url.append(","); url.append("daily"); first = false;}
+            if(excludes.contains(EExclude.alerts)){ if(!first) url.append(","); url.append("alerts"); first = false;}
+        }
+        url.append(endParams);
+
+        return new ObjectMapper().readValue(new URL(url.toString()), OneCallIResponse.class);
+    }
+
+    /**
      * automatically returns end parameters such as units, mode and appid
      */
     private void setEndParams(){
         this.endParams = "&appid=" + appid;
-        if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
+        //if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
         if(EUnits != EUnits.Standard) this.endParams += "&units=" + EUnits;
     }
     /**
@@ -57,7 +103,7 @@ public class ApiCaller {
      * @param stateCode OPTIONAL: state code
      * @param countryCode OPTIONAL: country code
      */
-    public ApiResponse getByCityName(String cityName, String stateCode, String countryCode)
+    public ApiIResponse getByCityName(String cityName, String stateCode, String countryCode)
             throws JsonProcessingException, MalformedURLException, IOException {
         String url = "https://api.openweathermap.org/data/2.5/weather?q="
                 + cityName
@@ -65,22 +111,22 @@ public class ApiCaller {
                 + (!countryCode.equals("") ? "," + countryCode : "")
                 + endParams;
 
-        return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
     }
     /**
      * Get ApiResponse by a single city id
      * @param cityId city id
      */
-    public ApiResponse getByCityId(String cityId)
+    public ApiIResponse getByCityId(String cityId)
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
-        return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
     }
     /**
      * Get ApiResponse by a list of city ids
      * @param cityIds String array of city ids
      */
-    public ApiResponse getByCityIds(String[] cityIds)
+    public ApiIResponse getByCityIds(String[] cityIds)
             throws JsonProcessingException, MalformedURLException, IOException  {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/weather?id=");
         boolean first = true;
@@ -90,30 +136,30 @@ public class ApiCaller {
             first = false;
         }
         url.append(endParams);
-        return new ObjectMapper().readValue(new URL(url.toString()), ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url.toString()), ApiIResponse.class);
     }
     /**
      * Get ApiResponse by Coordinates
      * @param lat latitude
      * @param lon longitude
      */
-    public ApiResponse getByCoordinates(float lat, float lon)
+    public ApiIResponse getByCoordinates(float lat, float lon)
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url =  "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + endParams;
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(url), ApiResponse.class);
+        return mapper.readValue(new URL(url), ApiIResponse.class);
     }
     /**
      * Get ApiResponse by Zip Code
      * @param zipCode REQUIRED: zip code
      * @param countryCode OPTIONAL: let this empty if no countryCode is needed
      */
-    public ApiResponse getByZipCode(String zipCode, String countryCode)
+    public ApiIResponse getByZipCode(String zipCode, String countryCode)
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;
-        return new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
     }
 
     /**
@@ -122,7 +168,7 @@ public class ApiCaller {
      * @param stateCode OPTIONAL: state code
      * @param countryCode OPTIONAL: country code
      */
-    public ForecastResponse getForecastByCityName(String cityName, String stateCode, String countryCode)
+    public ForecastIResponse getForecastByCityName(String cityName, String stateCode, String countryCode)
             throws JsonProcessingException, MalformedURLException, IOException {
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="
                 + cityName
@@ -130,22 +176,22 @@ public class ApiCaller {
                 + (!countryCode.equals("") ? "," + countryCode : "")
                 + endParams;
 
-        return new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
     }
     /**
      * Get ForecastResponse by a single city id
      * @param cityId city id
      */
-    public ForecastResponse getForecastByCityId(String cityId)
+    public ForecastIResponse getForecastByCityId(String cityId)
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + endParams;
-        return new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
     }
     /**
      * Get ForecastResponse by a list of city ids
      * @param cityIds String array of city ids
      */
-    public ForecastResponse getForecastByCityIds(String[] cityIds)
+    public ForecastIResponse getForecastByCityIds(String[] cityIds)
             throws JsonProcessingException, MalformedURLException, IOException  {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/forecast?id=");
         boolean first = true;
@@ -155,31 +201,32 @@ public class ApiCaller {
             first = false;
         }
         url.append(endParams);
-        return new ObjectMapper().readValue(new URL(url.toString()), ForecastResponse.class);
+        return new ObjectMapper().readValue(new URL(url.toString()), ForecastIResponse.class);
     }
     /**
      * Get ForecastResponse by Coordinates
      * @param lat latitude
      * @param lon longitude
      */
-    public ForecastResponse getForecastByCoordinates(float lat, float lon)
+    public ForecastIResponse getForecastByCoordinates(float lat, float lon)
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url =  "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + endParams;
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(url), ForecastResponse.class);
+        return mapper.readValue(new URL(url), ForecastIResponse.class);
     }
     /**
      * Get ForecastResponse by Zip Code
      * @param zipCode REQUIRED: zip code
      * @param countryCode OPTIONAL: let this empty if no countryCode is needed
      */
-    public ForecastResponse getForecastByZipCode(String zipCode, String countryCode)
+    public ForecastIResponse getForecastByZipCode(String zipCode, String countryCode)
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/forecast?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;
-        return new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
     }
+
 
 
 //    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo useremo mai

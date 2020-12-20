@@ -4,7 +4,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
-import umidity.api.response.ApiResponse;
+import umidity.api.response.ApiIResponse;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -48,7 +48,7 @@ public class MainGui {
     private JTextArea textArea_Records;
     private JTable records;
     DatabaseManager DBSM=new DatabaseManager();
-    ApiResponse realtimeResponse;
+    ApiIResponse realtimeResponse;
     StatsCalculator statsCalc;
     String[] recordColumnNames={"DateTime", "Temperature", "Humidity"};
     String[] statisticsColumnNames={"Min", "Max", "Avg", "Variance"};
