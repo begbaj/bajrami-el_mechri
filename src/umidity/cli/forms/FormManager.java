@@ -8,10 +8,14 @@ public abstract class FormManager implements Form, Runnable {
      * Refresh screen every declared milliseconds
      */
     private long refreshRate;
+    /**
+     * if true, the thread stops
+     */
     private boolean quit = false;
 
 
     public void run(){
+        init();
         while(!quit)
         {
             beforeUpdate();
@@ -24,7 +28,9 @@ public abstract class FormManager implements Form, Runnable {
             }
         }
     }
+    protected void init(){
 
+    }
     protected void beforeUpdate(){ clearConsole(); }
     protected void update(){}
     protected void afterUpdate(){}

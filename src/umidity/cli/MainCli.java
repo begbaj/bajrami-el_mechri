@@ -1,12 +1,12 @@
 package umidity.cli;
 
-import umidity.Debugger;
 import umidity.Main;
 import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
 import umidity.api.response.ApiResponse;
 import umidity.cli.forms.FormManager;
+import umidity.cli.forms.message.MessageBox;
 import umidity.cli.forms.prompt.UserPromptTypes;
 
 import java.util.Scanner;
@@ -18,31 +18,79 @@ public class MainCli extends FormManager {
     protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
     //TODO: prendere appid da un file di configurazione
     private Scanner inputScanner;
+    private StringBuilder path = new StringBuilder();
+    private String input;
+    private boolean inputRequired = false;
+    private UserPromptTypes inputType = UserPromptTypes.String;
+
+    private MessageBox titleBox = new MessageBox();
+    private MessageBox contentBox = new MessageBox();
+
+
+    @Override
+    protected void init(){
+        inputScanner = new Scanner(System.in);
+
+        titleBox.setVisibility(true);
+        titleBox.setMessage("Umidity 0.1");
+
+        contentBox.setVisibility(true);
+        contentBox.setMessage("Welcome to Umidity!");
+
+    }
 
     @Override
     protected void update(){
-        System.out.println("prova");
+        String[] paths = path.toString().split("/");
+        titleBox.show();
+        contentBox.show();
+        if(path.toString() == ""){
+            //user selection
+        }else{
+            if(paths[0] == "selected/"){
+                if(paths[1] == "mainMenu"){
+                    mainMenu();
+                }
+            }
+        }
     }
 
+    @Override
+    protected void afterUpdate(){
+        if(inputRequired){
+            input = userPrompt(inputType);
+        }
+    }
 
-
+    private void navigate(String to){
+        if(to == ".."){
+            int i = path.lastIndexOf("/");
+            if(i >= 0)
+                path.delete(i, path.length()-1);
+            else{
+                if(path.length() > 0)
+                    path.delete(0, path.length());
+            }
+        }else{
+            path.append(to + "/");
+        }
+    }
 
     private int mainMenu(){
-        System.out.println(
-                "Menu:\n" +
-                        "1) Get by city name\n" +
-                        "2) Get by city coordinates\n" +
-                        "3) Get by city id\n" +
-                        "4) Get ...\n" +
-                        "0) to quit \n"
-        );
-        String input = userPrompt(UserPromptTypes.Integer);
+        contentBox.setMessage("Menu:\n" +
+                "1) Get by city name\n" +
+                "2) Get by city coordinates\n" +
+                "3) Get by city id\n" +
+                "4) Get ...\n" +
+                "0) to quit \n");
+
+        input = userPrompt(UserPromptTypes.Integer);
         if(input.equals("1")){
             System.out.println("City name: ");
             ApiResponse response;
             try {
-                String cityName = userPrompt();
-                response = caller.getByCityName(cityName, "", "");
+                input = userPrompt();
+                response = caller.getByCityName(input, "", "");
                 System.out.printf(" City:%s\n Humidity:%s\n Temperature:%s \n",
                         response.name,
                         response.main.humidity,

@@ -14,7 +14,7 @@ public class Main {
 
 
     public static void main(String[] args){
-        Debugger.setActive(true); //TODO: da rimuovere in release
+        Debugger.setActive(false); //TODO: da rimuovere in release
         Date time=new Date();
         userSettings.interfaceSettings.guiEnabled = false;
         if(userSettings.interfaceSettings.guiEnabled){
@@ -22,7 +22,7 @@ public class Main {
         }else{
             MainCli mainCli = new MainCli();
 
-            mainCli.setRefreshRate(100);
+            mainCli.setRefreshRate(1);
             mainCli.run();
         }
     }
