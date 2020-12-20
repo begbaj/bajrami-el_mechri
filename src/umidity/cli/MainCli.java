@@ -1,6 +1,5 @@
 package umidity.cli;
 
-import umidity.Main;
 import umidity.api.ApiCaller;
 import umidity.api.EMode;
 import umidity.api.EUnits;
@@ -13,7 +12,6 @@ import umidity.cli.forms.prompt.UserPrompt;
 import umidity.cli.forms.prompt.UserPromptTypes;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class MainCli extends FormManager {
@@ -22,8 +20,10 @@ public class MainCli extends FormManager {
 //    private StringBuilder path = new StringBuilder();
     private String path = "";
     private boolean inputRequired = false;
-    private UserPromptTypes type;
+
     private ApiResponse response = new ApiResponse();
+    private Vector<String> inputStorage = new Vector<>();
+    private UserPromptTypes inputType;
 
 
 
@@ -54,34 +54,20 @@ public class MainCli extends FormManager {
         addForm(menuBox);
         addForm(userPrompt);
         __update();
-        navigate("mainMenu");
+        navigate("currentMenu");
     }
 
     @Override
     protected void beforeUpdate(){
-        if(path.equals("mainMenu")) mainMenu();
-        else if(path.equals("getByCityName")) getByCityName();
-        else if(path.equals("viewResponse")) viewResponse();
-        else if(path.equals("quit")) quit();
+        switch (path) {
+            case "currentMenu" -> currentMenu();
+            case "getByCityName" -> getByCityName();
+            case "getByCoordinates" -> getByCoordinates();
+            case "getByCityId" -> getByCityName();
+            case "viewResponse" -> viewResponse();
+            case "quit" -> quit();
+        }
 
-//        if(path.toString() == ""){
-//            //
-//        }else{
-//            if(paths[0].equals("selected")){
-//                if(paths[1].equals("mainMenu")){
-//                    if(paths.length > 2 && paths[2].equals("getByCityName")){
-//                        if(paths.length > 3 && paths[3].equals("viewResponse"))
-//                            viewResponse();
-//                        getByCityName();
-//                        return;
-//                    }
-//                    mainMenu();
-//                    return;
-//                }
-//                return;
-//            }
-//            return;
-//        }
     }
 
     @Override
@@ -94,7 +80,7 @@ public class MainCli extends FormManager {
         if(inputRequired){
             if(input == null){
                 ((UserPrompt)getForm("userPrompt")).setVisibility(true);
-                input = ((UserPrompt)getForm("userPrompt")).getUserInput(type);
+                input = ((UserPrompt)getForm("userPrompt")).getUserInput(inputType);
             }
         }else{
             input = null;
@@ -103,27 +89,26 @@ public class MainCli extends FormManager {
     }
 
     private void navigate(String to){
-//        for(String t:to.split("/"))
-//        if(t == ".."){
-//            int i = path.lastIndexOf("/");
-//            if(i >= 0)
-//                this.path.delete(i, path.length()-1);
-//            else{
-//                if(path.length() > 0)
-//                    this.path.delete(0, path.length());
-//            }
-//        }else{
-//            this.path.append(t + "/");
-//            getForm("titleBox").setContent(t);
-//        }
-//        inputRequired = false;
-//        input=null;
         path = to;
-        input = null;
         inputRequired = false;
+        input = null;
+        inputStorage = new Vector<>();
     }
 
-    private int mainMenu(){
+    private void navigate(String to, boolean clearInput){
+        path = to;
+        inputRequired = false;
+        if(clearInput)
+        {
+            input = null;
+            inputStorage = new Vector<>();
+        }
+    }
+
+    private int currentMenu(){
+        inputRequired = true;
+        inputType = UserPromptTypes.Integer;
+
         getForm("contentBox").setVisibility(false);
         MenuBox menu = (MenuBox) getForm("menuBox");
 
@@ -135,22 +120,27 @@ public class MainCli extends FormManager {
         menu.refresh(true);
         menu.setVisibility(true);
 
-        inputRequired = true;
-        type = UserPromptTypes.Integer;
+
         if(input != null) {
-            if(input.equals("1")) navigate("getByCityName");
-            else if(input.equals("0")) navigate("quit");
+            switch (input) {
+                case "1" -> navigate("getByCityName");
+                case "2" -> navigate("getByCoordinates");
+                case "3" -> navigate("getByCityId");
+                case "0" -> navigate("quit");
+            }
             menu.clear();
             menu.setVisibility(false);
         }
         return 1;
     }
     private int getByCityName(){
+        inputRequired = true;
+        inputType = UserPromptTypes.String;
+
         MessageBox contentBox = (MessageBox) getForm("contentBox");
         contentBox.setVisibility(true);
         contentBox.setContent("Inserire nome città:");
-        inputRequired = true;
-        type = UserPromptTypes.String;
+
         if(input != null){
             try {
                 response = caller.getByCityName(input, "","");
@@ -161,24 +151,73 @@ public class MainCli extends FormManager {
         }
         return 0;
     }
-    private int viewResponse(){
+    private int getByCoordinates(){
+        inputRequired = true;
+        inputType = UserPromptTypes.String;
+
         MessageBox contentBox = (MessageBox) getForm("contentBox");
         contentBox.setVisibility(true);
+
         String content = "";
-        content += "Umidità attuale: " + response.main.humidity + "\n";
-        content += "Temperatura attuale: " + response.main.temp + "\n";
-        content += "Temperatura massima: " + response.main.temp_max + "\n";
-        content += "Temperatura minima: " + response.main.temp_min + "\n";
-        content += "Inserire (q) per tornare al menu principale";
+        content += "Latitudine: " + ( inputStorage.size() > 0 ? inputStorage.elementAt(0) : "?")
+                + " Longitudine: " + ( inputStorage.size() > 1 ? inputStorage.elementAt(1) : "?")
+                + "\n";
+
+        if(inputStorage.size() == 0)
+            content += "Inserire latitudine:";
+        else{
+            content += "Inserire Longitudine:";
+        }
+
+        if(input != null){
+            inputStorage.add(input);
+            input = null;
+        }
+
         contentBox.setContent(content);
+        if(inputStorage.size() > 2){
+            try {
+                response = caller.getByCoordinates(
+                        Float.parseFloat(inputStorage.elementAt(0)),
+                        Float.parseFloat(inputStorage.elementAt(1)));
+                navigate("viewResponse");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+
+    private int viewResponse(){
         inputRequired = true;
-        type = UserPromptTypes.String;
+        inputType = UserPromptTypes.String;
+
+        MessageBox contentBox = (MessageBox) getForm("contentBox");
+        contentBox.setVisibility(true);
+
+        String content = "";
+
+        content += "Città: " + response.name + "\n"
+         + "Umidità attuale: " + response.main.humidity + "\n"
+         + "Temperatura attuale: " + response.main.temp + "\n"
+         + "Temperatura massima: " + response.main.temp_max + "\n"
+         + "Temperatura minima: " + response.main.temp_min + "\n"
+         + "Inserire (q) per tornare al menu principale";
+
+        contentBox.setContent(content);
+
+
         if(input != null){
             if(input.equals("q")){
                 contentBox.setVisibility(false);
                 navigate("mainMenu");
             }
+            else{
+                input = null;
+            }
         }
+
         return 1;
     }
 
