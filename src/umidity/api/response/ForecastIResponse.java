@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class ForecastIResponse implements IResponse, ICoordinates, IHumidities {
+public class ForecastIResponse extends Response implements IResponse, ICoordinates, IHumidities {
     public String cod;
     public int message;
     public int cnt;

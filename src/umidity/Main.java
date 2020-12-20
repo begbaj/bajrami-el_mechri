@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args){
         Debugger.setActive(true); //TODO: da rimuovere in release
         Date time=new Date();
-        userSettings.interfaceSettings.guiEnabled = false;
+        userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
             MainFrame Frame=new MainFrame();
         }else{

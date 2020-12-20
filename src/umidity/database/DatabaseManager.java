@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.util.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import umidity.Main;
-import umidity.api.response.Sys;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -16,6 +15,7 @@ import java.util.Vector;
 
 
 public class DatabaseManager {
+
     /**
      * Adds a humidity record to the given user's database
      * @param humidityRecord record to save

@@ -5,7 +5,7 @@ public class Coordinates implements ICoordinates{
     public float lon;
 
     public Coordinates(){
-
+        //costruttore vuoto, non sempre serve inizializzare i valori
     }
 
     public Coordinates(float lat, float lon){

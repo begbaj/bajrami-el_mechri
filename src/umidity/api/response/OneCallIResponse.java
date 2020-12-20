@@ -1,6 +1,6 @@
 package umidity.api.response;
 
-public class OneCallIResponse implements IResponse, ICoordinates, IHumidity {
+public class OneCallIResponse extends Response implements IResponse, ICoordinates, IHumidity {
     float lat;
     float lon;
     String timezone;
