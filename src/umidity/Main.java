@@ -24,6 +24,7 @@ public class Main {
 
             mainCli.setRefreshRate(1);
             mainCli.run();
+            Debugger.println("chiuso");
         }
     }
 

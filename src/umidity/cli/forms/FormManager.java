@@ -1,26 +1,36 @@
 package umidity.cli.forms;
 
 import umidity.Debugger;
+import umidity.cli.forms.prompt.UserPrompt;
 
-public abstract class FormManager implements Form, Runnable {
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
+public abstract class FormManager implements Runnable {
 
     /**
      * Refresh screen every declared milliseconds
      */
-    private long refreshRate;
+    protected long refreshRate;
     /**
      * if true, the thread stops
      */
-    private boolean quit = false;
+    protected boolean quit = false;
+    protected boolean inited = false;
+    protected String input = null;
+    protected List<Form> forms = new ArrayList<>();
+
 
 
     public void run(){
-        init();
+        if(!inited) __init();
         while(!quit)
         {
-            beforeUpdate();
-            update();
-            afterUpdate();
+            __beforeUpdate();
+            __update();
+            __afterUpdate();
             try {
                 Thread.sleep(refreshRate);
             } catch (InterruptedException e) {
@@ -28,22 +38,67 @@ public abstract class FormManager implements Form, Runnable {
             }
         }
     }
-    protected void init(){
 
-    }
-    protected void beforeUpdate(){ clearConsole(); }
+    /**
+     * Override this only IF you know what you're doing
+     */
+    protected void __init(){ inited = true; init();  }
+    /**
+     * Override this only IF you know what you're doing
+     */
+    protected void __beforeUpdate(){ clearConsole(); beforeUpdate(); }
+    /**
+     * Override this only IF you know what you're doing
+     */
+    protected void __update(){ refreshScreen(); update(); }
+    protected void __afterUpdate(){ afterUpdate(); }
+
+    /**
+     * Override this to perform actions one time and never again
+     */
+    protected void init(){}
+    /**
+     * override this method to perform actions before the screen update
+     */
+    protected void beforeUpdate(){}
+    /**
+     * override this method to perform actions during the screen update
+     */
     protected void update(){}
+    /**
+     * override this method to perform actions after the screen update
+     */
     protected void afterUpdate(){}
+
+    /**
+     * Closes the FormManager instance (Stops the thread)
+     */
     protected void quit(){ quit = true; }
 
+    protected void refreshScreen(){
+        for(Form f:forms){
+            if(f.getClass() != UserPrompt.class)f.show(); //TODO: da creare interfaccia piuttosto che cosi
+        }
+    }
+
+    public void addForm(Form newForm){ forms.add(newForm); }
+    public void addForms(Collection<Form> forms){ forms.addAll(forms); }
 
     public long getRefreshRate(){ return refreshRate; }
     public void setRefreshRate(long value){ refreshRate = value;};
 
+    public Form getForm(String formName)
+    {
+        for(Form f:forms){
+            if(f.getName() == formName) return f;
+        }
+        return null;
+    }
+
     /**
      * Clear console
      */
-    private static void clearConsole() {
+    protected static void clearConsole() {
         try {
             Debugger.println("CLEARED");
             final String os = System.getProperty("os.name");
