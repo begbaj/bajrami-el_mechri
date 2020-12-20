@@ -10,7 +10,8 @@ public class MessageBox implements Form {
 
     public void show(){
         if(isVisible)
-            System.out.println(content.toString());
+            if(content != null)
+                System.out.println(content.toString());
     }
 
     public void setVisibility(boolean value){ isVisible = value;}

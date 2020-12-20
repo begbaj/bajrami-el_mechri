@@ -2,13 +2,15 @@ package umidity.cli.forms;
 
 import umidity.Debugger;
 import umidity.cli.forms.prompt.UserPrompt;
+import umidity.cli.forms.prompt.UserPromptTypes;
 
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
-public abstract class FormManager implements Runnable {
+public abstract class FormManager implements Runnable, Form {
+
+    protected boolean inputRequired;
+    protected UserPromptTypes inputType;
+    protected boolean skipFrame = false;
 
     /**
      * Refresh screen every declared milliseconds
@@ -19,18 +21,42 @@ public abstract class FormManager implements Runnable {
      */
     protected boolean quit = false;
     protected boolean inited = false;
+    protected boolean clearScreen = true;
     protected String input = null;
     protected List<Form> forms = new ArrayList<>();
+    protected String path;
 
+    boolean isVisible = false;
+    String name = "form";
+    Object content = new Object();
 
+    @Override
+    public void show() {
+        if(!inited) __init();
+        __beforeUpdate();
+        __update();
+        __afterUpdate();
+    }
+
+    public boolean getInputRequired(){return inputRequired;}
+    @Override
+    public void setVisibility(boolean value) { isVisible = value; }
+    @Override
+    public void setName(String name) { this.name = name; }
+    @Override
+    public String getName() { return name; }
+    @Override
+    public <T> T setContent(T value) { content = value; return value;}
+    @Override
+    public <T> T getContent() { return (T)content; }
+
+    public void setClearScreen(boolean value){ clearScreen = value; }
+
+    public List<Form> getForms(){ return forms; }
 
     public void run(){
-        if(!inited) __init();
-        while(!quit)
-        {
-            __beforeUpdate();
-            __update();
-            __afterUpdate();
+        while(!quit){
+            show();
             try {
                 Thread.sleep(refreshRate);
             } catch (InterruptedException e) {
@@ -39,19 +65,52 @@ public abstract class FormManager implements Runnable {
         }
     }
 
+    protected void navigate(String to){
+        path = to;
+        inputRequired = false;
+        input = null;
+        skipFrame = false;
+    }
+    protected void navigate(String to, boolean skipFrame){
+        path = to;
+        inputRequired = false;
+        input = null;
+        skipFrame = skipFrame;
+    }
+
     /**
      * Override this only IF you know what you're doing
      */
-    protected void __init(){ inited = true; init();  }
+    protected void __init(){
+        inited = true;
+        init();
+    }
     /**
      * Override this only IF you know what you're doing
      */
-    protected void __beforeUpdate(){ clearConsole(); beforeUpdate(); }
+    protected void __beforeUpdate(){
+        if(clearScreen)
+            clearConsole();
+        beforeUpdate();
+    }
     /**
      * Override this only IF you know what you're doing
      */
-    protected void __update(){ refreshScreen(); update(); }
-    protected void __afterUpdate(){ afterUpdate(); }
+    protected void __update(){
+        if(!skipFrame){
+            refreshScreen();
+        update();
+        }
+        skipFrame = false;
+    }
+    /**
+     * Override this only IF you know what you're doing
+     */
+    protected void __afterUpdate(){
+        if(!skipFrame)
+            afterUpdate();
+        skipFrame = false;
+    }
 
     /**
      * Override this to perform actions one time and never again
@@ -81,14 +140,23 @@ public abstract class FormManager implements Runnable {
         }
     }
 
+    public String consumeInput(){
+        if(input != null){
+            inputRequired = false;
+            String temp = input;
+            input = null;
+            return temp;
+        }
+        return null;
+    }
+
     public void addForm(Form newForm){ forms.add(newForm); }
     public void addForms(Collection<Form> forms){ forms.addAll(forms); }
 
     public long getRefreshRate(){ return refreshRate; }
     public void setRefreshRate(long value){ refreshRate = value;};
 
-    public Form getForm(String formName)
-    {
+    public Form getForm(String formName){
         for(Form f:forms){
             if(f.getName() == formName) return f;
         }

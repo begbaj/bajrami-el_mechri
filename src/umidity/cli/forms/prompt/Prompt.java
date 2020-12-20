@@ -32,6 +32,6 @@ public class Prompt {
 
     @Override
     public String toString(){
-        return color.toString() + type + "::" + line;
+        return type + "::" + line;
     }
 }

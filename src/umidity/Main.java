@@ -22,7 +22,7 @@ public class Main {
         }else{
             MainCli mainCli = new MainCli();
 
-            mainCli.setRefreshRate(1);
+            mainCli.setRefreshRate(10);
             mainCli.run();
             Debugger.println("chiuso");
         }
