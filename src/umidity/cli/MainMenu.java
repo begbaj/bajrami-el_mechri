@@ -126,8 +126,24 @@ public class MainMenu extends FormManager {
         inputType = UserPromptTypes.Integer;
     }
 
-    public void forecastByCityName(){
+    public void forecastByCityName() {
+        MenuBox menu = (MenuBox)getForm("menu");
+        menu.clear();
+        menu.setVisibility(false);
+        menu.refresh(0);
 
+        if(input != null){
+            switch (consumeInput()){
+                case "1" -> navigate("forecastByCityName", true);
+                case "2" -> navigate("forecastByCoordinates", true);
+                case "3" -> navigate("forecastByZipCode", true);
+                case "4" -> navigate("forecastByCityId", true);
+                case "0" -> navigate("startupMenu", true);
+            }
+        }
+
+        inputRequired = true;
+        inputType = UserPromptTypes.Integer;
     }
 
     public void forecastByCityId(){
