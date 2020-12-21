@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * This class provides the user settings
  */
-public class UserSettings {
+public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE PRE CONFIGURATI PER EVITARE ERRORI
 
     public class InterfaceSettings{
         /**
@@ -17,7 +17,7 @@ public class UserSettings {
          */
         public String cliUserTheme; //TODO: temi per la cli
         /**
-         * If true, the GUI will be launched instead of CLI.
+         * If true, the GUI will be launched instead of CLI by default.
          */
         public boolean guiEnabled;
         public String prompt;
@@ -29,7 +29,13 @@ public class UserSettings {
         public umidity.api.EUnits units;
     }
 
+    /**
+     * Interface related settings
+     */
     public InterfaceSettings interfaceSettings = new InterfaceSettings();
+    /**
+     * Api related settings
+     */
     public ApiSettings apiSettings = new ApiSettings();
     /**
      * Username, only used to identify different settings on the same pc.
