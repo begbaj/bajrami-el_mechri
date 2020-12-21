@@ -118,7 +118,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="4cc30" class="javax.swing.JTable" binding="table1" default-binding="true">
+                      <component id="4cc30" class="javax.swing.JTable" binding="cityTable">
                         <constraints/>
                         <properties/>
                       </component>

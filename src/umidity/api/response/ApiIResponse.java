@@ -1,6 +1,8 @@
 package umidity.api.response;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ApiIResponse extends Response implements IResponse, ICoordinates, IHumidity {
     //TODO: documentazione necessaria
@@ -19,9 +21,12 @@ public class ApiIResponse extends Response implements IResponse, ICoordinates, I
     public String       name;
     public int          cod;
     public int          visibility;
+    public String       pop;
+    public String       dt_txt;
 
     public class Main implements IHumidity{
         public float temp;
+        public float temp_kf;
         public float feels_like;
         public float pressure;
         public int humidity;
@@ -49,10 +54,13 @@ public class ApiIResponse extends Response implements IResponse, ICoordinates, I
         public String country;
         public long sunrise;
         public long sunset;
+        public String pod;
     }
 
     public class RainSnow{
+        @JsonProperty("1h")
         public float oneH;
+        @JsonProperty("3h")
         public float threeH;
     }
 

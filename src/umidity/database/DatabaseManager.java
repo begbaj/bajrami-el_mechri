@@ -8,20 +8,17 @@ import umidity.Main;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Vector;
+import java.util.*;
 
 
 public class DatabaseManager {
 
-    /**
-     * Adds a humidity record to the given user's database
-     *
-     * @param record record to save
-     * @param filename   the path we're saving the record in
-     */
+//    /**
+//     * Adds a humidity record to the given user's database
+//     *
+//     * @param record record to save
+//     * @param filename   the path we're saving the record in
+//     */
 //    public void addRecord(Object record, String filename) {
 //        final ObjectMapper objectMapper = new ObjectMapper();
 //        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
@@ -35,17 +32,78 @@ public class DatabaseManager {
 //        }
 //    }
 
-    public void addCity(CityRecord record, String filename) {
+    public boolean addCity(CityRecord cityRecord){
+        final ObjectMapper objectMapper=new ObjectMapper();
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+        boolean flag=true;
+        try {
+            List<CityRecord> records=getCities();
+            for(CityRecord record:records)
+            {
+                if(record.getId()==cityRecord.getId())
+                    flag=false;
+            }
+            if(flag) {
+                records.add(cityRecord);
+                writer.writeValue(Paths.get("records/cities.json").toFile(), records);
+            };
+        }
+        catch (MismatchedInputException e){ //Il file era vuoto
+            try {
+                List<CityRecord> records = new ArrayList<>();
+                records.add(cityRecord);
+                writer.writeValue(Paths.get("records/cities.json").toFile(), records);
+            }
+            catch (Exception ex){
+                flag=false;
+                ex.printStackTrace();
+            }
+        }
+        catch (IOException e) {
+            flag=false;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    public boolean removeCity(CityRecord cityRecord) {
         final ObjectMapper objectMapper = new ObjectMapper();
         ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
-        List<CityRecord> records = null;
-        records = getCities("Records/"+filename+".json");
-        records.add(record);
-        try {
-            writer.writeValue(Paths.get("Records/"+filename).toFile(), records);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        boolean flag = false;
+        List<CityRecord> records = getCities();
+//        for (CityRecord record : records) {
+//            if (record.getId() == cityRecord.getId()) {
+//                records.remove(record);
+//                flag=true;
+//            }
+//        }
+        Iterator itr = records.iterator();
+        while (itr.hasNext())
+        {
+            CityRecord record=(CityRecord) itr.next();
+            if(record.getId()==cityRecord.getId()) {
+                itr.remove();
+                flag = true;
+            }
         }
+        if(flag) {
+            try {
+                writer.writeValue(Paths.get("records/cities.json").toFile(), records);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    public boolean cityisSaved(CityRecord city){
+        List<CityRecord> records = getCities();
+        for (CityRecord record : records) {
+            if (record.getId() == city.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addHumidity(HumidityRecord humidityRecord){
@@ -81,10 +139,6 @@ public class DatabaseManager {
         try {
             final ObjectMapper objectMapper=new ObjectMapper();
             records=objectMapper.readValue(new File("records/"+city_id+".json"), new TypeReference<List<HumidityRecord>>(){});
-            System.out.println("ESISTE");
-            for (HumidityRecord x:records) {
-                System.out.println(x.getHumidity());
-            }
             return records;
         }
         catch (MismatchedInputException e){ //Non trova alcun json(File vuoto)
@@ -108,17 +162,17 @@ public class DatabaseManager {
         return records;
     }
 
-    public List<CityRecord> getCities(String filename){
+    public List<CityRecord> getCities(){
             List<CityRecord> records = new ArrayList<>();
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
-            records = objectMapper.readValue(new File("Records/"+filename+".json"), new TypeReference<List<CityRecord>>() {
-            });
+            records = objectMapper.readValue(new File("records/cities.json"),
+                    new TypeReference<List<CityRecord>>() {});
         } catch (MismatchedInputException e) { //Non trova alcun record(File vuoto)
             return records;
         } catch (FileNotFoundException e) { //Non trova alcun file
             try {
-                File yourFile = new File("Records/"+filename+".json");
+                File yourFile = new File("records/cities.json");
                 yourFile.getParentFile().mkdirs(); //CREA LE DIRECTORY SOPRA
                 yourFile.createNewFile(); //Perciò crea il file
                 return records;
