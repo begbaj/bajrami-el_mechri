@@ -14,15 +14,15 @@ public class Main {
 
 
     public static void main(String[] args){
-        Debugger.setActive(false); //TODO: da rimuovere in release
+        Debugger.setActive(true); //TODO: da rimuovere in release
         Date time=new Date();
-        userSettings.interfaceSettings.guiEnabled = true;
+        userSettings.interfaceSettings.guiEnabled = false;
         if(userSettings.interfaceSettings.guiEnabled){
             MainFrame Frame=new MainFrame();
         }else{
             MainCli mainCli = new MainCli();
 
-            mainCli.setRefreshRate(10);
+            //mainCli.setRefreshRate(10);
             mainCli.run();
             Debugger.println("chiuso");
         }
