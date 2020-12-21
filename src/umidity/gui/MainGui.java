@@ -1,5 +1,6 @@
 package umidity.gui;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import org.jdatepicker.impl.JDatePickerImpl;
 import umidity.api.ApiCaller;
 import umidity.api.EMode;
@@ -8,20 +9,23 @@ import umidity.api.response.ApiIResponse;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import umidity.database.CityRecord;
 import umidity.database.DatabaseManager;
 import umidity.database.HumidityRecord;
 import umidity.statistics.StatsCalculator;
+import com.formdev.flatlaf.*;
 
 
 public class MainGui {
@@ -44,26 +48,38 @@ public class MainGui {
     private JLabel cityLabel;
     private JLabel enoguhLabel;
     private JLabel nosuchLabel;
+    private JPanel BigPanel;
+    private JLabel enoughLabel;
+    private JCheckBox saveCityRecordsCheckBox;
+    private JCheckBox setFavouriteCityCheckBox;
     private JScrollPane tableScrollPane;
     private JTextArea textArea_Records;
     private JTable records;
     DatabaseManager DBSM=new DatabaseManager();
     ApiIResponse realtimeResponse;
-    StatsCalculator statsCalc;
+    StatsCalculator statsCalc=new StatsCalculator();
     String[] recordColumnNames={"DateTime", "Temperature", "Humidity"};
     String[] statisticsColumnNames={"Min", "Max", "Avg", "Variance"};
+    public SettingsFrame settingsGui;
 
     public MainGui(){
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
+            UIManager.setLookAndFeel( new FlatLightLaf() );
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize LaF" );
         }
 
+//        try {
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        SwingUtilities.updateComponentTreeUI(panelMain);
         ApiCaller caller=new ApiCaller("beb62ff92c75eefce173edf69bacd835", EMode.JSON, EUnits.Metric);
         createTable(recordsTable, null, recordColumnNames);
         createTable(statisticsTable, null, statisticsColumnNames);
         JButton settingsButton= new JButton();
+
         buttonApi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,9 +92,11 @@ public class MainGui {
                     String[][] records={{dateString, Float.toString(realtimeResponse.main.temp), Float.toString(realtimeResponse.main.humidity)+"%"}};
                     createTable(recordsTable, records, recordColumnNames);
                     cityLabel.setText(realtimeResponse.name.toUpperCase());
-                    HumidityRecord record=new HumidityRecord(realtimeResponse.main.humidity, new Date(), realtimeResponse.id, realtimeResponse.coord);
+                    CityRecord city=new CityRecord(realtimeResponse.id, realtimeResponse.name, realtimeResponse.getCoord());
+                    HumidityRecord record= new HumidityRecord(realtimeResponse.main.humidity, new Date(), city);
                     DBSM.addHumidity(record);
                     timeStatsBox.setSelectedIndex(0);
+                    //caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
                 }
                 catch (FileNotFoundException fnfException){
                     nosuchLabel.setText("Can't find any area with such parameters");
@@ -92,8 +110,19 @@ public class MainGui {
         settingsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 SettingsFrame settingsGui = new SettingsFrame();
+                WindowFocusListener hi = new WindowFocusListener() {
+                    @Override
+                    public void windowGainedFocus(WindowEvent e) {
+                        SwingUtilities.updateComponentTreeUI(panelMain);
+                    }
+
+                    @Override
+                    public void windowLostFocus(WindowEvent e) {
+                        SwingUtilities.updateComponentTreeUI(panelMain);
+                    }
+                };
+                settingsGui.addWindowFocusListener(hi);
             }
         });
 
@@ -107,17 +136,18 @@ public class MainGui {
                     Date fromDate = cal.getTime();
                     createStatistic(fromDate, new Date());
                 }
-                else if(timeStatsBox.getSelectedIndex()==1){
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.DATE, -30);
-                    Date fromDate = cal.getTime();
-                    createStatistic(fromDate, new Date());
-                }
-                else{
-                    if(datePickerFrom.getJFormattedTextField().getText()!="" && datePickerTo.getJFormattedTextField().getText()!=""){
-                        Date fromDate = (Date) datePickerFrom.getModel().getValue();
-                        Date toDate = (Date) datePickerTo.getModel().getValue();
-                        createStatistic(fromDate, toDate);
+                else {
+                    if (timeStatsBox.getSelectedIndex() == 1) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.add(Calendar.DATE, -30);
+                        Date fromDate = cal.getTime();
+                        createStatistic(fromDate, new Date());
+                    } else {
+                        if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
+                            Date fromDate = (Date) datePickerFrom.getModel().getValue();
+                            Date toDate = (Date) datePickerTo.getModel().getValue();
+                            createStatistic(fromDate, toDate);
+                        }
                     }
                 }
             }
@@ -149,15 +179,17 @@ public class MainGui {
 
     public void createStatistic(Date fromDate, Date toDate){
         try {
-            enoguhLabel.setText("");
-            String[][] statistics = {{Double.toString(statsCalc.min(DBSM.getHumidity(realtimeResponse.id), fromDate, toDate).getHumidity()),
+            enoughLabel.setText("");
+            List<HumidityRecord> records = DBSM.getHumidity(realtimeResponse.id);
+            String[][] statistics = {{
+                    Double.toString((statsCalc.min(DBSM.getHumidity(realtimeResponse.id), fromDate, toDate)).getHumidity()),
                     Double.toString(statsCalc.max(DBSM.getHumidity(realtimeResponse.id), fromDate, toDate).getHumidity()),
                     Double.toString(statsCalc.avg(DBSM.getHumidity(realtimeResponse.id), fromDate, toDate)),
                     Double.toString(statsCalc.variance(DBSM.getHumidity(realtimeResponse.id), fromDate, toDate))}};
             createTable(statisticsTable, statistics, statisticsColumnNames);
-        }catch (Exception e){
+        }catch (Exception e) {
             createTable(statisticsTable, null, statisticsColumnNames);
-            enoguhLabel.setText("Not enough records");
+            enoughLabel.setText("Not enough records");
         }
     }
 

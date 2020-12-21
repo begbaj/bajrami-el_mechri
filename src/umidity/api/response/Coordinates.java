@@ -1,5 +1,7 @@
 package umidity.api.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Coordinates implements ICoordinates{
     public float lat;
     public float lon;
@@ -13,6 +15,7 @@ public class Coordinates implements ICoordinates{
         this.lon = lon;
     }
     @Override
+    @JsonIgnore
     public Coordinates getCoord() {
         try{
             return (Coordinates)this.clone();

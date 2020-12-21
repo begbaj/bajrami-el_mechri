@@ -8,37 +8,30 @@ import java.util.Date;
 /**
  * Inserire documentazione
  */
-public class HumidityRecord {
+public class HumidityRecord implements IJsonable{
 
     private double humidity;
-    private int cityId;
-
     private Date date;
-    private Coordinates location;
+    private CityRecord city;
 
     //TODO: Documentazione
 
 
     public double getHumidity() { return humidity; }
     public Date getDate() { return date; }
-    public Coordinates getLocation() { return location; }
-    public int getCityId() { return cityId; }
+    public CityRecord getCity() { return city; }
 
-    @JsonCreator //JSON creator?? cosa fa?
+    @JsonCreator //Permette di specifiare quali attributi vengono scritti su file se l'oggetto viene salvato su file
     public HumidityRecord(@JsonProperty("humidity") double humidity,
                           @JsonProperty("date") Date date,
-                          @JsonProperty("city_id") int cityId,
-                          @JsonProperty("location") Coordinates location) {
+                          @JsonProperty("city") CityRecord city){
         this.humidity = humidity;
         this.date = date;
-        this.cityId = cityId;
-        this.location = location;
+        this.city = city;
     }
 
     @Override
     public String toString(){
-        //return "humidity:" + humidity +" date:" +date+ " " + location.toString();
-        //Ai fini di rendere il codice più intuitivo:
         return String.valueOf(humidity);
     }
 }

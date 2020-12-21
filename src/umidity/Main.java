@@ -18,7 +18,7 @@ public class Main {
         Date time=new Date();
         userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
-            MainFrame Frame=new MainFrame();
+             MainFrame Frame=new MainFrame();
         }else{
             MainScreen main = new MainScreen();
         }

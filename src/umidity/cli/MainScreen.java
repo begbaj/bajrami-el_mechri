@@ -105,35 +105,6 @@ public class MainScreen {
             return 0;
         return 1;
     }
-    private int newUser(){
-        return -1;
-    }
-    private int UserSelection(){
-        Vector<String> userlist = dbmanager.getUsersList();
-        if(userlist.size() > 0){
-            do{
-                System.out.println("Sono stati trovati " + userlist.size() + " utenti. Selezionarne uno o crearne uno nuovo");
-                int count = 0;
-                for(String s:userlist){
-                    System.out.println(++count + ") " + s);
-                }
-                System.out.println("0) Crea nuovo utente");
-                String input = userPrompt(UserPromptTypes.Integer);
-                if(input == "0"){
-                    newUser();
-                    return 0;
-                }
-                else {
-                    try{
-                        dbmanager.loadUserSettings(userlist.elementAt(Integer.parseInt(input)));
-                    }catch (IndexOutOfBoundsException e){
-                        System.out.println("Elemento non valido! Riprovare");
-                    }
-                }
-            }while(true);
-        }
-        return -1;
-    }
     public String userPrompt(){
         System.out.print("string::" + prompt);
         String returns = inputScanner.nextLine();
