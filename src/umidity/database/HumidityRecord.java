@@ -1,14 +1,13 @@
 package umidity.database;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import umidity.api.response.Coordinates;
 
 import java.util.Date;
 
 /**
  * Inserire documentazione
  */
-public class HumidityRecord implements IJsonable{
+public class HumidityRecord {
 
     private double humidity;
     private Date date;

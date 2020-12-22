@@ -1,10 +1,13 @@
 package umidity.database;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import umidity.Main;
+import umidity.api.response.Coordinates;
+import umidity.api.response.ICoordinates;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -66,17 +69,50 @@ public class DatabaseManager {
         return flag;
     }
 
+    public void setFavouriteCity(CityRecord cityRecord){
+        final ObjectMapper objectMapper = new ObjectMapper();
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+        try {
+            writer.writeValue(Paths.get("records/favourite.json").toFile(), cityRecord);
+        }catch (FileNotFoundException ex){
+            File yourFile = new File("records/favourite.json");
+            yourFile.getParentFile().mkdirs(); //CREA LE DIRECTORY SOPRA
+            try {
+                yourFile.createNewFile();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public CityRecord getFavouriteCity(){
+        Coordinates coord=new Coordinates(-1, -1);
+        CityRecord cityRecord=new CityRecord(-1, "", coord);
+        final ObjectMapper objectMapper=new ObjectMapper();
+        try{
+            cityRecord = objectMapper.readValue(new File("records/favourite.json"), new TypeReference<CityRecord>() {
+            });
+        }catch (FileNotFoundException e){
+                File yourFile = new File("records/favourite.json");
+                yourFile.getParentFile().mkdirs(); //CREA LE DIRECTORY SOPRA
+            try {
+                yourFile.createNewFile();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cityRecord;
+    }
+
     public boolean removeCity(CityRecord cityRecord) {
         final ObjectMapper objectMapper = new ObjectMapper();
         ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
         boolean flag = false;
         List<CityRecord> records = getCities();
-//        for (CityRecord record : records) {
-//            if (record.getId() == cityRecord.getId()) {
-//                records.remove(record);
-//                flag=true;
-//            }
-//        }
         Iterator itr = records.iterator();
         while (itr.hasNext())
         {
@@ -142,7 +178,6 @@ public class DatabaseManager {
             return records;
         }
         catch (MismatchedInputException e){ //Non trova alcun json(File vuoto)
-            System.out.println("DIOPORCO");
             return records;
         }
         catch (FileNotFoundException e){ //Non trova alcun file
@@ -150,7 +185,6 @@ public class DatabaseManager {
                 File yourFile = new File("records/"+city_id + ".json");
                 yourFile.getParentFile().mkdirs(); //CREA LE DIRECTORY SOPRA
                 yourFile.createNewFile(); //Perciò crea il file
-                System.out.println("HO CREATO IL FILE");
                 return records;
             }catch (Exception ex){
                 e.printStackTrace();
@@ -215,7 +249,7 @@ public class DatabaseManager {
         }
     }
 
-    //TODO: RICORDATI DI FARLO PER DIO
+    //TODO: RICORDATI DI FARLO
     public void setUserSettings() { //TODO: DEFAULT VS OBBLIGA A NON FARLO(MENU A TENDINA?)
 
     }

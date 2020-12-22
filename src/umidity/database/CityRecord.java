@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import umidity.api.response.Coordinates;
 
-public class CityRecord implements IJsonable {
+public class CityRecord {
     private int id;
     private String name;
     private Coordinates coord;
