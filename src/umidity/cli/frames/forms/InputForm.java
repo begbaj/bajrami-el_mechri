@@ -1,7 +1,6 @@
 package umidity.cli.frames.forms;
 
-import umidity.cli.frames.eventHandlers.InputFormArgument;
-import umidity.cli.frames.eventHandlers.InputFormListener;
+import umidity.cli.frames.eventHandlers.*;
 
 import java.io.IOException;
 

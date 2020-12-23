@@ -1,5 +1,7 @@
 package umidity.cli.frames;
+import umidity.Debugger;
 import umidity.cli.frames.forms.Form;
+import umidity.cli.frames.forms.formEvents.Callable;
 
 import java.util.*;
 
@@ -14,6 +16,17 @@ public class Frame {
     public void show(){
         for(Form f:forms){
             f.show();
+            Callable tocall = f.nextEvent();
+            if(tocall != null)
+                invoke(tocall, tocall.getArg());
+        }
+    }
+
+    private static void invoke(Callable callable, Object arg){
+        try{
+            callable.call(arg);
+        }catch (InterruptedException e){
+            Debugger.println("Event could not be executed!" + e.getMessage() + " " + e.getCause());
         }
     }
 

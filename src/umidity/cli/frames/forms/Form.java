@@ -1,17 +1,32 @@
 package umidity.cli.frames.forms;
 
+import com.sun.jdi.Method;
+import umidity.cli.frames.forms.formEvents.Callable;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.Vector;
+
 public abstract class Form {
     boolean enabled = true;
     boolean isVisible = false;
+    protected Queue<Callable> events = new ArrayDeque<>();
 
     String name = "";
 
 
-    public void show(){}
+    public void show(){
+        if(!enabled) return;
+    }
+
+    public void addEvent(Callable newEvent){
+        events.add(newEvent);
+    }
 
     public void enable(){ enabled = true; }
     public void disable(){ enabled = false; }
     public boolean getEnabled(){ return enabled; }
+    public Callable nextEvent(){ return events.poll();}
 
     /**
      * if true, when show is called, the Form will be showed to the user

@@ -1,7 +1,8 @@
 package umidity.cli.frames.forms;
 
 import umidity.Debugger;
-import umidity.cli.frames.eventHandlers.InputFormArgument;
+
+import umidity.cli.frames.eventHandlers.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class TextInput extends InputForm{
     }
 
     public String openStream(){
+        if(!enabled) return "";
         input = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
