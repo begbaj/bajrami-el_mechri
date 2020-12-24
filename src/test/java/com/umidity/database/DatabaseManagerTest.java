@@ -3,6 +3,7 @@ package com.umidity.database;
 import com.umidity.UserSettings;
 import com.umidity.api.EUnits;
 import com.umidity.api.response.Coordinates;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,11 +26,12 @@ class DatabaseManagerTest {
         settings.interfaceSettings.guiUserTheme = "default";
         settings.interfaceSettings.prompt = ">";
         settings.username = "test";
+        dbms.recreate();
 
     }
 
-    @BeforeEach
-    void setUp(){
+    @AfterEach
+    void tearDown(){
         dbms.recreate();
     }
 

@@ -5,6 +5,7 @@ import com.umidity.api.response.EExclude;
 import com.umidity.api.response.ForecastIResponse;
 import com.umidity.api.response.OneCallIResponse;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,15 +15,11 @@ import java.util.EnumSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApiCallerTest {
-    private ApiCaller caller;
+    private static ApiCaller caller;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void initAll() {
         caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test
