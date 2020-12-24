@@ -49,7 +49,6 @@ public class ApiCaller {
      */
     public OneCallIResponse oneCall(float lat, float lon, EnumSet<EExclude> excludes)
             throws JsonProcessingException, MalformedURLException, IOException{
-
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
         url.append("lat=" + lat + "&lon=" + lon);
         if(excludes.size() > 0){
@@ -67,7 +66,7 @@ public class ApiCaller {
     }
 
     /**
-     * make a "one call" call to api
+     * make a "one call" call to api for historicals
      */
     public OneCallIResponse oneCall(float lat, float lon, long dt, EnumSet<EExclude> excludes)
             throws JsonProcessingException, MalformedURLException, IOException{
@@ -125,7 +124,7 @@ public class ApiCaller {
      * Get ApiResponse by a list of city ids
      * @param cityIds String array of city ids
      */
-    public ApiIResponse getByCityIds(String[] cityIds)
+    public ApiIResponse[] getByCityIds(String[] cityIds)
             throws IOException  {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/weather?id=");
         boolean first = true;
@@ -135,7 +134,7 @@ public class ApiCaller {
             first = false;
         }
         url.append(endParams);
-        return new ObjectMapper().readValue(new URL(url.toString()), ApiIResponse.class);
+        return new ObjectMapper().readValue(new URL(url.toString()), ApiIResponse[].class);
     }
     /**
      * Get ApiResponse by Coordinates
@@ -190,7 +189,7 @@ public class ApiCaller {
      * Get ForecastResponse by a list of city ids
      * @param cityIds String array of city ids
      */
-    public ForecastIResponse getForecastByCityIds(String[] cityIds)
+    public ForecastIResponse[] getForecastByCityIds(String[] cityIds)
             throws JsonProcessingException, MalformedURLException, IOException  {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/forecast?id=");
         boolean first = true;
@@ -200,7 +199,7 @@ public class ApiCaller {
             first = false;
         }
         url.append(endParams);
-        return new ObjectMapper().readValue(new URL(url.toString()), ForecastIResponse.class);
+        return new ObjectMapper().readValue(new URL(url.toString()), ForecastIResponse[].class);
     }
     /**
      * Get ForecastResponse by Coordinates

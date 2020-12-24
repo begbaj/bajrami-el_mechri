@@ -1,90 +1,110 @@
 package com.umidity.api.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OneCallIResponse extends Response implements IResponse, ICoordinates, IHumidity {
-    float lat;
-    float lon;
-    String timezone;
-    long timezone_offset;
-    Current current;
-    Minutely[] minutely;
-    Hourly[] hourly;
-    Daily[] daily;
-    Alerts[] alerts;
+    public float lat;
+    public float lon;
+    public String timezone;
+    public long timezone_offset;
+    public Current current;
+    public Minutely[] minutely;
+    public Hourly[] hourly;
+    public Daily[] daily;
+    public Alerts[] alerts;
 
     @Override
     public int getHumidity() {
         return current.humidity;
     }
 
-    public class Current{
-        long dt;
-        long sunrise;
-        long sunset;
-        float temp;
-        float feels_like;
-        int pressure;
-        int humidity;
-        float dew_point;
-        int clouds;
-        int visibility;
-        int wind_speed;
-        int wind_deg;
-        Weather[] weather;
+    public static class Current{
+        public long dt;
+        public long sunrise;
+        public long sunset;
+        public float temp;
+        public float feels_like;
+        public int pressure;
+        public int humidity;
+        public float dew_point;
+        public int clouds;
+        public int uvi;
+        public int visibility;
+        public int wind_speed;
+        public int wind_deg;
+        public Weather[] weather;
     }
 
-    public class Minutely{
-        long dt;
-        int precipitation;
+    public static class Minutely{
+        public long dt;
+        public int precipitation;
     }
 
-    public class Hourly{
-        long dt;
-        float temp;
-        float feels_like;
-        int pressure;
-        int humidty;
-        float dew_point;
-        int uvi;
-        int clouds;
-        int visibility;
-        float wind_speed;
-        int wind_deg;
-        Weather[] weather;
-        float pop;
+    public static class Hourly{
+        public long dt;
+        public float temp;
+        public float feels_like;
+        public int pressure;
+        public int humidity;
+        public float dew_point;
+        public int uvi;
+        public int clouds;
+        public Rain rain;
+        public Snow snow;
+        public int visibility;
+        public float wind_speed;
+        public int wind_deg;
+        public Weather[] weather;
+        public float pop;
+
     }
 
-    public class Daily{
-        long dt;
-        long sunrise;
-        long sunset;
-        Temp temp;
-        Temp feels_like;
-        int pressure;
-        int humidity;
-        float dew_point;
-        float wind_speed;
-        int wind_deg;
-        Weather[] weather;
-        int clouds;
-        float pop;
-        float uvi;
+    public static class Daily{
+        public long dt;
+        public long sunrise;
+        public long sunset;
+        public Temp temp;
+        public Temp feels_like;
+        public int pressure;
+        public int humidity;
+        public float dew_point;
+        public float wind_speed;
+        public int wind_deg;
+        @JsonIgnore
+        public Rain rain;
+        @JsonIgnore
+        public Snow snow;
+        public Weather[] weather;
+        public int clouds;
+        public float pop;
+        public int uvi;
 
-        public class Temp{
-            float day;
-            float min;
-            float max;
-            float night;
-            float eve;
-            float morn;
+        public static class Temp{
+            public float day;
+            public float min;
+            public float max;
+            public float night;
+            public float eve;
+            public float morn;
         }
     }
 
-    public class Alerts{
-        String sender_name;
-        String event;
-        long start;
-        long end;
-        String description;
+    public static class Alerts{
+        public String sender_name;
+        public String event;
+        public long start;
+        public long end;
+        public String description;
+    }
+
+    public static class Rain{
+        @JsonProperty("1h")
+        public Number oneH;
+    }
+    public static class Snow{
+        @JsonProperty("1h")
+        public Number oneH;
     }
 
 
