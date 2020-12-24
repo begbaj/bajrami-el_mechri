@@ -1,6 +1,12 @@
 package com.umidity;
 
+/**
+ * A debugging classes, used to print to System.out custom messages
+ */
 public class Debugger {
+    /**
+     * when its active, Debugger will print debugging messages to System.out
+     */
     static boolean isActive = false;
 
     public static void setActive(boolean set){isActive = set;}

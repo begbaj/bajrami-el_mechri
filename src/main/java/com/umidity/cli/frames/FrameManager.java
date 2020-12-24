@@ -7,6 +7,8 @@ import java.util.Vector;
 public class FrameManager {
     protected Vector<Frame> frames = new Vector<>();
     protected Boolean inited = false;
+    protected String path;
+
 
     public void add(Frame frame){ frames.add(frame); }
     public void remove(Frame frame){ frames.remove(frame); }
@@ -28,6 +30,8 @@ public class FrameManager {
         __update();
         __afterUpdate();
     }
+
+
 
     /**
      * Override this only IF you know what you're doing
@@ -86,6 +90,10 @@ public class FrameManager {
             Debugger.println("something went wrong :(");
             e.printStackTrace();
         }
+    }
+
+    public void setPath(String newPath){
+        path = newPath;
     }
 
 }

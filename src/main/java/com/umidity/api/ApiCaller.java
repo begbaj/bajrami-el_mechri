@@ -103,7 +103,7 @@ public class ApiCaller {
      * @param countryCode OPTIONAL: country code
      */
     public ApiIResponse getByCityName(String cityName, String stateCode, String countryCode)
-            throws JsonProcessingException, MalformedURLException, IOException {
+            throws IOException {
         String url = "https://api.openweathermap.org/data/2.5/weather?q="
                 + cityName
                 + (!stateCode.equals("") ? "," + stateCode : "")
@@ -117,7 +117,7 @@ public class ApiCaller {
      * @param cityId city id
      */
     public ApiIResponse getByCityId(String cityId)
-            throws JsonProcessingException, MalformedURLException, IOException  {
+            throws IOException  {
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
         return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
     }
@@ -126,7 +126,7 @@ public class ApiCaller {
      * @param cityIds String array of city ids
      */
     public ApiIResponse getByCityIds(String[] cityIds)
-            throws JsonProcessingException, MalformedURLException, IOException  {
+            throws IOException  {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/weather?id=");
         boolean first = true;
         for(String s:cityIds){
@@ -143,7 +143,7 @@ public class ApiCaller {
      * @param lon longitude
      */
     public ApiIResponse getByCoordinates(float lat, float lon)
-            throws JsonProcessingException, MalformedURLException, IOException  {
+            throws IOException  {
         String url =  "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + endParams;
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new URL(url), ApiIResponse.class);
@@ -154,7 +154,7 @@ public class ApiCaller {
      * @param countryCode OPTIONAL: let this empty if no countryCode is needed
      */
     public ApiIResponse getByZipCode(String zipCode, String countryCode)
-            throws JsonProcessingException, MalformedURLException, IOException  {
+            throws IOException  {
         String url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;

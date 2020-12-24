@@ -49,5 +49,4 @@ public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE 
 
     //TODO: altre impostazioni utili
 
-
 }

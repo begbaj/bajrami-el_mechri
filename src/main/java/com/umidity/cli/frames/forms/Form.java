@@ -14,7 +14,7 @@ public abstract class Form {
 
 
     public void show(){
-        if(!enabled) return;
+        if(!enabled && !isVisible) return;
     }
 
     public void addEvent(Callable newEvent){

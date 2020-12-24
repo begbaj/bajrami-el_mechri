@@ -9,6 +9,7 @@ public class Frame {
     Vector<Form> forms;
     private String name;
 
+
     public Frame(){
         this.forms = new Vector<>();
     }
@@ -18,13 +19,13 @@ public class Frame {
             f.show();
             Callable tocall = f.nextEvent();
             if(tocall != null)
-                invoke(tocall, tocall.getArg());
+                invoke(tocall);
         }
     }
 
-    private static void invoke(Callable callable, Object arg){
+    private static void invoke(Callable callable){
         try{
-            callable.call(arg);
+            callable.call();
         }catch (InterruptedException e){
             Debugger.println("Event could not be executed!" + e.getMessage() + " " + e.getCause());
         }

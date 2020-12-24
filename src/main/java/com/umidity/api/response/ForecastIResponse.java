@@ -1,7 +1,11 @@
 package com.umidity.api.response;
 
+import com.umidity.Pair;
+import com.umidity.cli.frames.forms.ScreenMenu;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class ForecastIResponse extends Response implements IResponse, ICoordinates, IHumidities {
     public String cod;
@@ -16,10 +20,11 @@ public class ForecastIResponse extends Response implements IResponse, ICoordinat
     }
 
     @Override
-    public Map<Long, Integer> getHumidities() {
-        Map<Long,Integer> humidities = new HashMap<>();
+    public Vector<Pair<Long, Integer>> getHumidities() {
+        Vector<Pair<Long,Integer>> humidities = new Vector<>();
+
         for(ApiIResponse a:list){
-            humidities.put(Long.parseLong(a.dt), a.main.getHumidity());
+            humidities.add(new Pair<>(Long.parseLong(a.dt), a.main.getHumidity()));
         }
         return humidities;
     }

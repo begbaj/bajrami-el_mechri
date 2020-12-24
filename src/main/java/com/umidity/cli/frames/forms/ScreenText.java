@@ -8,6 +8,7 @@ public class ScreenText extends Form {
 
     public void show(){
         super.show();
-        System.out.println(text);
+        if(enabled && isVisible)
+            System.out.println(text);
     }
 }
