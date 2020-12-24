@@ -120,22 +120,7 @@ public class ApiCaller {
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
         return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
     }
-    /**
-     * Get ApiResponse by a list of city ids
-     * @param cityIds String array of city ids
-     */
-    public ApiIResponse[] getByCityIds(String[] cityIds)
-            throws IOException  {
-        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/weather?id=");
-        boolean first = true;
-        for(String s:cityIds){
-            if(!first) url.append(",");
-            url.append(s);
-            first = false;
-        }
-        url.append(endParams);
-        return new ObjectMapper().readValue(new URL(url.toString()), ApiIResponse[].class);
-    }
+
     /**
      * Get ApiResponse by Coordinates
      * @param lat latitude
@@ -184,22 +169,6 @@ public class ApiCaller {
             throws JsonProcessingException, MalformedURLException, IOException  {
         String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + endParams;
         return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
-    }
-    /**
-     * Get ForecastResponse by a list of city ids
-     * @param cityIds String array of city ids
-     */
-    public ForecastIResponse[] getForecastByCityIds(String[] cityIds)
-            throws JsonProcessingException, MalformedURLException, IOException  {
-        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/forecast?id=");
-        boolean first = true;
-        for(String s:cityIds){
-            if(!first) url.append(",");
-            url.append(s);
-            first = false;
-        }
-        url.append(endParams);
-        return new ObjectMapper().readValue(new URL(url.toString()), ForecastIResponse[].class);
     }
     /**
      * Get ForecastResponse by Coordinates

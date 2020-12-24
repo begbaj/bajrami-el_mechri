@@ -82,22 +82,6 @@ class ApiCallerTest {
         }
     }
 
-    @Test
-    void getByCityIds() {
-        try {
-            ApiIResponse[] r1 = caller.getByCityIds(new String[]{"3166740", "3166711"});
-
-            assertNotNull(r1);
-
-            assertEquals(r1[0].name, "Senigallia");
-            assertNotNull(r1[0].main);
-            assertEquals(r1[1].name, "Seregno");
-            assertNotNull(r1[1].main);
-
-        } catch (IOException e) {
-            fail();
-        }
-    }
 
     @Test
     void getByCoordinates() {
@@ -115,9 +99,9 @@ class ApiCallerTest {
     @Test
     void getByZipCode() {
         try {
-            ApiIResponse r1 = caller.getByZipCode("60019", "an");
+            ApiIResponse r1 = caller.getByZipCode("60019", "it");
             assertNotNull(r1);
-            assertEquals(r1.name, "Senigallia");
+            assertEquals(r1.name, "Roncitelli");
             assertNotNull(r1.main);
         } catch (IOException e) {
             fail();
@@ -150,23 +134,6 @@ class ApiCallerTest {
             assertTrue(r1.list.length > 0);
             assertEquals(r2.city.name, "Seregno");
             assertTrue(r2.list.length > 0);
-
-        } catch (IOException e) {
-            fail();
-        }
-    }
-
-    @Test
-    void getForecastByCityIds() {
-        try {
-            ForecastIResponse[] r1 = caller.getForecastByCityIds(new String[]{"3166740", "3166711"});
-
-            assertNotNull(r1);
-
-            assertEquals(r1[0].city.name, "Senigallia");
-            assertTrue(r1[0].list.length > 0);
-            assertEquals(r1[1].city.name, "Seregno");
-            assertTrue(r1[1].list.length > 0);
 
         } catch (IOException e) {
             fail();

@@ -116,17 +116,22 @@ public class StatsCalculator {
     public static double avg(List<HumidityRecord> records, Date date, boolean inverse){
 
             double avg = 0;
+            int count = 0;
             if(!records.isEmpty()) {
                 for (HumidityRecord record : records) {
                     if(!inverse){
-                        if(record.getDate().after(date))
+                        if(record.getDate().after(date)){
                             avg += record.getHumidity();
+                            count++;
+                        }
                     }else{
-                        if(record.getDate().before(date))
+                        if(record.getDate().before(date)){
                             avg += record.getHumidity();
+                            count++;
+                        }
                     }
                 }
-                return avg / records.size();
+                return avg / count;
             }
             else {
                 return -1;
@@ -141,12 +146,15 @@ public class StatsCalculator {
      */
     public static double avg(List<HumidityRecord> records, Date from, Date to){
         double avg = 0;
+        double count = 0;
         if(!records.isEmpty()) {
             for (HumidityRecord record : records) {
-                    if(record.getDate().after(from) && record.getDate().before(to))
+                    if(record.getDate().after(from) && record.getDate().before(to)){
                         avg += record.getHumidity();
+                        count++;
+                    }
             }
-            return avg / records.size();
+            return avg / count;
         }
         else {
             return -1;
