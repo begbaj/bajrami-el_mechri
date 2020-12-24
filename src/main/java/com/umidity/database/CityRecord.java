@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umidity.api.response.Coordinates;
 
+import java.util.Objects;
+
 public class CityRecord {
     private int id;
     private String name;
@@ -28,5 +30,20 @@ public class CityRecord {
         this.id=id;
         this.name=name;
         this.coord=coord;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CityRecord that = (CityRecord) o;
+        return id == that.id &&
+                name.equals(that.name) &&
+                coord.equals(that.coord);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, coord);
     }
 }

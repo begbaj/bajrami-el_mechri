@@ -2,6 +2,8 @@ package com.umidity.api.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Objects;
+
 public class Coordinates implements ICoordinates{
     public float lat;
     public float lon;
@@ -22,5 +24,19 @@ public class Coordinates implements ICoordinates{
         }catch (CloneNotSupportedException e){
             return this;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates that = (Coordinates) o;
+        return Float.compare(that.lat, lat) == 0 &&
+                Float.compare(that.lon, lon) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lat, lon);
     }
 }
