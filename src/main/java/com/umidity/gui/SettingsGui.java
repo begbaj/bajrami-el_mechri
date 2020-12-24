@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.formdev.flatlaf.*;
+import com.umidity.Main;
 import com.umidity.api.response.Coordinates;
 import com.umidity.database.CityRecord;
 import com.umidity.database.DatabaseManager;
@@ -19,9 +20,9 @@ public class SettingsGui {
     private JButton deleteButton;
     private JPanel Graphics;
     private JPanel User;
-    private JComboBox comboBox2;
-    private JComboBox comboBox3;
-    private final DatabaseManager DBMS=new DatabaseManager();
+    private JComboBox cliComboBox;
+    private JComboBox interfaceComboBox;
+
     public SettingsGui() {
 
         guiComboBox.addActionListener(e -> {
@@ -48,13 +49,13 @@ public class SettingsGui {
             }
         });
         deleteButton.addActionListener(e -> {
-            DBMS.removeCity(new CityRecord(Integer.parseInt((String)cityTable.getValueAt(cityTable.getSelectedRow(), 1)), "", new Coordinates(-1,-1)));
+            Main.dbms.removeCity(new CityRecord(Integer.parseInt((String)cityTable.getValueAt(cityTable.getSelectedRow(), 1)), "", new Coordinates(-1,-1)));
             createCityTable();
         });
     }
 
     public void createCityTable(){
-        List<CityRecord> cities=DBMS.getCities();
+        List<CityRecord> cities= Main.dbms.getCities();
         Vector<Vector<String>>data=new Vector<>();
         for(CityRecord record:cities){
             Vector<String> data_info=new Vector<>(2);

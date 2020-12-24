@@ -1,32 +1,51 @@
 package com.umidity.gui;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import org.jdatepicker.impl.JDatePickerImpl;
 import com.umidity.api.ApiCaller;
 import com.umidity.api.EMode;
 import com.umidity.api.EUnits;
 import com.umidity.api.response.ApiIResponse;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
-
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.UtilDateModel;
 import com.umidity.api.response.Coordinates;
 import com.umidity.api.response.ForecastIResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.DatabaseManager;
 import com.umidity.database.HumidityRecord;
 import com.umidity.statistics.StatsCalculator;
-
+import java.awt.Component;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class MainGui {
     public JPanel panelMain;
@@ -49,222 +68,235 @@ public class MainGui {
     private JPanel BigPanel;
     private JLabel label1;
     private JToolBar toolbar;
-    DatabaseManager DBMS =new DatabaseManager();
+    private ChartPanel chartPanel;
+    private ChartPanel chartRecordsPanel;
+    DatabaseManager DBMS;
     ApiIResponse realtimeResponse;
-    StatsCalculator statsCalc=new StatsCalculator();
-    String[] recordColumnNames={"DateTime", "Temperature", "Humidity"}; //TODO: GESTISCI TUTTA LA QUESTIONE VECTOR
-    String[] statisticsColumnNames={"Min", "Max", "Avg", "Variance"};
-    boolean listenerOn=true;
+    StatsCalculator statsCalc;
+    String[] recordColumnNames;
+    String[] statisticsColumnNames;
+    boolean listenerOn;
+    Locale currentLocale;
+    DecimalFormatSymbols otherSymbols;
+    DecimalFormat df;
 
-    public MainGui(){
+    public MainGui() {
+        createUIComponents();
+        DBMS = new DatabaseManager();
+        statsCalc = new StatsCalculator();
+        recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
+        statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
+        listenerOn = true;
+        currentLocale = Locale.getDefault();
+        otherSymbols = new DecimalFormatSymbols(this.currentLocale);
+
         try {
-            UIManager.setLookAndFeel( new FlatLightLaf() );
-        } catch( Exception ex ) {
-            System.err.println( "Failed to initialize LaF" );
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception var3) {
+            System.err.println("Failed to initialize LaF");
         }
-        Vector<String> vectorRecordColumnNames=new Vector<>();
+
+        this.otherSymbols.setDecimalSeparator('.');
+        this.df = new DecimalFormat("###.##", this.otherSymbols);
+        Vector<String> vectorRecordColumnNames = new Vector();
         vectorRecordColumnNames.add("DateTime");
         vectorRecordColumnNames.add("Temperature");
         vectorRecordColumnNames.add("Humidity");
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        SwingUtilities.updateComponentTreeUI(panelMain);
-        ApiCaller caller=new ApiCaller("beb62ff92c75eefce173edf69bacd835", EMode.JSON, EUnits.Metric);
-        createTable(recordsTable, null, recordColumnNames);
-        createTable(statisticsTable, null, statisticsColumnNames);
-        JButton settingsButton= new JButton();
-
-
-        //TODO: SITUA STRANA COL SAVECITY
-        buttonApi.addActionListener(e -> {
+        SwingUtilities.updateComponentTreeUI(this.panelMain);
+        ApiCaller caller = new ApiCaller("beb62ff92c75eefce173edf69bacd835", EMode.JSON, EUnits.Metric);
+        this.createTable(this.recordsTable, (String[][])null, this.recordColumnNames);
+        this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
+        new JButton();
+        this.buttonApi.addActionListener((e) -> {
             try {
-                nosuchLabel.setText("");
-                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:00");
-                realtimeResponse=caller.getByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
-                Date date= new Date(new Timestamp(Long.parseLong(realtimeResponse.dt)*1000).getTime());
+                this.nosuchLabel.setText("");
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM hh:00");
+                this.realtimeResponse = caller.getByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
+                Date date = new Date((new Timestamp(Long.parseLong(this.realtimeResponse.dt) * 1000L)).getTime());
                 String dateString = format.format(date);
-                Vector<Vector<String>> matrix=new Vector<>();
-                Vector<String> firstRow=new Vector<>();
+                Vector<Vector<String>> matrix = new Vector();
+                Vector<String> firstRow = new Vector();
                 firstRow.add(dateString);
-                firstRow.add(Float.toString(realtimeResponse.main.temp));
-                firstRow.add(Float.toString(realtimeResponse.main.humidity)+"%");
+                firstRow.add(Float.toString(this.realtimeResponse.main.temp));
+                firstRow.add(Float.toString((float)this.realtimeResponse.main.humidity) + "%");
                 matrix.add(firstRow);
-                ForecastIResponse forecastIResponse=caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
-                for(ApiIResponse f_record:forecastIResponse.list)
-                {
-                    Date datetime= new Date(new Timestamp(Long.parseLong(f_record.dt)*1000).getTime());
+                ForecastIResponse forecastIResponse = caller.getForecastByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
+                ApiIResponse[] var10 = forecastIResponse.list;
+                int var11 = var10.length;
+
+                for(int var12 = 0; var12 < var11; ++var12) {
+                    ApiIResponse f_record = var10[var12];
+                    Date datetime = new Date((new Timestamp(Long.parseLong(f_record.dt) * 1000L)).getTime());
                     String datetimeString = format.format(datetime);
-                    Vector<String> nextRow=new Vector<>();
+                    Vector<String> nextRow = new Vector();
                     nextRow.add(datetimeString);
                     nextRow.add(Float.toString(f_record.main.temp));
-                    nextRow.add(Float.toString(f_record.main.humidity)+"%");
+                    nextRow.add(Float.toString((float)f_record.main.humidity) + "%");
                     matrix.add(nextRow);
                 }
-                //createTable(recordsTable, records, recordColumnNames); //TODO: SISTEMALO
-                recordsTable.setModel(new DefaultTableModel(matrix, vectorRecordColumnNames));
-                recordsTable.setFillsViewportHeight(true);
-                cityLabel.setText(realtimeResponse.name.toUpperCase());
-                CityRecord city=new CityRecord(realtimeResponse.id, realtimeResponse.name, realtimeResponse.getCoord());
-                HumidityRecord record= new HumidityRecord(realtimeResponse.main.humidity, new Date(), city);
 
-                listenerOn=false;
-                if(DBMS.cityisSaved(city)){
-                    saveCityRecordsCheckBox.setSelected(true);
-                    DBMS.addHumidity(record);
-                    timeStatsBox.setSelectedIndex(0);
-                    setPanelEnabled(statisticPanel, true);
-
-                }else{
-                    saveCityRecordsCheckBox.setSelected(false);
-                    createTable(statisticsTable, null, statisticsColumnNames);
-                    setPanelEnabled(statisticPanel, false);
+                this.recordsTable.setModel(new DefaultTableModel(matrix, vectorRecordColumnNames));
+                this.recordsTable.setFillsViewportHeight(true);
+                this.cityLabel.setText(this.realtimeResponse.name.toUpperCase());
+                CityRecord city = new CityRecord(this.realtimeResponse.id, this.realtimeResponse.name, this.realtimeResponse.getCoord());
+                HumidityRecord record = new HumidityRecord((double)this.realtimeResponse.main.humidity, new Date(), city);
+                this.listenerOn = false;
+                if (this.DBMS.cityisSaved(city)) {
+                    this.saveCityRecordsCheckBox.setSelected(true);
+                    this.DBMS.addHumidity(record);
+                    this.timeStatsBox.setSelectedIndex(0);
+                    this.setPanelEnabled(this.statisticPanel, true);
+                } else {
+                    this.saveCityRecordsCheckBox.setSelected(false);
+                    this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
+                    this.setPanelEnabled(this.statisticPanel, false);
                 }
-                setFavouriteCityCheckBox.setSelected(DBMS.getFavouriteCity().getId() == city.getId());
-                listenerOn=true;
-            }
-            catch (FileNotFoundException fnfException){
-                nosuchLabel.setText("Can't find any area with such parameters");
-            }
-            catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
 
-        settingsbutton.addActionListener(e -> {
+                this.setFavouriteCityCheckBox.setSelected(this.DBMS.getFavouriteCity().getId() == city.getId());
+                this.listenerOn = true;
+            } catch (FileNotFoundException var17) {
+                this.nosuchLabel.setText("Can't find any area with such parameters");
+            } catch (IOException var18) {
+                var18.printStackTrace();
+            }
+
+        });
+        this.settingsbutton.addActionListener((e) -> {
             SettingsFrame settingsGui = new SettingsFrame();
             WindowFocusListener hi = new WindowFocusListener() {
-                @Override
                 public void windowGainedFocus(WindowEvent e) {
-                    SwingUtilities.updateComponentTreeUI(panelMain);
+                    SwingUtilities.updateComponentTreeUI(MainGui.this.panelMain);
                 }
 
-                @Override
                 public void windowLostFocus(WindowEvent e) {
-                    SwingUtilities.updateComponentTreeUI(panelMain);
+                    SwingUtilities.updateComponentTreeUI(MainGui.this.panelMain);
+                    MainGui.this.DBMS.setUserSettings();
                 }
             };
             settingsGui.addWindowFocusListener(hi);
         });
+        this.timeStatsBox.addActionListener((e) -> {
+            Calendar cal;
+            Date toDate;
+            if (this.timeStatsBox.getSelectedIndex() == 0) {
+                cal = Calendar.getInstance();
+                cal.add(5, -7);
+                toDate = cal.getTime();
+                this.createStatistic(toDate, new Date());
+            } else if (this.timeStatsBox.getSelectedIndex() == 1) {
+                cal = Calendar.getInstance();
+                cal.add(5, -30);
+                toDate = cal.getTime();
+                this.createStatistic(toDate, new Date());
+            } else if (!this.datePickerFrom.getJFormattedTextField().getText().equals("") && !this.datePickerTo.getJFormattedTextField().getText().equals("")) {
+                Date fromDate = (Date)this.datePickerFrom.getModel().getValue();
+                toDate = (Date)this.datePickerTo.getModel().getValue();
+                this.createStatistic(fromDate, toDate);
+            }
 
-        timeStatsBox.addActionListener(e -> {
-            if(timeStatsBox.getSelectedIndex()==0)
-            {
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.DATE, -7);
-                Date fromDate = cal.getTime();
-                createStatistic(fromDate, new Date());
-            }
-            else {
-                if (timeStatsBox.getSelectedIndex() == 1) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.DATE, -30);
-                    Date fromDate = cal.getTime();
-                    createStatistic(fromDate, new Date());
-                } else {
-                    if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
-                        Date fromDate = (Date) datePickerFrom.getModel().getValue();
-                        Date toDate = (Date) datePickerTo.getModel().getValue();
-                        createStatistic(fromDate, toDate);
-                    }
-                }
-            }
         });
+        this.datePickerFrom.addActionListener((e) -> {
+            if (this.timeStatsBox.getSelectedIndex() == 2) {
+                this.timeStatsBox.setSelectedIndex(2);
+            }
 
-        datePickerFrom.addActionListener(e -> {
-            if(timeStatsBox.getSelectedIndex()==2){
-                timeStatsBox.setSelectedIndex(2);
-            }
         });
+        this.datePickerTo.addActionListener((e) -> {
+            if (this.timeStatsBox.getSelectedIndex() == 2) {
+                this.timeStatsBox.setSelectedIndex(2);
+            }
 
-        datePickerTo.addActionListener(e -> {
-            if(timeStatsBox.getSelectedIndex()==2){
-                timeStatsBox.setSelectedIndex(2);
-            }
         });
-        saveCityRecordsCheckBox.addActionListener(e -> {
-            if (listenerOn) {
+        this.saveCityRecordsCheckBox.addActionListener((e) -> {
+            if (this.listenerOn) {
                 try {
-                    CityRecord city = new CityRecord(realtimeResponse.id, realtimeResponse.name, realtimeResponse.coord);
-                    if (saveCityRecordsCheckBox.isSelected()) {
-                        boolean flag = DBMS.addCity(city);
-                        if(flag) {
-                            nosuchLabel.setText("City added!");
-                        }else {
+                    CityRecord city = new CityRecord(this.realtimeResponse.id, this.realtimeResponse.name, this.realtimeResponse.coord);
+                    if (this.saveCityRecordsCheckBox.isSelected()) {
+                        boolean flag = this.DBMS.addCity(city);
+                        if (flag) {
+                            this.nosuchLabel.setText("City added!");
+                        } else {
                             System.out.println("SOMETHING WRONG");
                         }
-                    }else {
-                        if(JOptionPane.showConfirmDialog(panelMain, "Remove city and delete all its records?","Message", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                            DBMS.removeCity(city);
-                            nosuchLabel.setText("City removed!");
-                        }else{
-                            listenerOn=false;
-                            saveCityRecordsCheckBox.setSelected(true);
-                            listenerOn=true;
-                        }
+                    } else if (JOptionPane.showConfirmDialog(this.panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
+                        this.DBMS.removeCity(city);
+                        this.nosuchLabel.setText("City removed!");
+                    } else {
+                        this.listenerOn = false;
+                        this.saveCityRecordsCheckBox.setSelected(true);
+                        this.listenerOn = true;
                     }
-                }catch(Exception exception){
-                    nosuchLabel.setText("You have to search it first");
-                    listenerOn=false;
-                    saveCityRecordsCheckBox.setSelected(false);
-                    listenerOn=true;
+                } catch (Exception var4) {
+                    this.nosuchLabel.setText("You have to search it first");
+                    this.listenerOn = false;
+                    this.saveCityRecordsCheckBox.setSelected(false);
+                    this.listenerOn = true;
                 }
             }
-        });
-        setFavouriteCityCheckBox.addActionListener(e -> {
-            if(listenerOn){
-                if(setFavouriteCityCheckBox.isSelected()){
-                    DBMS.setFavouriteCity(new CityRecord(realtimeResponse.id, realtimeResponse.name, realtimeResponse.coord));
-                }else{
-                    DBMS.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1, -1)));
-                }
-            }
-        });
 
-        favouriteCityStart();
+        });
+        this.setFavouriteCityCheckBox.addActionListener((e) -> {
+            if (this.listenerOn) {
+                if (this.setFavouriteCityCheckBox.isSelected()) {
+                    this.DBMS.setFavouriteCity(new CityRecord(this.realtimeResponse.id, this.realtimeResponse.name, this.realtimeResponse.coord));
+                } else {
+                    this.DBMS.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1.0F, -1.0F)));
+                }
+            }
+
+        });
+        this.favouriteCityStart();
     }
 
-    public void createTable(JTable table, String[][] data, Object[] columnNames){
+    public void createTable(JTable table, String[][] data, Object[] columnNames) {
         table.setModel(new DefaultTableModel(data, columnNames));
         table.setFillsViewportHeight(true);
     }
 
-    public void createStatistic(Date fromDate, Date toDate){
+    public void createStatistic(Date fromDate, Date toDate) {
         try {
-            enoughLabel.setText("");
-            List<HumidityRecord> records = DBMS.getHumidity(realtimeResponse.id);
-            String[][] statistics = {{
-                    Double.toString((statsCalc.min(records, fromDate, toDate)).getHumidity()),
-                    Double.toString(statsCalc.max(records, fromDate, toDate).getHumidity()),
-                    Double.toString(statsCalc.avg(records, fromDate, toDate)),
-                    Double.toString(statsCalc.variance(records, fromDate, toDate))}};
-            createTable(statisticsTable, statistics, statisticsColumnNames);
-        }catch (Exception e) {
-            createTable(statisticsTable, null, statisticsColumnNames);
-            enoughLabel.setText("Not enough records");
+            this.enoughLabel.setText("");
+            List<HumidityRecord> records = this.DBMS.getHumidity(this.realtimeResponse.id);
+            StatsCalculator var10000 = this.statsCalc;
+            double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
+            var10000 = this.statsCalc;
+            double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
+            var10000 = this.statsCalc;
+            double avg = StatsCalculator.avg(records, fromDate, toDate);
+            this.createStatsGraph(min, max, avg);
+            var10000 = this.statsCalc;
+            double variance = StatsCalculator.variance(records, fromDate, toDate);
+            String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), this.df.format(avg), this.df.format(variance)}};
+            this.createTable(this.statisticsTable, statistics, this.statisticsColumnNames);
+        } catch (Exception var14) {
+            this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
+            this.enoughLabel.setText("Not enough records");
         }
+
     }
 
     void setPanelEnabled(JPanel panel, Boolean isEnabled) {
         panel.setEnabled(isEnabled);
-
         Component[] components = panel.getComponents();
+        Component[] var4 = components;
+        int var5 = components.length;
 
-        for (Component component : components) {
+        for(int var6 = 0; var6 < var5; ++var6) {
+            Component component = var4[var6];
             if (component instanceof JPanel) {
-                setPanelEnabled((JPanel) component, isEnabled);
+                this.setPanelEnabled((JPanel)component, isEnabled);
             }
+
             component.setEnabled(isEnabled);
         }
+
     }
 
-    private void favouriteCityStart(){
-        CityRecord favouriteCity=DBMS.getFavouriteCity();
-        if(favouriteCity.getId()!=-1){
-            textField_City.setText(favouriteCity.getName());
-            buttonApi.doClick();
+    private void favouriteCityStart() {
+        CityRecord favouriteCity = this.DBMS.getFavouriteCity();
+        if (favouriteCity.getId() != -1) {
+            this.textField_City.setText(favouriteCity.getName());
+            this.buttonApi.doClick();
         }
 
     }
@@ -278,10 +310,26 @@ public class MainGui {
         p.put("text.year", "Year");
         JDatePanelImpl datePanelFrom = new JDatePanelImpl(modelFrom, p);
         JDatePanelImpl datePanelTo = new JDatePanelImpl(modelTo, p);
-        datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
-        datePickerTo=new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
-        datePickerFrom.setVisible(true);
-        datePickerTo.setEnabled(false);
+        this.datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
+        this.datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
+        this.datePickerFrom.setVisible(true);
+        this.datePickerTo.setEnabled(false);
+        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+        dcd.setValue(1.0D, "Humidity", "Min");
+        dcd.setValue(2.0D, "Humidity", "Max");
+        dcd.setValue(4.0D, "Humidity", "Avg");
+        JFreeChart jchart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+        this.chartPanel = new ChartPanel(jchart);
+        this.chartRecordsPanel=new ChartPanel(jchart);
     }
 
+    private void createStatsGraph(double min, double max, double avg) {
+        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+        dcd.setValue(min, "Humidity", "Min");
+        dcd.setValue(max, "Humidity", "Max");
+        dcd.setValue(avg, "Humidity", "Avg");
+        JFreeChart jchart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+        this.chartPanel = new ChartPanel(jchart);
+        this.statisticPanel.validate();
+    }
 }
