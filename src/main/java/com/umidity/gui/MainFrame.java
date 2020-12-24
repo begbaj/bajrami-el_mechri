@@ -7,7 +7,7 @@ public class MainFrame extends JFrame {
         this.setContentPane(new MainGui().panelMain);
         this.setVisible(true);
         this.setTitle("Umidity");
-        this.setSize(750, 500);
+        this.setSize(700, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
 //        this.getContentPane().setBackground(new Color(130,130,130));

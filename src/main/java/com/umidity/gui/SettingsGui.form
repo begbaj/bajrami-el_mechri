@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="main.java.com.umidity.gui.SettingsGui">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.umidity.gui.SettingsGui">
   <grid id="27dc6" binding="panelSettings" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -33,7 +33,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="8c2ab" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+                  <component id="8c2ab" class="javax.swing.JComboBox" binding="cliComboBox">
                     <constraints>
                       <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -72,7 +72,7 @@
                       <text value="CLI THEME"/>
                     </properties>
                   </component>
-                  <component id="3dbcc" class="javax.swing.JComboBox" binding="comboBox3" default-binding="true">
+                  <component id="3dbcc" class="javax.swing.JComboBox" binding="interfaceComboBox">
                     <constraints>
                       <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
