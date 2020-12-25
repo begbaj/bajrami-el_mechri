@@ -10,11 +10,11 @@ import java.util.Date;
 public class Main {
     public static UserSettings userSettings = new UserSettings();
     public static DatabaseManager dbms =new DatabaseManager();
-    //TODO: unit tests
-    //TODO: sistemare maven
-    //TODO: arrotondamento delle cifre decimali nella gui
-    //TODO: JavaDocs
-    //TODO: README.md
+    //TODO: unit tests [quasi]
+    //TODO: arrotondamento delle cifre decimali nella gui [non lo so]
+
+    //TODO: JavaDocs [da fare]
+    //TODO: README.md [da fare]
 
 
     public static void main(String[] args){
