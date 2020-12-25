@@ -3,7 +3,7 @@ package com.umidity.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ApiIResponse extends Response implements IResponse, ICoordinates, IHumidity {
+public class ApiResponse extends Response implements ICoordinates, IHumidity {
     //TODO: documentazione necessaria
     public Coordinates  coord;
     public Weather[]    weather;

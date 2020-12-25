@@ -2,11 +2,10 @@ package com.umidity.api;
 
 
 import com.umidity.Debugger;
-import com.umidity.api.response.ApiIResponse;
+import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.EExclude;
-import com.umidity.api.response.ForecastIResponse;
-import com.umidity.api.response.OneCallIResponse;
-import org.jetbrains.annotations.Debug;
+import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallResponse;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -18,23 +17,32 @@ public class AsyncCaller extends Thread {
         forecastByCityName, forecastByCityId, forecastByCoordinates, forecastByZipCode,
     }
 
-    public boolean close;
-    public OneCallIResponse oneCallIResponse;
-    public ApiIResponse apiIResponse;
-    public ForecastIResponse forecastIResponse;
+    private boolean close;
+    private boolean oneTime;
+    public OneCallResponse oneCallResponse;
+    public ApiResponse apiResponse;
+    public ForecastResponse forecastResponse;
     private ApiCaller caller;
     private AsyncMethod method;
     private long ms;
     private Object[] args;
 
+    public void clearResponse(){
+        oneCallResponse = null;
+        apiResponse = null;
+        forecastResponse = null;
+    }
     public AsyncCaller(ApiCaller caller, AsyncMethod method, long ms, Object... args) {
         this.caller = caller;
         this.method = method;
         this.ms = ms;
         this.args = args;
+        oneTime = false;
     }
 
+    public void addListener(ApiListener listener){caller.addListener(listener);}
     public void close(){ close = true; }
+    public void setOneTime(boolean value){ oneTime = value; }
 
     public void run()
     {
@@ -42,38 +50,39 @@ public class AsyncCaller extends Thread {
             while(!close){
                 switch (method){
                     case oneCall1 ->
-                            oneCallIResponse = caller.oneCall((float)args[0],
-                                    (float)args[1], (EnumSet<EExclude>)args[2]);
+                            oneCallResponse = caller.oneCall((float)args[0], (float)args[1], (EnumSet<EExclude>)args[2]);
                     case oneCall2 ->
-                            oneCallIResponse =caller.oneCall((float)args[0],
+                            oneCallResponse =caller.oneCall((float)args[0],
                                     (float)args[1], (long)args[2], (EnumSet<EExclude>) args[3]);
                     case byCityName ->
-                            apiIResponse = caller.getByCityName((String)args[0],
+                            apiResponse = caller.getByCityName((String)args[0],
                                     (String)args[1], (String)args[2]);
                     case byCoordinates ->
-                            apiIResponse = caller.getByCoordinates((float)args[0],
+                            apiResponse = caller.getByCoordinates((float)args[0],
                                     (float)args[1]);
                     case byCityId ->
-                            apiIResponse = caller.getByCityId((String)args[0]);
+                            apiResponse = caller.getByCityId((String)args[0]);
                     case byZipCode ->
-                            apiIResponse = caller.getByZipCode((String)args[0], (String)args[1]);
+                            apiResponse = caller.getByZipCode((String)args[0], (String)args[1]);
                     case forecastByCityId ->
-                            forecastIResponse = caller.getForecastByCityId((String)args[0]);
+                            forecastResponse = caller.getForecastByCityId((String)args[0]);
                     case forecastByZipCode ->
-                            forecastIResponse = caller.getForecastByZipCode((String)args[0],
+                            forecastResponse = caller.getForecastByZipCode((String)args[0],
                                     (String)args[1]);
                     case forecastByCityName ->
-                            forecastIResponse = caller.getForecastByCityName((String)args[0],
+                            forecastResponse = caller.getForecastByCityName((String)args[0],
                                     (String) args[1],(String)args[1]);
                     case forecastByCoordinates ->
-                            forecastIResponse = caller.getForecastByCoordinates((float)args[0],
+                            forecastResponse = caller.getForecastByCoordinates((float)args[0],
                                     (float)args[1]);
                     }
+                    if(oneTime)return;
                     Thread.sleep(ms);
                 }
             } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }finally {
+            close = false;
             Debugger.println("AsyncCaller fermato!");
         }
     }

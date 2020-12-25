@@ -4,9 +4,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.umidity.api.ApiCaller;
 import com.umidity.api.EMode;
 import com.umidity.api.EUnits;
-import com.umidity.api.response.ApiIResponse;
+import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.Coordinates;
-import com.umidity.api.response.ForecastIResponse;
+import com.umidity.api.response.ForecastResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.DatabaseManager;
 import com.umidity.database.HumidityRecord;
@@ -71,7 +71,7 @@ public class MainGui {
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
     DatabaseManager DBMS;
-    ApiIResponse realtimeResponse;
+    ApiResponse realtimeResponse;
     StatsCalculator statsCalc;
     String[] recordColumnNames;
     String[] statisticsColumnNames;
@@ -120,12 +120,12 @@ public class MainGui {
                 firstRow.add(Float.toString(this.realtimeResponse.main.temp));
                 firstRow.add(Float.toString((float)this.realtimeResponse.main.humidity) + "%");
                 matrix.add(firstRow);
-                ForecastIResponse forecastIResponse = caller.getForecastByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
-                ApiIResponse[] var10 = forecastIResponse.list;
+                ForecastResponse forecastResponse = caller.getForecastByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
+                ApiResponse[] var10 = forecastResponse.list;
                 int var11 = var10.length;
 
                 for(int var12 = 0; var12 < var11; ++var12) {
-                    ApiIResponse f_record = var10[var12];
+                    ApiResponse f_record = var10[var12];
                     Date datetime = new Date((new Timestamp(Long.parseLong(f_record.dt) * 1000L)).getTime());
                     String datetimeString = format.format(datetime);
                     Vector<String> nextRow = new Vector();

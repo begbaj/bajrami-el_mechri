@@ -1,12 +1,10 @@
 package com.umidity.api;
 
-import com.umidity.api.response.ApiIResponse;
+import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.EExclude;
-import com.umidity.api.response.ForecastIResponse;
-import com.umidity.api.response.OneCallIResponse;
-import org.junit.jupiter.api.AfterEach;
+import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallResponse;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -27,9 +25,10 @@ class ApiCallerTest {
         EnumSet<EExclude> set1,set2;
         set1 = EnumSet.of(EExclude.alerts);
         set2 = EnumSet.allOf(EExclude.class);
+        assertTrue(set2.contains(EExclude.current));
         try {
-            OneCallIResponse r1 = caller.oneCall(43.713056f, 13.218333f, set1 );
-            OneCallIResponse r2 = caller.oneCall(43.713056f, 13.218333f, set2 );
+            OneCallResponse r1 = caller.oneCall(43.713056f, 13.218333f, set1 );
+            OneCallResponse r2 = caller.oneCall(43.713056f, 13.218333f, set2 );
             assertNotNull(r1);
             assertAll("excluded",
                     ()->assertNull(r2.alerts),
@@ -53,8 +52,8 @@ class ApiCallerTest {
     @Test
     void getByCityName() {
         try {
-            ApiIResponse r1 = caller.getByCityName("Rome","","US");
-            ApiIResponse r2 = caller.getByCityName("Rome","","IT");
+            ApiResponse r1 = caller.getByCityName("Rome","","US");
+            ApiResponse r2 = caller.getByCityName("Rome","","IT");
             assertNotEquals(r1.getCoord(), r2.getCoord());
             assertNotNull(r1.main);
             assertNotNull(r2.main);
@@ -66,8 +65,8 @@ class ApiCallerTest {
     @Test
     void getByCityId() {
         try {
-            ApiIResponse r1 = caller.getByCityId("3166740");
-            ApiIResponse r2 = caller.getByCityId("3166711");
+            ApiResponse r1 = caller.getByCityId("3166740");
+            ApiResponse r2 = caller.getByCityId("3166711");
 
             assertNotNull(r1);
             assertNotNull(r2);
@@ -86,7 +85,7 @@ class ApiCallerTest {
     @Test
     void getByCoordinates() {
         try {
-            ApiIResponse r1 = caller.getByCoordinates(43.713056f,13.218333f);
+            ApiResponse r1 = caller.getByCoordinates(43.713056f,13.218333f);
             assertNotNull(r1);
 
             assertEquals(r1.name, "Senigallia");
@@ -99,7 +98,7 @@ class ApiCallerTest {
     @Test
     void getByZipCode() {
         try {
-            ApiIResponse r1 = caller.getByZipCode("60019", "it");
+            ApiResponse r1 = caller.getByZipCode("60019", "it");
             assertNotNull(r1);
             assertEquals(r1.name, "Roncitelli");
             assertNotNull(r1.main);
@@ -111,8 +110,8 @@ class ApiCallerTest {
     @Test
     void getForecastByCityName() {
         try {
-            ForecastIResponse r1 = caller.getForecastByCityName("Rome","","us");
-            ForecastIResponse r2 = caller.getForecastByCityName("Rome","","it");
+            ForecastResponse r1 = caller.getForecastByCityName("Rome","","us");
+            ForecastResponse r2 = caller.getForecastByCityName("Rome","","it");
             assertNotEquals(r1.getCoord(), r2.getCoord());
             assertTrue(r1.getHumidities().size()>0);
             assertTrue(r2.getHumidities().size() > 0);
@@ -124,8 +123,8 @@ class ApiCallerTest {
     @Test
     void getForecastByCityId() {
         try {
-            ForecastIResponse r1 = caller.getForecastByCityId("3166740");
-            ForecastIResponse r2 = caller.getForecastByCityId("3166711");
+            ForecastResponse r1 = caller.getForecastByCityId("3166740");
+            ForecastResponse r2 = caller.getForecastByCityId("3166711");
 
             assertNotNull(r1);
             assertNotNull(r2);
@@ -143,7 +142,7 @@ class ApiCallerTest {
     @Test
     void getForecastByCoordinates() {
         try {
-            ForecastIResponse r1 = caller.getForecastByCoordinates(43.713056f,13.218333f);
+            ForecastResponse r1 = caller.getForecastByCoordinates(43.713056f,13.218333f);
             assertNotNull(r1);
 
             assertEquals(r1.city.name, "Senigallia");
@@ -156,7 +155,7 @@ class ApiCallerTest {
     @Test
     void getForecastByZipCode() {
         try {
-            ForecastIResponse r1 = caller.getForecastByZipCode("60019", "it");
+            ForecastResponse r1 = caller.getForecastByZipCode("60019", "it");
             assertNotNull(r1);
             assertEquals(r1.city.name, "Roncitelli");
             assertTrue(r1.list.length > 0);

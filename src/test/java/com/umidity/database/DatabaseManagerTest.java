@@ -66,7 +66,6 @@ class DatabaseManagerTest {
 
         assertEquals(1, dbms.getHumidity(cityRecord1.getId()).size());
         assertEquals(1, dbms.getHumidity(cityRecord2.getId()).size());
-
     }
 
     @Test

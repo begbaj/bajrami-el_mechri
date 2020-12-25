@@ -85,7 +85,7 @@ public class TextInput extends InputForm{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             input = reader.readLine();
-            if(inputListener != null) inputListener.onSubmit(this, new InputFormArgument(input));
+            for(var i:inputListeners) i.onSubmit(this, new InputFormArgument(input));
         } catch (IOException e) {
             Debugger.println(e.getMessage());
         }
@@ -104,7 +104,7 @@ public class TextInput extends InputForm{
             typed = typed.equals("")? " " : typed;
             if(getLength() > 0)input += ",," + typed;
             else input = typed;
-            if(inputListener != null) inputListener.onSubmit(this, new InputFormArgument(input));
+            for(var i:inputListeners) i.onSubmit(this, new InputFormArgument(input));
         } catch (IOException e) {
             Debugger.println(e.getMessage());
         }

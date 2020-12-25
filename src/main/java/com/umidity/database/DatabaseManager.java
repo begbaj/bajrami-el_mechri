@@ -8,11 +8,8 @@ import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.UserSettings;
 import com.umidity.api.response.Coordinates;
-import com.umidity.api.response.ForecastIResponse;
 
-import javax.naming.spi.DirectoryManager;
 import java.io.*;
-import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,22 +1,22 @@
 package com.umidity.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import com.umidity.api.response.ApiIResponse;
+import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.EExclude;
-import com.umidity.api.response.ForecastIResponse;
-import com.umidity.api.response.OneCallIResponse;
+import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallResponse;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.EnumSet;
 
 /**
  * This class handles every connection to the API. Set the appid
  */
-public class ApiCaller {
+public class ApiCaller extends Caller{
+
+
 
     /**
      * Api key used for making api calls
@@ -48,8 +48,20 @@ public class ApiCaller {
     /**
      * make a "one call" call to api
      */
-    public OneCallIResponse oneCall(float lat, float lon, EnumSet<EExclude> excludes)
-            throws IOException{
+    public OneCallResponse oneCall(float lat, float lon, EnumSet<EExclude> excludes) throws IOException{
+
+        boolean current = true;
+        if(excludes.contains(EExclude.current)) current = false;
+        boolean forecast = true;
+        if(!excludes.containsAll(Arrays.asList(new EExclude[]{EExclude.minutely, EExclude.hourly, EExclude.daily})))
+            forecast = false;
+
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, new ApiArgument(null));
+            if(current) l.onRequestCurrent(this, new ApiArgument(null));
+            if(forecast) l.onRequestForecast(this, new ApiArgument(null));
+        }
+
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
         url.append("lat=" + lat + "&lon=" + lon);
         if(excludes.size() > 0){
@@ -63,14 +75,25 @@ public class ApiCaller {
         }
         url.append(endParams);
 
-        return new ObjectMapper().readValue(new URL(url.toString()), OneCallIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
+        for(ApiListener l:apiListeners){
+            if(response != null);{
+                if(current) l.onReciveCurrent(this, new ApiArgument<>(response));
+                if(forecast) l.onReciveForecast(this, new ApiArgument<>(response));
+                l.onRecive(this, new ApiArgument<>(response));
+            }
+        }
+        return response;
     }
 
     /**
      * make a "one call" call to api for historicals
      */
-    public OneCallIResponse oneCall(float lat, float lon, long dt, EnumSet<EExclude> excludes)
-            throws IOException{
+    public OneCallResponse oneCall(float lat, float lon, long dt, EnumSet<EExclude> excludes) throws IOException{
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestHistorical(this, null);
+        }
 
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
         url.append("lat=" + lat + "&lon=" + lon + "&dt=" + dt);
@@ -84,8 +107,15 @@ public class ApiCaller {
             if(excludes.contains(EExclude.alerts)){ if(!first) url.append(","); url.append("alerts"); first = false;}
         }
         url.append(endParams);
-
-        return new ObjectMapper().readValue(new URL(url.toString()), OneCallIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
+        ApiArgument apiArg = new ApiArgument<>(response);
+        for(ApiListener l:apiListeners){
+            if(response != null);{
+                l.onRecive(this, apiArg);
+                l.onReciveHistorical(this, apiArg);
+            }
+        }
+        return response;
     }
 
     /**
@@ -96,30 +126,50 @@ public class ApiCaller {
         //if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
         if(EUnits != EUnits.Standard) this.endParams += "&units=" + EUnits;
     }
+
     /**
      * Get ApiResponse by city name
      * @param cityName REQUIRED: city name
      * @param stateCode OPTIONAL: state code
      * @param countryCode OPTIONAL: country code
      */
-    public ApiIResponse getByCityName(String cityName, String stateCode, String countryCode)
-            throws IOException {
+    public ApiResponse getByCityName(String cityName, String stateCode, String countryCode) throws IOException {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestCurrent(this, null);
+        }
+
         String url = "https://api.openweathermap.org/data/2.5/weather?q="
                 + cityName
                 + (!stateCode.equals("") ? "," + stateCode : "")
                 + (!countryCode.equals("") ? "," + countryCode : "")
                 + endParams;
 
-        return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
     /**
      * Get ApiResponse by a single city id
      * @param cityId city id
      */
-    public ApiIResponse getByCityId(String cityId)
-            throws IOException  {
+    public ApiResponse getByCityId(String cityId) throws IOException  {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestCurrent(this, null);
+        }
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
-        return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
 
     /**
@@ -127,23 +177,44 @@ public class ApiCaller {
      * @param lat latitude
      * @param lon longitude
      */
-    public ApiIResponse getByCoordinates(float lat, float lon)
-            throws IOException  {
+    public ApiResponse getByCoordinates(float lat, float lon) throws IOException  {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestCurrent(this, null);
+        }
+
         String url =  "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + endParams;
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(url), ApiIResponse.class);
+
+        var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
     /**
      * Get ApiResponse by Zip Code
      * @param zipCode REQUIRED: zip code
      * @param countryCode OPTIONAL: let this empty if no countryCode is needed
      */
-    public ApiIResponse getByZipCode(String zipCode, String countryCode)
-            throws IOException  {
+    public ApiResponse getByZipCode(String zipCode, String countryCode) throws IOException  {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestCurrent(this, null);
+        }
+
         String url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;
-        return new ObjectMapper().readValue(new URL(url), ApiIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
 
     /**
@@ -152,47 +223,94 @@ public class ApiCaller {
      * @param stateCode OPTIONAL: state code
      * @param countryCode OPTIONAL: country code
      */
-    public ForecastIResponse getForecastByCityName(String cityName, String stateCode, String countryCode)
-            throws IOException {
+    public ForecastResponse getForecastByCityName(String cityName, String stateCode, String countryCode) throws IOException {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestForecast(this, null);
+        }
+
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="
                 + cityName
                 + (!stateCode.equals("") ? "," + stateCode : "")
                 + (!countryCode.equals("") ? "," + countryCode : "")
                 + endParams;
 
-        return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
+
     /**
      * Get ForecastResponse by a single city id
      * @param cityId city id
      */
-    public ForecastIResponse getForecastByCityId(String cityId)
-            throws IOException  {
+    public ForecastResponse getForecastByCityId(String cityId) throws IOException  {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestForecast(this, null);
+        }
+
         String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + endParams;
-        return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
+
     /**
      * Get ForecastResponse by Coordinates
      * @param lat latitude
      * @param lon longitude
      */
-    public ForecastIResponse getForecastByCoordinates(float lat, float lon)
-            throws IOException  {
+    public ForecastResponse getForecastByCoordinates(float lat, float lon) throws IOException  {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestForecast(this, null);
+        }
+
         String url =  "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + endParams;
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(url), ForecastIResponse.class);
+
+        var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
     /**
      * Get ForecastResponse by Zip Code
      * @param zipCode REQUIRED: zip code
      * @param countryCode OPTIONAL: let this empty if no countryCode is needed
      */
-    public ForecastIResponse getForecastByZipCode(String zipCode, String countryCode)
-            throws IOException  {
+    public ForecastResponse getForecastByZipCode(String zipCode, String countryCode) throws IOException  {
+        for(ApiListener l:apiListeners){
+            l.onRequest(this, null);
+            l.onRequestForecast(this, null);
+        }
+
         String url = "https://api.openweathermap.org/data/2.5/forecast?zip=" + zipCode
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;
-        return new ObjectMapper().readValue(new URL(url), ForecastIResponse.class);
+
+        var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
+        ApiArgument apiArg = new ApiArgument(response);
+
+        for(ApiListener l:apiListeners){
+            l.onReciveCurrent(this, apiArg);
+            l.onRecive(this, apiArg);
+        }
+        return response;
     }
 
 //    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo useremo mai

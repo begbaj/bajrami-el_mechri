@@ -2,6 +2,8 @@ package com.umidity.cli.frames.forms;
 
 import com.umidity.cli.frames.eventHandlers.*;
 
+import java.util.ArrayList;
+
 public abstract class InputForm extends Form {
 
     protected boolean isPassword;
@@ -12,10 +14,10 @@ public abstract class InputForm extends Form {
 
     public Form setText(String text){this.text = text; return this;}
 
-    protected InputFormListener inputListener;
+    protected ArrayList<InputFormListener> inputListeners = new ArrayList<>();
 
-    public void setInputListener(InputFormListener inputListener){
-        this.inputListener = inputListener;
+    public void setInputListeners(InputFormListener inputListener){
+        this.inputListeners.add(inputListener);
     }
 
 

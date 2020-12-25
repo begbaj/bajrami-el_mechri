@@ -3,7 +3,7 @@ package com.umidity.api.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class OneCallIResponse extends Response implements IResponse, ICoordinates, IHumidity {
+public class OneCallResponse extends Response implements ICoordinates, IHumidity {
     public float lat;
     public float lon;
     public String timezone;
