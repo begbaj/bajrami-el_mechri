@@ -288,6 +288,7 @@ public class MainGui {
                 chartFrame.setVisible(true);
                 chartFrame.setSize(500,400);
                 chartFrame.pack();
+                chartFrame.setLocationRelativeTo(null);
             }
         });
         button2.addActionListener(new ActionListener() {
@@ -310,6 +311,7 @@ public class MainGui {
                 chartFrame.setVisible(true);
                 chartFrame.setSize(1000,400);
                 chartFrame.pack();
+                chartFrame.setLocationRelativeTo(null);
             }
         });
     }
