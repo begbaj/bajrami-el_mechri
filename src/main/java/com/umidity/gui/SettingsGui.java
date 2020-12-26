@@ -2,6 +2,8 @@ package com.umidity.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -24,21 +26,38 @@ public class SettingsGui {
 
     public SettingsGui() {
 
+        Main.dbms.loadUserSettings();
+        if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light"))
+            guiComboBox.setSelectedIndex(0);
+        else
+            guiComboBox.setSelectedIndex(1);
+        if(Main.userSettings.interfaceSettings.cliUserTheme.equals("Light"))
+            cliComboBox.setSelectedIndex(0);
+        else
+            cliComboBox.setSelectedIndex(1);
+        if(Main.userSettings.interfaceSettings.guiEnabled)
+            interfaceComboBox.setSelectedIndex(0);
+        else
+            interfaceComboBox.setSelectedIndex(1);
+
         guiComboBox.addActionListener(e -> {
                 if(guiComboBox.getSelectedIndex()==0){
                     try {
                         UIManager.setLookAndFeel( new FlatLightLaf() );
+                        Main.userSettings.interfaceSettings.guiUserTheme="Light";
                     } catch( Exception ex ) {
                         System.err.println( "Failed to initialize LaF" );
                     }
                 }else {
                     try {
                         UIManager.setLookAndFeel( new FlatDarkLaf() );
+                        Main.userSettings.interfaceSettings.guiUserTheme="Dark";
                     } catch( Exception ex ) {
                         System.err.println( "Failed to initialize LaF" );
                     }
                 }
-            SwingUtilities.updateComponentTreeUI(panelSettings);
+                Main.dbms.setUserSettings();
+                SwingUtilities.updateComponentTreeUI(panelSettings);
             });
 
 
@@ -50,6 +69,30 @@ public class SettingsGui {
         deleteButton.addActionListener(e -> {
             Main.dbms.removeCity(new CityRecord(Integer.parseInt((String)cityTable.getValueAt(cityTable.getSelectedRow(), 1)), "", new Coordinates(-1,-1)));
             createCityTable();
+        });
+        cliComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(cliComboBox.getSelectedIndex()==0){
+                        Main.userSettings.interfaceSettings.guiUserTheme="Light";
+
+                }else {
+                        Main.userSettings.interfaceSettings.guiUserTheme="Dark";
+                }
+                Main.dbms.setUserSettings();
+            }
+        });
+        interfaceComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(interfaceComboBox.getSelectedIndex()==0){
+                    Main.userSettings.interfaceSettings.guiEnabled=true;
+
+                }else {
+                    Main.userSettings.interfaceSettings.guiEnabled=false;
+                }
+                Main.dbms.setUserSettings();
+            }
         });
     }
 

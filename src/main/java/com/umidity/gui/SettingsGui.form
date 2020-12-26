@@ -52,7 +52,6 @@
                       <model>
                         <item value="Light"/>
                         <item value="Dark"/>
-                        <item value="Berax Mode 2"/>
                       </model>
                     </properties>
                   </component>

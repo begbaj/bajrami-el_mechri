@@ -225,7 +225,7 @@
               </component>
             </children>
           </toolbar>
-          <grid id="9c3fc" binding="statisticPanel" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="9c3fc" binding="statisticPanel" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -235,7 +235,7 @@
             <children>
               <scrollpane id="3bdee">
                 <constraints>
-                  <grid row="0" column="1" row-span="4" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                  <grid row="0" column="1" row-span="3" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="50" height="20"/>
                   </grid>
                 </constraints>
@@ -311,23 +311,22 @@
                   </model>
                 </properties>
               </component>
-              <component id="a9cab" class="org.jfree.chart.ChartPanel" binding="chartPanel" custom-create="true">
+              <component id="c2241" class="javax.swing.JButton" binding="button1" default-binding="true">
                 <constraints>
-                  <grid row="4" column="1" row-span="4" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value="Simple Graph"/>
+                </properties>
               </component>
-              <component id="1fcd5" class="org.jfree.chart.ChartPanel" binding="chartRecordsPanel" custom-create="true">
+              <component id="ebe72" class="javax.swing.JButton" binding="button2" default-binding="true">
                 <constraints>
-                  <grid row="4" column="3" row-span="4" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value="Records Graph"/>
+                </properties>
               </component>
-              <hspacer id="486df">
-                <constraints>
-                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </hspacer>
             </children>
           </grid>
           <hspacer id="c5bc7">

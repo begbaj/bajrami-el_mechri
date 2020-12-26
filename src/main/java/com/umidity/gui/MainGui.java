@@ -11,9 +11,9 @@ import com.umidity.database.CityRecord;
 import com.umidity.database.DatabaseManager;
 import com.umidity.database.HumidityRecord;
 import com.umidity.statistics.StatsCalculator;
-import java.awt.Component;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+
+import java.awt.*;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -26,26 +26,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYDataset;
 
 public class MainGui {
     public JPanel panelMain;
@@ -68,6 +62,8 @@ public class MainGui {
     private JPanel BigPanel;
     private JLabel label1;
     private JToolBar toolbar;
+    private JButton button1;
+    private JButton button2;
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
     DatabaseManager DBMS;
@@ -79,6 +75,7 @@ public class MainGui {
     Locale currentLocale;
     DecimalFormatSymbols otherSymbols;
     DecimalFormat df;
+    DefaultCategoryDataset dcd;
 
     public MainGui() {
         createUIComponents();
@@ -246,6 +243,75 @@ public class MainGui {
 
         });
         this.favouriteCityStart();
+        chartPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+            }
+        });
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultCategoryDataset dcd=new DefaultCategoryDataset();
+                List<HumidityRecord> records = DBMS.getHumidity(realtimeResponse.id);
+                Calendar cal;
+                Date fromDate=new Date();
+                Date toDate=new Date();
+                if (timeStatsBox.getSelectedIndex() == 0) {
+                    cal = Calendar.getInstance();
+                    cal.add(5, -7);
+                    fromDate = cal.getTime();
+                } else if (timeStatsBox.getSelectedIndex() == 1) {
+                    cal = Calendar.getInstance();
+                    cal.add(5, -30);
+                    fromDate = cal.getTime();
+                } else if (datePickerFrom.getJFormattedTextField().getText().equals("") && datePickerTo.getJFormattedTextField().getText().equals("")) {
+                    fromDate = (Date)datePickerFrom.getModel().getValue();
+                    toDate = (Date)datePickerTo.getModel().getValue();
+                }
+                double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
+                double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
+                double avg = StatsCalculator.avg(records, fromDate, toDate);
+                dcd.setValue(min, "Humidity", "Min");
+                dcd.setValue(max, "Humidity", "Max");
+                dcd.setValue(avg, "Humidity", "Avg");
+
+                JFreeChart jChart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+                CategoryPlot plot=jChart.getCategoryPlot();
+                plot.setRangeGridlinePaint(Color.black);
+                ChartPanel chartpanel=new ChartPanel(jChart);
+                chartpanel.setPreferredSize(new Dimension(400, 400));
+
+                JFrame chartFrame = new JFrame();
+                chartFrame.add(chartpanel);
+                chartFrame.setVisible(true);
+                chartFrame.setSize(500,400);
+                chartFrame.pack();
+            }
+        });
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultCategoryDataset dcd=new DefaultCategoryDataset();
+                List<HumidityRecord> records = DBMS.getHumidity(realtimeResponse.id);
+                for(HumidityRecord record:records){
+                    dcd.addValue(record.getHumidity(), "Humidity", record.getDate());
+                }
+
+                JFreeChart jChart = ChartFactory.createLineChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+                CategoryPlot plot=jChart.getCategoryPlot();
+                plot.setRangeGridlinePaint(Color.black);
+                ChartPanel chartpanel=new ChartPanel(jChart);
+                chartpanel.setPreferredSize(new Dimension(1000, 400));
+
+                JFrame chartFrame = new JFrame();
+                chartFrame.add(chartpanel);
+                chartFrame.setVisible(true);
+                chartFrame.setSize(1000,400);
+                chartFrame.pack();
+            }
+        });
     }
 
     public void createTable(JTable table, String[][] data, Object[] columnNames) {
@@ -257,14 +323,10 @@ public class MainGui {
         try {
             this.enoughLabel.setText("");
             List<HumidityRecord> records = this.DBMS.getHumidity(this.realtimeResponse.id);
-            StatsCalculator var10000 = this.statsCalc;
             double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
-            var10000 = this.statsCalc;
             double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
-            var10000 = this.statsCalc;
             double avg = StatsCalculator.avg(records, fromDate, toDate);
-            this.createStatsGraph(min, max, avg);
-            var10000 = this.statsCalc;
+            createStatsGraph(min, max, avg);
             double variance = StatsCalculator.variance(records, fromDate, toDate);
             String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), this.df.format(avg), this.df.format(variance)}};
             this.createTable(this.statisticsTable, statistics, this.statisticsColumnNames);
@@ -314,22 +376,30 @@ public class MainGui {
         this.datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
         this.datePickerFrom.setVisible(true);
         this.datePickerTo.setEnabled(false);
-        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-        dcd.setValue(1.0D, "Humidity", "Min");
-        dcd.setValue(2.0D, "Humidity", "Max");
-        dcd.setValue(4.0D, "Humidity", "Avg");
-        JFreeChart jchart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
-        this.chartPanel = new ChartPanel(jchart);
-        this.chartRecordsPanel=new ChartPanel(jchart);
+        chartPanel=new ChartPanel(null);
+        int c=3;
     }
 
     private void createStatsGraph(double min, double max, double avg) {
-        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+        DefaultCategoryDataset dcd=new DefaultCategoryDataset();
         dcd.setValue(min, "Humidity", "Min");
         dcd.setValue(max, "Humidity", "Max");
         dcd.setValue(avg, "Humidity", "Avg");
-        JFreeChart jchart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
-        this.chartPanel = new ChartPanel(jchart);
-        this.statisticPanel.validate();
+        JFreeChart jChart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+        chartPanel=new ChartPanel(null);
+        chartPanel.setChart(jChart);
+        chartPanel.validate();
+        panelMain.validate();
     }
+
+//    private JFreeChart createChart(final XYDataset dataset) {
+//        final JFreeChart result = ChartFactory.createTimeSeriesChart(
+//                TITLE, "hh:mm:ss", "milliVolts", dataset, true, true, false);
+//        final XYPlot plot = result.getXYPlot();
+//        ValueAxis domain = plot.getDomainAxis();
+//        domain.setAutoRange(true);
+//        ValueAxis range = plot.getRangeAxis();
+//        range.setRange(-MINMAX, MINMAX);
+//        return result;
+//    }
 }
