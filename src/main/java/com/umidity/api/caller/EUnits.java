@@ -1,4 +1,4 @@
-package com.umidity.api;
+package com.umidity.api.caller;
 
 /**
  * Enumeration for units. This is needed when an Api call is made to determine the used units by Openweather.

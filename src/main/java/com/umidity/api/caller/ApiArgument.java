@@ -1,6 +1,5 @@
-package com.umidity.api;
+package com.umidity.api.caller;
 
-import java.security.Timestamp;
 import java.util.Date;
 
 public class ApiArgument<T>{

@@ -1,6 +1,10 @@
 package com.umidity.api.response;
 
+import com.umidity.Coordinates;
+import com.umidity.ICoordinates;
+import com.umidity.IHumidities;
 import com.umidity.Pair;
+import com.umidity.api.Single;
 
 import java.util.Vector;
 
@@ -35,6 +39,28 @@ public class ForecastResponse extends Response implements ICoordinates, IHumidit
         public long timezone;
         public long sunrise;
         public long sunset;
+    }
+
+    /**
+     * Get first forecast on the list aa a Single object.
+     * @return
+     */
+    @Override
+    public Single getSingle(){
+        if(list.length > 0)
+            return new Single(list[0]);
+        return null;
+    }
+
+    /**
+     * Get forecast list aa a Single array.
+     * @return
+     */
+    @Override
+    public Single[] getSingles(){
+        if(list.length > 0)
+            return Single.getSingles(list);
+        return null;
     }
 
 }

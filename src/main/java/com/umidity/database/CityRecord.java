@@ -2,7 +2,7 @@ package com.umidity.database;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.umidity.api.response.Coordinates;
+import com.umidity.Coordinates;
 
 import java.util.Objects;
 

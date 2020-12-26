@@ -2,16 +2,14 @@ package com.umidity.cli;
 
 import com.umidity.Debugger;
 import com.umidity.Main;
-import com.umidity.api.ApiCaller;
-import com.umidity.api.EMode;
-import com.umidity.api.EUnits;
+import com.umidity.api.caller.ApiCaller;
+import com.umidity.api.caller.EMode;
+import com.umidity.api.caller.EUnits;
 import com.umidity.cli.frames.*;
 import com.umidity.cli.frames.eventHandlers.*;
 import com.umidity.cli.frames.forms.*;
 import com.umidity.cli.frames.forms.formEvents.WaitEvent;
 import com.umidity.cli.frames.forms.formEvents.WaitForInput;
-import com.umidity.database.CityRecord;
-import com.umidity.database.DatabaseManager;
 import com.umidity.database.HumidityRecord;
 import com.umidity.statistics.StatsCalculator;
 

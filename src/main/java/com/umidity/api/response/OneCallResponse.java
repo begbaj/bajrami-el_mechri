@@ -2,6 +2,10 @@ package com.umidity.api.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.umidity.Coordinates;
+import com.umidity.ICoordinates;
+import com.umidity.IHumidity;
+import com.umidity.api.Single;
 
 public class OneCallResponse extends Response implements ICoordinates, IHumidity {
     public float lat;
@@ -112,5 +116,25 @@ public class OneCallResponse extends Response implements ICoordinates, IHumidity
     @Override
     public Coordinates getCoord() {
         return new Coordinates(lat,lon);
+    }
+
+    /**
+     * Get a Single object about the current weather.
+     * @return
+     */
+    @Override
+    public Single getSingle(){
+        if(current != null)
+            return new Single(this);
+        return null;
+    }
+
+    /**
+     * Get a Single object about the current weather.
+     * @return
+     */
+    @Override
+    public Single[] getSingles(){
+        return null;
     }
 }

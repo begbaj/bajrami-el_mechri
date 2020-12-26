@@ -7,9 +7,8 @@ import java.util.Vector;
 
 import com.formdev.flatlaf.*;
 import com.umidity.Main;
-import com.umidity.api.response.Coordinates;
+import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
-import com.umidity.database.DatabaseManager;
 
 public class SettingsGui {
 

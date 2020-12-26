@@ -1,4 +1,4 @@
-package com.umidity.api.response;
+package com.umidity;
 
 public interface ICoordinates {
     Coordinates getCoord();

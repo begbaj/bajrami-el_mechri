@@ -1,4 +1,4 @@
-package com.umidity.api.response;
+package com.umidity.api.caller;
 
 public enum EExclude {
     current, minutely, hourly, daily, alerts

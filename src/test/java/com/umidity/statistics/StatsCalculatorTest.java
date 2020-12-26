@@ -1,6 +1,6 @@
 package com.umidity.statistics;
 
-import com.umidity.api.response.Coordinates;
+import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,7 +1,10 @@
 package com.umidity.api;
 
+import com.umidity.api.caller.ApiCaller;
+import com.umidity.api.caller.EMode;
+import com.umidity.api.caller.EUnits;
 import com.umidity.api.response.ApiResponse;
-import com.umidity.api.response.EExclude;
+import com.umidity.api.caller.EExclude;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallResponse;
 import org.junit.jupiter.api.BeforeAll;

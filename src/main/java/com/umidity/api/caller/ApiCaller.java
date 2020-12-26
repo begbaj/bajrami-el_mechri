@@ -1,8 +1,7 @@
-package com.umidity.api;
+package com.umidity.api.caller;
 
 import com.fasterxml.jackson.databind.*;
 import com.umidity.api.response.ApiResponse;
-import com.umidity.api.response.EExclude;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallResponse;
 
@@ -14,17 +13,17 @@ import java.util.EnumSet;
 /**
  * This class handles every connection to the API. Set the appid
  */
-public class ApiCaller extends Caller{
+public class ApiCaller extends Caller {
 
 
 
     /**
      * Api key used for making api calls
      */
-    private final String appid;
-    private EMode EMode;
-    private EUnits EUnits;
-    private String endParams;
+    private final String                       appid;
+    private com.umidity.api.caller.EMode  EMode;
+    private com.umidity.api.caller.EUnits EUnits;
+    private String                        endParams;
 
     //TODO: Lista di appid, in modo da utilizzarne diverse per non rischiare di saturare la connessione
 

@@ -1,5 +1,9 @@
 package com.umidity.api;
 
+import com.umidity.api.caller.ApiCaller;
+import com.umidity.api.caller.AsyncCaller;
+import com.umidity.api.caller.EMode;
+import com.umidity.api.caller.EUnits;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +27,8 @@ class AsyncCallerTest {
             Thread.sleep(2000);
             assertEquals("Senigallia", caller.apiResponse.name);
             caller.close();
-            Thread.sleep(2000);
-            caller.clearResponse();
-            assertNull(caller.apiResponse);
+            Thread.sleep(500);
+            assertFalse(caller.getRunningStatus());
         } catch (InterruptedException e) {
             fail();
         }

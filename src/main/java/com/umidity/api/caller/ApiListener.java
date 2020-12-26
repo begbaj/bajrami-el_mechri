@@ -1,8 +1,4 @@
-package com.umidity.api;
-
-import com.umidity.api.response.ApiResponse;
-import com.umidity.api.response.ForecastResponse;
-import com.umidity.api.response.OneCallResponse;
+package com.umidity.api.caller;
 
 public interface ApiListener {
 

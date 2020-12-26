@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.UserSettings;
-import com.umidity.api.response.Coordinates;
+import com.umidity.Coordinates;
 
 import java.io.*;
 import java.nio.file.Files;

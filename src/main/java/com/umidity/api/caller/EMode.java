@@ -1,4 +1,4 @@
-package com.umidity.api;
+package com.umidity.api.caller;
 
 /**
  * Enumeration for response mode. Generally, Umiditity will use JSON format, but you never know if an XML or HTML

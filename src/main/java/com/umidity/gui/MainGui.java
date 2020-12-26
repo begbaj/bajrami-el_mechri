@@ -1,11 +1,11 @@
 package com.umidity.gui;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.umidity.api.ApiCaller;
-import com.umidity.api.EMode;
-import com.umidity.api.EUnits;
+import com.umidity.api.caller.ApiCaller;
+import com.umidity.api.caller.EMode;
+import com.umidity.api.caller.EUnits;
 import com.umidity.api.response.ApiResponse;
-import com.umidity.api.response.Coordinates;
+import com.umidity.Coordinates;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.DatabaseManager;

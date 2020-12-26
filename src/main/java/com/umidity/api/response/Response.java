@@ -1,23 +1,14 @@
 package com.umidity.api.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.umidity.api.Current;
-import com.umidity.api.Forecast;
-import com.umidity.api.Historical;
+import com.umidity.api.Single;
 
 public abstract class Response {
-
-    public Current getCurrent(){
-        return null;
-    }
-
-    public Forecast getForecast(){
-        return null;
-    }
-
-    public Historical getHistorical(){
-        return null;
-    }
+    public Single getSingle(){ return null; }
+    /**
+     * Get array of <em>Single</em> objects
+     * @return
+     */
+    public Single[] getSingles(){ return null; }
 
     public Object getClone(){
         try{
@@ -27,5 +18,4 @@ public abstract class Response {
         }
         return null;
     }
-
 }

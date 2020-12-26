@@ -1,10 +1,13 @@
-package com.umidity.api.response;
+package com.umidity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Objects;
 
-public class Coordinates implements ICoordinates{
+/**
+ * Geo location coordinates.
+ */
+public class Coordinates implements ICoordinates {
     public float lat;
     public float lon;
 

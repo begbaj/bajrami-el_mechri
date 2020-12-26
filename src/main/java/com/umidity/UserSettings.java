@@ -2,6 +2,7 @@ package com.umidity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.umidity.api.caller.EUnits;
 
 /**
  * This class provides the user settings
@@ -39,7 +40,7 @@ public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE 
          * Show results with the unit mode selected
          */
         @JsonIgnore
-        public com.umidity.api.EUnits units;
+        public EUnits units;
     }
 
     /**

@@ -1,11 +1,10 @@
 package com.umidity.database;
 
 import com.umidity.UserSettings;
-import com.umidity.api.EUnits;
-import com.umidity.api.response.Coordinates;
+import com.umidity.api.caller.EUnits;
+import com.umidity.Coordinates;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
