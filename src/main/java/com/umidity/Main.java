@@ -1,5 +1,6 @@
 package com.umidity;
 
+import com.umidity.api.caller.ApiListener;
 import com.umidity.cli.MainCli;
 import com.umidity.gui.*;
 import com.umidity.database.DatabaseManager;
@@ -7,7 +8,7 @@ import com.umidity.database.DatabaseManager;
 import java.util.Date;
 
 
-public class Main {
+public class Main{
     public static UserSettings userSettings = new UserSettings();
     public static DatabaseManager dbms =new DatabaseManager();
     //TODO: unit tests [quasi]
@@ -15,7 +16,11 @@ public class Main {
 
     //TODO: JavaDocs [da fare]
     //TODO: README.md [da fare]
-
+    //TODO: api key nascosta
+    //TODO: Main asyncaller
+    //TODO: Maingui eventi asyncaller
+    //TODO: Maingui Utilizza Single
+    //TODO: Javadoc
 
     public static void main(String[] args){
         Debugger.setActive(true); //TODO: da rimuovere in release
