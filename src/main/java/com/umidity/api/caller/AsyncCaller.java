@@ -104,7 +104,7 @@ public class AsyncCaller extends Thread {
      * @param method the selected method for this AsyncCaller.
      * @param args arguments needed for that method.
      */
-    public AsyncCaller(ApiCaller caller, long timeToWait, AsyncMethod method, Object... args) throws InvalidParameterException {
+    public AsyncCaller(ApiCaller caller, long timeToWait, AsyncMethod method, Object... args) throws IllegalArgumentException {
         setArgs(args);
         this.caller = caller;
         this.method = method;
@@ -112,8 +112,6 @@ public class AsyncCaller extends Thread {
         oneCallResponse = new Vector<>();
         apiResponse = new Vector<>();
         forecastResponse = new Vector<>();
-
-
 
         oneTime = false;
         isRunning = false;
@@ -181,7 +179,7 @@ public class AsyncCaller extends Thread {
         }
     }
 
-    public void setArgs(Object... args){
+    public void setArgs(Object... args) throws IllegalArgumentException{
         try{
             oneTime = true;
             switch (method){
@@ -232,4 +230,5 @@ public class AsyncCaller extends Thread {
         apiResponse.clear();
         forecastResponse.clear();
     }
+
 }
