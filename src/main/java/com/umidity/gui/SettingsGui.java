@@ -110,6 +110,7 @@ public class SettingsGui {
         header.add("ID");
         cityTable.setModel(new DefaultTableModel(data,header));
         cityTable.setFillsViewportHeight(true);
+        cityTable.setDefaultEditor(Object.class, null);
     }
 }
 

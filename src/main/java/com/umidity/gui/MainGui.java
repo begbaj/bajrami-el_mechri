@@ -78,7 +78,6 @@ public class MainGui implements ApiListener{
     DefaultCategoryDataset dcd;
     JDatePanelImpl datePanelFrom;
     JDatePanelImpl datePanelTo;
-    AsyncCaller asyncCaller;
 
     public MainGui(){
 
@@ -172,8 +171,8 @@ public class MainGui implements ApiListener{
             } catch (IOException var18) {
                 var18.printStackTrace();
             }
-
         });
+
         settingsbutton.addActionListener((e) -> {
             SettingsFrame settingsGui = new SettingsFrame();
             WindowFocusListener hi = new WindowFocusListener() {
@@ -188,6 +187,7 @@ public class MainGui implements ApiListener{
             };
             settingsGui.addWindowFocusListener(hi);
         });
+
         timeStatsBox.addActionListener((e) -> {
             Calendar cal;
             Date fromDate;
@@ -223,6 +223,7 @@ public class MainGui implements ApiListener{
             }catch (Exception ex){
             }
         });
+
         datePickerTo.addActionListener((e) -> {
             try {
                 if (((Date) datePickerFrom.getModel().getValue()).before((Date) datePickerTo.getModel().getValue())) {
@@ -239,6 +240,7 @@ public class MainGui implements ApiListener{
             }
 
         });
+
         saveCityRecordsCheckBox.addActionListener((e) -> {
             if (listenerOn) {
                 try {
@@ -269,6 +271,7 @@ public class MainGui implements ApiListener{
             }
 
         });
+
         setFavouriteCityCheckBox.addActionListener((e) -> {
             if (listenerOn) {
                 if (setFavouriteCityCheckBox.isSelected()) {
@@ -279,8 +282,6 @@ public class MainGui implements ApiListener{
             }
 
         });
-
-        favouriteCityStart();
 
         simpleGraphButton.addActionListener(new ActionListener() {
             @Override
@@ -363,11 +364,14 @@ public class MainGui implements ApiListener{
                 chartFrame.setLocationRelativeTo(null);
             }
         });
+
+        favouriteCityStart();
     }
 
     public void createTable(JTable table, String[][] data, Object[] columnNames) {
         table.setModel(new DefaultTableModel(data, columnNames));
         table.setFillsViewportHeight(true);
+        table.setDefaultEditor(Object.class, null);
     }
 
     public void createStatistic(Date fromDate, Date toDate) {
