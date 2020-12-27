@@ -13,17 +13,17 @@ import java.util.Vector;
 public class Single implements IHumidity, ICoordinates {
 
     private boolean     isReadOnly;
-    private Coordinates coord;
-    private int         humidity;
-    private long     timestamp;
-    private float         temp;
-    private String    cityName;
-    private String      cityId;
+    private Coordinates      coord;
+    private int           humidity;
+    private long         timestamp;
+    private float             temp;
+    private String        cityName;
+    private int          cityId;
     /**
      * Currently not available
      */
-    private String cityZipCode;
-    private String cityCountry;
+    private String     cityZipCode;
+    private String     cityCountry;
 
     public Single(){
         isReadOnly = false;
@@ -36,7 +36,7 @@ public class Single implements IHumidity, ICoordinates {
         temp = response.main.temp;
 
         cityName = response.name;
-        cityId = String.valueOf(response.id);
+        cityId = response.id;
         cityCountry = response.sys.country;
         coord = response.getCoord();
 
@@ -74,9 +74,7 @@ public class Single implements IHumidity, ICoordinates {
     public String getCityName() {
         return cityName;
     }
-    public String getCityId() {
-        return cityId;
-    }
+    public int getCityId() { return cityId; }
     public String getCityZipCode() {
         return cityZipCode;
     }
@@ -100,32 +98,26 @@ public class Single implements IHumidity, ICoordinates {
         if(isReadOnly) throw new IsReadOnlyException();
         this.humidity = humidity;
     }
-
     public void setTimestamp(long timestamp)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.timestamp = timestamp;
     }
-
     public void setTemp(float temp)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.temp = temp;
     }
-
     public void setCityName(String cityName)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityName = cityName;
     }
-
-    public void setCityId(String cityId)throws IsReadOnlyException {
+    public void setCityId(int cityId)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityId = cityId;
     }
-
     public void setCityZipCode(String cityZipCode) throws IsReadOnlyException{
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityZipCode = cityZipCode;
     }
-
     public void setCityCountry(String cityCountry)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityCountry = cityCountry;

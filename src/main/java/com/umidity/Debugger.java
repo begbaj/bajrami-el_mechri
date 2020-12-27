@@ -1,14 +1,18 @@
 package com.umidity;
 
 /**
- * A debugging classes, used to print to System.out custom messages
+ * A debugging class, used to print to System.out custom messages
  */
 public class Debugger {
     /**
-     * when its active, Debugger will print debugging messages to System.out
+     * when active, Debugger will print debugging messages to System.out
      */
     static boolean isActive = false;
 
+    /**
+     * Activate(true)/Deactivate(false) debugging messages.
+     * @param set
+     */
     public static void setActive(boolean set){isActive = set;}
 
     public static void println(String message){

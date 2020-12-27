@@ -22,7 +22,7 @@ public class AsyncCaller extends Thread {
     private boolean isRunning;
     private boolean oneTime;
     public  Vector<OneCallResponse> oneCallResponse;
-    public Vector<ApiResponse> apiResponse;
+    public  Vector<ApiResponse> apiResponse;
     public  Vector<ForecastResponse> forecastResponse;
     private ApiCaller        caller;
     private AsyncMethod      method;
