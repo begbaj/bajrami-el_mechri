@@ -186,19 +186,16 @@ public class MainGui{
             Calendar cal;
             Date fromDate;
             if (this.timeStatsBox.getSelectedIndex() == 0) {
-                System.out.println("7 GIORNI");
                 cal = Calendar.getInstance();
                 cal.add(5, -7);
                 fromDate = cal.getTime();
                 this.createStatistic(fromDate, new Date());
             } else if (this.timeStatsBox.getSelectedIndex() == 1) {
-                System.out.println("30 GIORNI");
                 cal = Calendar.getInstance();
                 cal.add(5, -30);
                 fromDate = cal.getTime();
                 this.createStatistic(fromDate, new Date());
             } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
-                System.out.println("SCEGLIE L'UTENTE");
                 fromDate = (Date)this.datePickerFrom.getModel().getValue();
                 Date toDate = (Date)this.datePickerTo.getModel().getValue();
                 this.createStatistic(fromDate, toDate);
