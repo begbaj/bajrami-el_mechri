@@ -105,9 +105,9 @@ public class AsyncCaller extends Thread {
      * @param args arguments needed for that method.
      */
     public AsyncCaller(ApiCaller caller, long timeToWait, AsyncMethod method, Object... args) throws IllegalArgumentException {
-        setArgs(args);
-        this.caller = caller;
         this.method = method;
+        this.caller = caller;
+        setArgs(args);
         this.timeToWait = timeToWait;
         oneCallResponse = new Vector<>();
         apiResponse = new Vector<>();
