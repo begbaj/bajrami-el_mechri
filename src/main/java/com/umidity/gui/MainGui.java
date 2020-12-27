@@ -7,6 +7,7 @@ import com.umidity.api.Single;
 import com.umidity.api.caller.ApiArgument;
 import com.umidity.api.caller.ApiListener;
 import com.umidity.Coordinates;
+import com.umidity.api.caller.AsyncCaller;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
@@ -77,46 +78,51 @@ public class MainGui implements ApiListener{
     DefaultCategoryDataset dcd;
     JDatePanelImpl datePanelFrom;
     JDatePanelImpl datePanelTo;
+    AsyncCaller asyncCaller;
 
     public MainGui(){
+
         recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
         statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
+
         listenerOn = true;
         currentLocale = Locale.getDefault();
-        otherSymbols = new DecimalFormatSymbols(this.currentLocale);
+        otherSymbols = new DecimalFormatSymbols(currentLocale);
         Main.dbms.loadUserSettings();
         SimpleDateFormat format = new SimpleDateFormat("dd-MM hh:00");
+
         if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light")) {
             try {
                 UIManager.setLookAndFeel(new FlatLightLaf());
-            } catch (Exception var3) {
+            } catch (Exception e) {
                 System.err.println("Failed to initialize LaF");
             }
         }else{
             try {
                 UIManager.setLookAndFeel(new FlatDarkLaf());
-            } catch (Exception var3) {
+            } catch (Exception e) {
                 System.err.println("Failed to initialize LaF");
             }
         }
 
-        this.otherSymbols.setDecimalSeparator('.');
-        this.df = new DecimalFormat("###.##", this.otherSymbols);
+        otherSymbols.setDecimalSeparator('.');
+        df = new DecimalFormat("###.##", otherSymbols);
         Vector<String> vectorRecordColumnNames = new Vector();
         vectorRecordColumnNames.add("DateTime");
         vectorRecordColumnNames.add("Temperature");
         vectorRecordColumnNames.add("Humidity");
-        SwingUtilities.updateComponentTreeUI(this.panelMain);
-        this.createTable(this.recordsTable, (String[][])null, this.recordColumnNames);
-        this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
+        createTable(recordsTable, null, recordColumnNames);
+        createTable(statisticsTable, null, statisticsColumnNames);
 
-        this.searchButton.addActionListener((e) -> {
+        SwingUtilities.updateComponentTreeUI(panelMain);
+
+        searchButton.addActionListener((e) -> {
             try {
-                this.nosuchLabel.setText("");
+                nosuchLabel.setText("");
                 if(!textField_City.getText().equals(""))
-                    realtimeResponse = new Single(Main.caller.getByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText()));
+                    realtimeResponse = new Single(Main.caller.getByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText()));
                 else if(!textField_ZIP.getText().equals(""))
-                    realtimeResponse= new Single(Main.caller.getByZipCode(this.textField_ZIP.getText(), textField_State.getText()));
+                    realtimeResponse= new Single(Main.caller.getByZipCode(textField_ZIP.getText(), textField_State.getText()));
                 else nosuchLabel.setText("You must specify the area!");
                 if(!nosuchLabel.getText().equals("You must specify the area!")) {
                     Date date = new Date((new Timestamp(realtimeResponse.getTimestamp() * 1000)).getTime());
@@ -124,10 +130,10 @@ public class MainGui implements ApiListener{
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
                     firstRow.add(dateString);
-                    firstRow.add(Float.toString(this.realtimeResponse.getTemp()));
-                    firstRow.add((float) this.realtimeResponse.getHumidity() + "%");
+                    firstRow.add(Float.toString(realtimeResponse.getTemp()));
+                    firstRow.add((float) realtimeResponse.getHumidity() + "%");
                     matrix.add(firstRow);
-                    ForecastResponse forecastResponse = Main.caller.getForecastByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
+                    ForecastResponse forecastResponse = Main.caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
                     Single[] forecastRecords = forecastResponse.getSingles();
 
                     for (int counter = 0; counter < forecastRecords.length; ++counter) {
@@ -141,72 +147,72 @@ public class MainGui implements ApiListener{
                         matrix.add(nextRow);
                     }
 
-                    this.recordsTable.setModel(new DefaultTableModel(matrix, vectorRecordColumnNames));
-                    this.recordsTable.setFillsViewportHeight(true);
-                    this.cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
-                    CityRecord city = new CityRecord(this.realtimeResponse.getCityId(), this.realtimeResponse.getCityName(), this.realtimeResponse.getCoord());
+                    recordsTable.setModel(new DefaultTableModel(matrix, vectorRecordColumnNames));
+                    recordsTable.setFillsViewportHeight(true);
+                    cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
+                    CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                     HumidityRecord record = new HumidityRecord(realtimeResponse.getHumidity(), realtimeResponse.getTimestamp(), city);
-                    this.listenerOn = false;
+                    listenerOn = false;
                     if (Main.dbms.cityisSaved(city)) {
-                        this.saveCityRecordsCheckBox.setSelected(true);
+                        saveCityRecordsCheckBox.setSelected(true);
                         Main.dbms.addHumidity(record);
-                        this.timeStatsBox.setSelectedIndex(0);
-                        this.setPanelEnabled(this.statisticPanel, true);
+                        timeStatsBox.setSelectedIndex(0);
+                        setPanelEnabled(statisticPanel, true);
                     } else {
-                        this.saveCityRecordsCheckBox.setSelected(false);
-                        this.createTable(this.statisticsTable, (String[][]) null, this.statisticsColumnNames);
-                        this.setPanelEnabled(this.statisticPanel, false);
+                        saveCityRecordsCheckBox.setSelected(false);
+                        createTable(statisticsTable, (String[][]) null, statisticsColumnNames);
+                        setPanelEnabled(statisticPanel, false);
                     }
 
-                    this.setFavouriteCityCheckBox.setSelected(Main.dbms.getFavouriteCity().getId() == city.getId());
-                    this.listenerOn = true;
+                    setFavouriteCityCheckBox.setSelected(Main.dbms.getFavouriteCity().getId() == city.getId());
+                    listenerOn = true;
                 }
             } catch (FileNotFoundException var17) {
-                this.nosuchLabel.setText("Can't find any area with such parameters");
+                nosuchLabel.setText("Can't find any area with such parameters");
             } catch (IOException var18) {
                 var18.printStackTrace();
             }
 
         });
-        this.settingsbutton.addActionListener((e) -> {
+        settingsbutton.addActionListener((e) -> {
             SettingsFrame settingsGui = new SettingsFrame();
             WindowFocusListener hi = new WindowFocusListener() {
                 public void windowGainedFocus(WindowEvent e) {
-                    SwingUtilities.updateComponentTreeUI(MainGui.this.panelMain);
+                    SwingUtilities.updateComponentTreeUI(panelMain);
                 }
 
                 public void windowLostFocus(WindowEvent e) {
-                    SwingUtilities.updateComponentTreeUI(MainGui.this.panelMain);
+                    SwingUtilities.updateComponentTreeUI(panelMain);
                     Main.dbms.setUserSettings();
                 }
             };
             settingsGui.addWindowFocusListener(hi);
         });
-        this.timeStatsBox.addActionListener((e) -> {
+        timeStatsBox.addActionListener((e) -> {
             Calendar cal;
             Date fromDate;
-            if (this.timeStatsBox.getSelectedIndex() == 0) {
+            if (timeStatsBox.getSelectedIndex() == 0) {
                 cal = Calendar.getInstance();
                 cal.add(5, -7);
                 fromDate = cal.getTime();
-                this.createStatistic(fromDate, new Date());
-            } else if (this.timeStatsBox.getSelectedIndex() == 1) {
+                createStatistic(fromDate, new Date());
+            } else if (timeStatsBox.getSelectedIndex() == 1) {
                 cal = Calendar.getInstance();
                 cal.add(5, -30);
                 fromDate = cal.getTime();
-                this.createStatistic(fromDate, new Date());
+                createStatistic(fromDate, new Date());
             } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
-                fromDate = (Date)this.datePickerFrom.getModel().getValue();
-                Date toDate = (Date)this.datePickerTo.getModel().getValue();
-                this.createStatistic(fromDate, toDate);
+                fromDate = (Date)datePickerFrom.getModel().getValue();
+                Date toDate = (Date)datePickerTo.getModel().getValue();
+                createStatistic(fromDate, toDate);
             }
         });
 
-        this.datePickerFrom.addActionListener((e) -> {
+        datePickerFrom.addActionListener((e) -> {
             try {
                 if (((Date) datePickerFrom.getModel().getValue()).before((Date) datePickerTo.getModel().getValue())) {
-                    if (this.timeStatsBox.getSelectedIndex() == 2) {
-                        this.timeStatsBox.setSelectedIndex(2);
+                    if (timeStatsBox.getSelectedIndex() == 2) {
+                        timeStatsBox.setSelectedIndex(2);
                     }
                     easterEggLabel.setText("");
                     timeWarningLabel.setText("");
@@ -217,11 +223,11 @@ public class MainGui implements ApiListener{
             }catch (Exception ex){
             }
         });
-        this.datePickerTo.addActionListener((e) -> {
+        datePickerTo.addActionListener((e) -> {
             try {
                 if (((Date) datePickerFrom.getModel().getValue()).before((Date) datePickerTo.getModel().getValue())) {
-                    if (this.timeStatsBox.getSelectedIndex() == 2) {
-                        this.timeStatsBox.setSelectedIndex(2);
+                    if (timeStatsBox.getSelectedIndex() == 2) {
+                        timeStatsBox.setSelectedIndex(2);
                     }
                     easterEggLabel.setText("");
                     timeWarningLabel.setText("");
@@ -233,38 +239,40 @@ public class MainGui implements ApiListener{
             }
 
         });
-        this.saveCityRecordsCheckBox.addActionListener((e) -> {
-            if (this.listenerOn) {
+        saveCityRecordsCheckBox.addActionListener((e) -> {
+            if (listenerOn) {
                 try {
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
-                    if (this.saveCityRecordsCheckBox.isSelected()) {
+                    if (saveCityRecordsCheckBox.isSelected()) {
                         boolean flag = Main.dbms.addCity(city);
                         if (flag) {
-                            this.nosuchLabel.setText("City added!");
+                            nosuchLabel.setText("City added!");
+                            updateAsynCaller();
                         } else {
                             System.out.println("SOMETHING WRONG");
                         }
-                    } else if (JOptionPane.showConfirmDialog(this.panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
+                    } else if (JOptionPane.showConfirmDialog(panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
                         Main.dbms.removeCity(city);
-                        this.nosuchLabel.setText("City removed!");
+                        nosuchLabel.setText("City removed!");
+                        updateAsynCaller();
                     } else {
-                        this.listenerOn = false;
-                        this.saveCityRecordsCheckBox.setSelected(true);
-                        this.listenerOn = true;
+                        listenerOn = false;
+                        saveCityRecordsCheckBox.setSelected(true);
+                        listenerOn = true;
                     }
                 } catch (Exception var4) {
-                    this.nosuchLabel.setText("You have to search it first");
-                    this.listenerOn = false;
-                    this.saveCityRecordsCheckBox.setSelected(false);
-                    this.listenerOn = true;
+                    nosuchLabel.setText("You have to search it first");
+                    listenerOn = false;
+                    saveCityRecordsCheckBox.setSelected(false);
+                    listenerOn = true;
                 }
             }
 
         });
-        this.setFavouriteCityCheckBox.addActionListener((e) -> {
-            if (this.listenerOn) {
-                if (this.setFavouriteCityCheckBox.isSelected()) {
-                    Main.dbms.setFavouriteCity(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), this.realtimeResponse.getCoord()));
+        setFavouriteCityCheckBox.addActionListener((e) -> {
+            if (listenerOn) {
+                if (setFavouriteCityCheckBox.isSelected()) {
+                    Main.dbms.setFavouriteCity(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord()));
                 } else {
                     Main.dbms.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1.0F, -1.0F)));
                 }
@@ -272,7 +280,7 @@ public class MainGui implements ApiListener{
 
         });
 
-        this.favouriteCityStart();
+        favouriteCityStart();
 
         simpleGraphButton.addActionListener(new ActionListener() {
             @Override
@@ -366,18 +374,17 @@ public class MainGui implements ApiListener{
         try {
             simpleGraphButton.setEnabled(true);
             recordsGraphButton.setEnabled(true);
-            this.enoughLabel.setText("");
-            List<HumidityRecord> records = Main.dbms.getHumidity(this.realtimeResponse.getCityId());
+            enoughLabel.setText("");
+            List<HumidityRecord> records = Main.dbms.getHumidity(realtimeResponse.getCityId());
             double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
             double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
             double avg = StatsCalculator.avg(records, fromDate, toDate);
             double variance = StatsCalculator.variance(records, fromDate, toDate);
-            String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), this.df.format(avg), this.df.format(variance)}};
-            this.createTable(this.statisticsTable, statistics, this.statisticsColumnNames);
+            String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), df.format(avg), df.format(variance)}};
+            createTable(statisticsTable, statistics, statisticsColumnNames);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
-            this.enoughLabel.setText("Not enough records");
+            createTable(statisticsTable, (String[][])null, statisticsColumnNames);
+            enoughLabel.setText("Not enough records");
             simpleGraphButton.setEnabled(false);
             recordsGraphButton.setEnabled(false);
         }
@@ -393,7 +400,7 @@ public class MainGui implements ApiListener{
         for(int var6 = 0; var6 < var5; ++var6) {
             Component component = var4[var6];
             if (component instanceof JPanel) {
-                this.setPanelEnabled((JPanel)component, isEnabled);
+                setPanelEnabled((JPanel)component, isEnabled);
             }
 
             component.setEnabled(isEnabled);
@@ -404,8 +411,8 @@ public class MainGui implements ApiListener{
     private void favouriteCityStart() {
         CityRecord favouriteCity = Main.dbms.getFavouriteCity();
         if (favouriteCity.getId() != -1) {
-            this.textField_City.setText(favouriteCity.getName());
-            this.searchButton.doClick();
+            textField_City.setText(favouriteCity.getName());
+            searchButton.doClick();
         }
 
     }
@@ -419,10 +426,18 @@ public class MainGui implements ApiListener{
         p.put("text.year", "Year");
         datePanelFrom = new JDatePanelImpl(modelFrom, p);
         datePanelTo = new JDatePanelImpl(modelTo, p);
-        this.datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
-        this.datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
-        this.datePickerFrom.setVisible(true);
-        this.datePickerTo.setEnabled(false);
+        datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
+        datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
+        datePickerFrom.setVisible(true);
+        datePickerTo.setEnabled(false);
+    }
+
+    public void updateAsynCaller(){
+        Vector<Integer> ids = new Vector<>();
+        for(var city:Main.dbms.getCities()){
+            ids.add(city.getId());
+        };
+         Main.asyncCaller.setArgs(ids.toArray(Integer[]::new));
     }
 
     @Override

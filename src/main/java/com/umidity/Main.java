@@ -32,7 +32,7 @@ public class Main{
     //TODO: Sistema search [fatto]
     //TODO: Date easter egg [fatto]
     //TODO: OneCall utilizzo??
-    //TODO: Humidity Record TimeStamp
+    //TODO: Humidity Record TimeStamp [fatto!]
 
     //TODO: PUSH(
 
@@ -42,6 +42,7 @@ public class Main{
         Date time=new Date();
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.apiSettings.apikey, EUnits.Metric);
+
         Vector<Integer> ids = new Vector<>();
         for(var city:dbms.getCities()){
             ids.add(city.getId());
