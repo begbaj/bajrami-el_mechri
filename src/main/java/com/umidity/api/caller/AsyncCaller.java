@@ -20,7 +20,7 @@ public class AsyncCaller extends Thread {
          */
         oneCall1,
         /**
-         * Arguments: float lat, float lon,long dt,  {@code EnumSet< EExclude >} excludes.
+         * Arguments: float lat, float lon,long dt.
          */
         oneCall2,
         /**
@@ -139,7 +139,7 @@ public class AsyncCaller extends Thread {
                         case byCoordinates -> apiResponse.add(caller.getByCoordinates((float)args[0], (float)args[1]));
                         case byCityId -> getByCityId((Integer[])args[0]);
                         case byZipCode -> apiResponse.add(caller.getByZipCode((String)args[0], (String)args[1]));
-                        case forecastByCityId -> forecastResponse.add(caller.getForecastByCityId((String)args[0]));
+                        case forecastByCityId -> getForecastByCityId((Integer[])args[0]);
                         case forecastByZipCode -> forecastResponse.add(caller.getForecastByZipCode((String)args[0], (String)args[1]));
                         case forecastByCityName -> forecastResponse.add(caller.getForecastByCityName((String)args[0], (String) args[1],(String)args[1]));
                         case forecastByCoordinates -> forecastResponse.add(caller.getForecastByCoordinates((float)args[0], (float)args[1]));
@@ -179,6 +179,18 @@ public class AsyncCaller extends Thread {
         }
     }
 
+    /**
+     * Makes call to "Forecast By City Id" api. If there are more than one argument, it will make a call for each argument.
+     * @param args a list of city ids (a list of Strings)
+     * @throws IOException
+     */
+    private void getForecastByCityId(Integer[] args) throws IOException {
+        forecastResponse.clear();
+        for(Object o:args){
+            forecastResponse.add(caller.getForecastByCityId(String.valueOf(o)));
+        }
+    }
+
     public void setArgs(Object... args) throws IllegalArgumentException{
         try{
             switch (method){
@@ -191,7 +203,6 @@ public class AsyncCaller extends Thread {
                     float a = (float)args[0];
                     a = (float)args[1];
                     long c= (long)args[2];
-                    EnumSet<EExclude> d = (EnumSet<EExclude>) args[3];
                 }
                 case byCityName, forecastByCityName ->{
                     String a = (String)args[0];

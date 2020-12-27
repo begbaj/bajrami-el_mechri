@@ -109,7 +109,6 @@ public class ApiCaller extends Caller {
      * @param lat latitude
      * @param lon longitude
      * @param dt timestamp (see openweather documentation for more info)
-     * @param excludes objects to exclude from response (see openweather documentation for more info)
      * @return
      * @throws IOException
      */

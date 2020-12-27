@@ -61,9 +61,8 @@ class ApiCallerTest {
 
     @Test
     void OneCall2() {
-        var now = Calendar.getInstance().getTimeInMillis();
         try {
-            OneCallResponse r1 = caller.oneCall(43.713056f, 13.218333f, now);
+            OneCallResponse r1 = caller.oneCall(43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis());
             assertNotNull(r1.current);
         } catch (IOException e) {
             e.printStackTrace();

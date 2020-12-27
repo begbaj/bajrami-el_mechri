@@ -1,14 +1,13 @@
 package com.umidity.api;
 
 import com.umidity.Coordinates;
-import com.umidity.api.caller.ApiCaller;
-import com.umidity.api.caller.AsyncCaller;
-import com.umidity.api.caller.EMode;
-import com.umidity.api.caller.EUnits;
+import com.umidity.api.caller.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;
+import java.util.Calendar;
+import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +16,12 @@ class AsyncCallerTest {
 
     @AfterEach
     void tearDown(){
-        caller = null;
+        try {
+            Thread.sleep(1000);
+            caller = null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -30,6 +34,45 @@ class AsyncCallerTest {
             wasThrown = true;
         }
         assertTrue(wasThrown);
+    }
+
+    @Test
+    void testOneCall1(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
+                10000,AsyncCaller.AsyncMethod.oneCall1, 43.713056f, 13.218333f, EnumSet.of(EExclude.alerts));
+        try {
+            caller.start();
+            Thread.sleep(500);
+            caller.close();
+            caller.join();
+
+            assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertNull(caller.oneCallResponse.elementAt(0).alerts);
+            assertNotNull(caller.oneCallResponse.elementAt(0).current);
+        } catch (InterruptedException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testOneCall2(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
+                10000,AsyncCaller.AsyncMethod.oneCall2, 43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis());
+        try {
+            caller.start();
+            Thread.sleep(500);
+            caller.close();
+            caller.join();
+
+            assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertNotNull(caller.oneCallResponse.elementAt(0).current);
+        } catch (InterruptedException e) {
+            fail();
+        }
     }
 
     @Test
@@ -103,6 +146,82 @@ class AsyncCallerTest {
             assertFalse(caller.isAlive());
 
             assertEquals("Roncitelli", caller.apiResponse.elementAt(0).name);
+        } catch (InterruptedException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testForecastByCityName(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
+                10000,AsyncCaller.AsyncMethod.forecastByCityName, "Senigallia", "","");
+        try {
+            caller.start();
+            Thread.sleep(500);
+            caller.close();
+            caller.join();
+
+            assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).city.name);
+        } catch (InterruptedException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testForecastByCityId(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
+                10000, AsyncCaller.AsyncMethod.forecastByCityId, (Object) new Integer[]{3166740});
+        try {
+            caller.start();
+            Thread.sleep(500);
+            caller.close();
+            caller.join();
+
+            assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).city.name);
+        } catch (InterruptedException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testForecastByCoord(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
+                10000, AsyncCaller.AsyncMethod.forecastByCoordinates, 43.713056f,13.218333f);
+        try {
+            caller.start();
+            Thread.sleep(500);
+            caller.close();
+            caller.join();
+
+            assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).city.name);
+        } catch (InterruptedException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testForecastByZipCode(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
+                10000, AsyncCaller.AsyncMethod.forecastByZipCode, "60019", "it");
+        try {
+            caller.start();
+            Thread.sleep(500);
+            caller.close();
+            caller.join();
+
+            assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertEquals("Roncitelli", caller.forecastResponse.elementAt(0).city.name);
         } catch (InterruptedException e) {
             fail();
         }
