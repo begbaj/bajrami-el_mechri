@@ -20,7 +20,6 @@ public class StatsCalculator {
         //TODO: e se ce ne fossero due o più con lo stesso valore????
         HumidityRecord min = null;
         try{
-            records.stream().forEach(x->System.out.println(new Date(x.getTimestamp()*1000)));
             min = records.stream()
                     .filter(x -> new Date(x.getTimestamp()*1000).after(from))
                     .filter(x -> new Date(x.getTimestamp()*1000).before(to))

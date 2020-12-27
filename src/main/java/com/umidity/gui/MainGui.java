@@ -260,7 +260,7 @@ public class MainGui implements ApiListener{
                         saveCityRecordsCheckBox.setSelected(true);
                         listenerOn = true;
                     }
-                } catch (Exception var4) {
+                } catch (Exception ex) {
                     nosuchLabel.setText("You have to search it first");
                     listenerOn = false;
                     saveCityRecordsCheckBox.setSelected(false);
@@ -437,7 +437,7 @@ public class MainGui implements ApiListener{
         for(var city:Main.dbms.getCities()){
             ids.add(city.getId());
         };
-         Main.asyncCaller.setArgs(ids.toArray(Integer[]::new));
+         Main.asyncCaller.setArgs((Object) ids.toArray(Integer[]::new));
     }
 
     @Override

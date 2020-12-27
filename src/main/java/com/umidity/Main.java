@@ -46,8 +46,8 @@ public class Main{
         Vector<Integer> ids = new Vector<>();
         for(var city:dbms.getCities()){
             ids.add(city.getId());
-        };
-        asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, ids);
+        }
+        asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, (Object) ids.toArray(Integer[]::new));
 
         userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
