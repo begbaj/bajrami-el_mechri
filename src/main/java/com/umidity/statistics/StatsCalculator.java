@@ -5,7 +5,7 @@ import com.umidity.database.HumidityRecord;
 import java.util.*;
 
 /**
- * Calculate Humidity statistics
+ * Calculate Humidity statistics such as Minimum, Maximum, Average and Variance.
  */
 public class StatsCalculator {
 

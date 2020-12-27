@@ -15,10 +15,17 @@ public class Debugger {
      */
     public static void setActive(boolean set){isActive = set;}
 
+    /**
+     * Print debugging message.
+     * @param message
+     */
     public static void println(String message){
         if(isActive) System.out.println("Debugger:"+message);
     }
-
+    /**
+     * Print debugging message.
+     * @param message
+     */
     public static void println(String message, Object obj){
         if(isActive){
             System.out.println("Debugger:"+message);

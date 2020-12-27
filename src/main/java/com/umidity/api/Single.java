@@ -12,23 +12,55 @@ import java.util.Vector;
  */
 public class Single implements IHumidity, ICoordinates {
 
-    private boolean     isReadOnly;
-    private Coordinates      coord;
-    private int           humidity;
-    private long         timestamp;
-    private float             temp;
-    private String        cityName;
-    private int          cityId;
     /**
+     * Self explanatory.
+     */
+    private boolean     isReadOnly;
+    /**
+     * Self explanatory.
+     */
+    private Coordinates      coord;
+    /**
+     * Self explanatory.
+     */
+    private int           humidity;
+    /**
+     * Timestamp of when this record was calculated by Openweather
+     */
+    private long         timestamp;
+    /**
+     * Temperature.
+     */
+    private float             temp;
+    /**
+     * Self explanatory.
+     */
+    private String        cityName;
+    /**
+     * Self explanatory.
+     */
+    private int             cityId;
+    /**
+     * Self explanatory.
      * Currently not available
      */
     private String     cityZipCode;
+    /**
+     * Self explanatory.
+     */
     private String     cityCountry;
 
+    /**
+     * Creates a new Single object in ReadWrite mode.
+     */
     public Single(){
         isReadOnly = false;
     }
 
+    /**
+     * Creates a new Single object from a ApiResponse, in ReadOnly mode.
+     * @param response
+     */
     public Single(ApiResponse response){
         isReadOnly = true;
 
@@ -44,6 +76,10 @@ public class Single implements IHumidity, ICoordinates {
         timestamp = Long.parseLong(response.dt);
 
     }
+    /**
+     * Creates a new Single object from a OneCallResponse, in ReadOnly mode.
+     * @param response
+     */
     public Single(OneCallResponse response){
         isReadOnly = true;
 
@@ -54,6 +90,11 @@ public class Single implements IHumidity, ICoordinates {
         timestamp = response.current.dt;
     }
 
+    /**
+     * Returns an array og Single objects from an array of ApiResponses
+     * @param response
+     * @return
+     */
     public static Single[] getSingles(ApiResponse[] response){
         Vector<Single> singles = new Vector<>();
         for(ApiResponse r: response){
@@ -65,9 +106,15 @@ public class Single implements IHumidity, ICoordinates {
     public int getHumidity() {
         return humidity;
     }
+    /**
+     * Timestamp of when this record was calculated by Openweather
+     */
     public long getTimestamp() {
         return timestamp;
     }
+    /**
+     * Temperature.
+     */
     public float getTemp() {
         return temp;
     }
@@ -94,30 +141,70 @@ public class Single implements IHumidity, ICoordinates {
      */
     public void unlock(){ isReadOnly = false;}
 
+    /**
+     * Set humidity value.
+     * @param humidity
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setHumidity(int humidity) throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.humidity = humidity;
     }
+
+    /**
+     * Set timestamp
+     * @param timestamp
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setTimestamp(long timestamp)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.timestamp = timestamp;
     }
+
+    /**
+     * Set temperature
+     * @param temp
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setTemp(float temp)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.temp = temp;
     }
+
+    /**
+     * Set city name
+     * @param cityName
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setCityName(String cityName)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityName = cityName;
     }
+
+    /**
+     * Set city id
+     * @param cityId
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setCityId(int cityId)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityId = cityId;
     }
+
+    /**
+     * Set city zip code
+     * @param cityZipCode
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setCityZipCode(String cityZipCode) throws IsReadOnlyException{
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityZipCode = cityZipCode;
     }
+    /**
+     * Set city country
+     * @param cityCountry
+     * @throws IsReadOnlyException if the object was previosly locked
+     */
     public void setCityCountry(String cityCountry)throws IsReadOnlyException {
         if(isReadOnly) throw new IsReadOnlyException();
         this.cityCountry = cityCountry;

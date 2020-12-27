@@ -58,6 +58,10 @@ public class ForecastResponse extends Response implements ICoordinates, IHumidit
      */
     @Override
     public Single[] getSingles(){
+        for(ApiResponse a:list){
+            a.coord = city.coord;
+            a.name = city.name;
+        }
         if(list.length > 0)
             return Single.getSingles(list);
         return null;
