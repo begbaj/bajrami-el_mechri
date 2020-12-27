@@ -30,8 +30,9 @@ public class Main{
     //TODO: Tema grafici
     //TODO: Sistema search [fatto?]
     //TODO: Inverti Date se al contrario?
+    //TODO: OneCall utilizzo??
 
-    //TODO: PUSH(Fixed settings loading, fiex jdatepicker bug,
+    //TODO: PUSH(
 
 
     public static void main(String[] args){

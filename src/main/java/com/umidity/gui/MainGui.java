@@ -65,7 +65,6 @@ public class MainGui implements ApiListener{
     private JButton recordsGraphButton;
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
-    DatabaseManager DBMS;
     Single realtimeResponse;
     StatsCalculator statsCalc;
     String[] recordColumnNames;
@@ -79,8 +78,6 @@ public class MainGui implements ApiListener{
     JDatePanelImpl datePanelTo;
 
     public MainGui(){
-        DBMS = new DatabaseManager();
-        statsCalc = new StatsCalculator();
         recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
         statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
         listenerOn = true;
@@ -145,13 +142,13 @@ public class MainGui implements ApiListener{
 
                     this.recordsTable.setModel(new DefaultTableModel(matrix, vectorRecordColumnNames));
                     this.recordsTable.setFillsViewportHeight(true);
-                    this.cityLabel.setText(this.realtimeResponse.getCityName().toUpperCase());
+                    this.cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(this.realtimeResponse.getCityId(), this.realtimeResponse.getCityName(), this.realtimeResponse.getCoord());
                     HumidityRecord record = new HumidityRecord(realtimeResponse.getHumidity(), new Date(), city);
                     this.listenerOn = false;
-                    if (this.DBMS.cityisSaved(city)) {
+                    if (Main.dbms.cityisSaved(city)) {
                         this.saveCityRecordsCheckBox.setSelected(true);
-                        this.DBMS.addHumidity(record);
+                        Main.dbms.addHumidity(record);
                         this.timeStatsBox.setSelectedIndex(0);
                         this.setPanelEnabled(this.statisticPanel, true);
                     } else {
@@ -160,7 +157,7 @@ public class MainGui implements ApiListener{
                         this.setPanelEnabled(this.statisticPanel, false);
                     }
 
-                    this.setFavouriteCityCheckBox.setSelected(this.DBMS.getFavouriteCity().getId() == city.getId());
+                    this.setFavouriteCityCheckBox.setSelected(Main.dbms.getFavouriteCity().getId() == city.getId());
                     this.listenerOn = true;
                 }
             } catch (FileNotFoundException var17) {
@@ -179,7 +176,7 @@ public class MainGui implements ApiListener{
 
                 public void windowLostFocus(WindowEvent e) {
                     SwingUtilities.updateComponentTreeUI(MainGui.this.panelMain);
-                    MainGui.this.DBMS.setUserSettings();
+                    Main.dbms.setUserSettings();
                 }
             };
             settingsGui.addWindowFocusListener(hi);
@@ -221,14 +218,14 @@ public class MainGui implements ApiListener{
                 try {
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                     if (this.saveCityRecordsCheckBox.isSelected()) {
-                        boolean flag = this.DBMS.addCity(city);
+                        boolean flag = Main.dbms.addCity(city);
                         if (flag) {
                             this.nosuchLabel.setText("City added!");
                         } else {
                             System.out.println("SOMETHING WRONG");
                         }
                     } else if (JOptionPane.showConfirmDialog(this.panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
-                        this.DBMS.removeCity(city);
+                        Main.dbms.removeCity(city);
                         this.nosuchLabel.setText("City removed!");
                     } else {
                         this.listenerOn = false;
@@ -247,9 +244,9 @@ public class MainGui implements ApiListener{
         this.setFavouriteCityCheckBox.addActionListener((e) -> {
             if (this.listenerOn) {
                 if (this.setFavouriteCityCheckBox.isSelected()) {
-                    this.DBMS.setFavouriteCity(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), this.realtimeResponse.getCoord()));
+                    Main.dbms.setFavouriteCity(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), this.realtimeResponse.getCoord()));
                 } else {
-                    this.DBMS.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1.0F, -1.0F)));
+                    Main.dbms.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1.0F, -1.0F)));
                 }
             }
 
@@ -266,7 +263,7 @@ public class MainGui implements ApiListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultCategoryDataset dcd=new DefaultCategoryDataset();
-                List<HumidityRecord> records = DBMS.getHumidity(realtimeResponse.getCityId());
+                List<HumidityRecord> records = Main.dbms.getHumidity(realtimeResponse.getCityId());
                 Calendar cal;
                 Date fromDate=new Date();
                 Date toDate=new Date();
@@ -316,7 +313,7 @@ public class MainGui implements ApiListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultCategoryDataset dcd=new DefaultCategoryDataset();
-                List<HumidityRecord> records = DBMS.getHumidity(realtimeResponse.getCityId());
+                List<HumidityRecord> records = Main.dbms.getHumidity(realtimeResponse.getCityId());
                 for(HumidityRecord record:records){
                     dcd.addValue(record.getHumidity(), "Humidity", record.getDate());
                 }
@@ -355,7 +352,7 @@ public class MainGui implements ApiListener{
             simpleGraphButton.setEnabled(true);
             recordsGraphButton.setEnabled(true);
             this.enoughLabel.setText("");
-            List<HumidityRecord> records = this.DBMS.getHumidity(this.realtimeResponse.getCityId());
+            List<HumidityRecord> records = Main.dbms.getHumidity(this.realtimeResponse.getCityId());
             double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
             double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
             double avg = StatsCalculator.avg(records, fromDate, toDate);
@@ -389,7 +386,7 @@ public class MainGui implements ApiListener{
     }
 
     private void favouriteCityStart() {
-        CityRecord favouriteCity = this.DBMS.getFavouriteCity();
+        CityRecord favouriteCity = Main.dbms.getFavouriteCity();
         if (favouriteCity.getId() != -1) {
             this.textField_City.setText(favouriteCity.getName());
             this.searchButton.doClick();
