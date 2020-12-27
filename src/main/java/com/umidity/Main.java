@@ -13,7 +13,6 @@ public class Main{
     public static DatabaseManager dbms =new DatabaseManager();
     public static ApiCaller caller;
     //TODO: unit tests [quasi]
-    //TODO: arrotondamento delle cifre decimali nella gui [non lo so]
     //TODO: JavaDocs [da fare]
     //TODO: README.md [da fare]
 
@@ -22,7 +21,6 @@ public class Main{
     //TODO: Main asyncaller [chiedi beg]
     //TODO: Maingui eventi asyncaller
     //TODO: Maingui Utilizza Single
-    //TODO: Javadoc
     //TODO: Depreca cose inutili
     //TODO: Gestisci eccezioni grafici
     //TODO: Tema grafici

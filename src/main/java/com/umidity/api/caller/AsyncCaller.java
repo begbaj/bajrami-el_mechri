@@ -34,6 +34,7 @@ public class AsyncCaller extends Thread {
         apiResponse = null;
         forecastResponse = null;
     }
+
     public AsyncCaller(ApiCaller caller, AsyncMethod method, long ms, Object... args) {
         this.caller = caller;
         this.method = method;
@@ -67,8 +68,7 @@ public class AsyncCaller extends Thread {
                         case byCoordinates ->
                                 apiResponse = caller.getByCoordinates((float)args[0],
                                         (float)args[1]);
-                        case byCityId ->
-                                apiResponse = caller.getByCityId((String)args[0]);
+                        case byCityId -> getByCityId(args);
                         case byZipCode ->
                                 apiResponse = caller.getByZipCode((String)args[0], (String)args[1]);
                         case forecastByCityId ->
@@ -92,6 +92,17 @@ public class AsyncCaller extends Thread {
             close = false;
             isRunning = false;
             Debugger.println("AsyncCaller fermato!");
+        }
+    }
+
+    private void getByCityId(Object... args) throws IOException {
+        if(args.length > 1){
+            for(Object o:args){
+                caller.getByCityId((String)o);
+            }
+        }
+        else{
+            apiResponse = caller.getByCityId((String)args[0]);
         }
     }
 }

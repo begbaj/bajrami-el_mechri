@@ -2,10 +2,10 @@ package com.umidity.api.caller;
 
 public interface ApiListener {
 
-    void onReciveCurrent(Object sender, ApiArgument arg);
-    void onReciveForecast(Object sender, ApiArgument arg);
-    void onReciveHistorical(Object sender, ApiArgument arg);
-    void onRecive(Object sender, ApiArgument arg);
+    void onReceiveCurrent(Object sender, ApiArgument arg);
+    void onReceiveForecast(Object sender, ApiArgument arg);
+    void onReceiveHistorical(Object sender, ApiArgument arg);
+    void onReceive(Object sender, ApiArgument arg);
 
     void onRequestCurrent(Object sender, ApiArgument arg);
     void onRequestForecast(Object sender, ApiArgument arg);

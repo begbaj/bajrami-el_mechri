@@ -77,9 +77,9 @@ public class ApiCaller extends Caller {
         var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
         for(ApiListener l:apiListeners){
             if(response != null);{
-                if(current) l.onReciveCurrent(this, new ApiArgument<>(response));
-                if(forecast) l.onReciveForecast(this, new ApiArgument<>(response));
-                l.onRecive(this, new ApiArgument<>(response));
+                if(current) l.onReceiveCurrent(this, new ApiArgument<>(response));
+                if(forecast) l.onReceiveForecast(this, new ApiArgument<>(response));
+                l.onReceive(this, new ApiArgument<>(response));
             }
         }
         return response;
@@ -110,8 +110,8 @@ public class ApiCaller extends Caller {
         ApiArgument apiArg = new ApiArgument<>(response);
         for(ApiListener l:apiListeners){
             if(response != null);{
-                l.onRecive(this, apiArg);
-                l.onReciveHistorical(this, apiArg);
+                l.onReceive(this, apiArg);
+                l.onReceiveHistorical(this, apiArg);
             }
         }
         return response;
@@ -147,8 +147,8 @@ public class ApiCaller extends Caller {
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
         ApiArgument apiArg = new ApiArgument(response);
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -165,8 +165,8 @@ public class ApiCaller extends Caller {
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
         ApiArgument apiArg = new ApiArgument(response);
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -187,8 +187,8 @@ public class ApiCaller extends Caller {
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
         ApiArgument apiArg = new ApiArgument(response);
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -210,8 +210,8 @@ public class ApiCaller extends Caller {
         ApiArgument apiArg = new ApiArgument(response);
 
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -238,8 +238,8 @@ public class ApiCaller extends Caller {
         ApiArgument apiArg = new ApiArgument(response);
 
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -259,8 +259,8 @@ public class ApiCaller extends Caller {
         ApiArgument apiArg = new ApiArgument(response);
 
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -282,8 +282,8 @@ public class ApiCaller extends Caller {
         ApiArgument apiArg = new ApiArgument(response);
 
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
@@ -306,8 +306,8 @@ public class ApiCaller extends Caller {
         ApiArgument apiArg = new ApiArgument(response);
 
         for(ApiListener l:apiListeners){
-            l.onReciveCurrent(this, apiArg);
-            l.onRecive(this, apiArg);
+            l.onReceiveCurrent(this, apiArg);
+            l.onReceive(this, apiArg);
         }
         return response;
     }
