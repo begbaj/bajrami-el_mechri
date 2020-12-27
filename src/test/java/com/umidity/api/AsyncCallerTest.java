@@ -22,7 +22,6 @@ class AsyncCallerTest {
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
                  1000,AsyncCaller.AsyncMethod.byCityName, "Senigallia", "","");
         try {
-            assertNull(caller.apiResponse);
             caller.start();
             Thread.sleep(2000);
             assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
@@ -37,9 +36,8 @@ class AsyncCallerTest {
     @Test
     void testByCityId(){
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
-                 1000, AsyncCaller.AsyncMethod.byCityName, new int[]{});
+                 1000, AsyncCaller.AsyncMethod.byCityId, new int[]{3166740});
         try {
-            assertNull(caller.apiResponse);
             caller.start();
             Thread.sleep(2000);
             assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);

@@ -58,43 +58,43 @@ public class AsyncCaller extends Thread {
     /**
      * Id true, the thread will stop.
      */
-    private       boolean                    close;
+    private       boolean                       close;
     /**
      * Indicates whether the thread is running or not.
      */
-    private       boolean                    isRunning;
+    private       boolean                       isRunning;
     /**
      * If set to true, after <em>myAsyncCaller.Start()</em> is launched, the thread will run just one time and than it stops.
      */
-    private       boolean                    oneTime;
+    private       boolean                       oneTime;
     /**
      * A vector of oneCallResponses
      */
-    public        Vector< OneCallResponse >  oneCallResponse;
+    public        Vector< OneCallResponse >     oneCallResponse;
     /**
      * A vector of ApiResponses
      */
-    public        Vector< ApiResponse >      apiResponse;
+    public        Vector< ApiResponse >         apiResponse;
     /**
      * A vector of ForecastResponses
      */
-    public        Vector< ForecastResponse > forecastResponse;
+    public        Vector< ForecastResponse >    forecastResponse;
     /**
      * The api caller used for each api call.
      */
-    private final ApiCaller                  caller;
+    private final ApiCaller                     caller;
     /**
      * the selected method for this AsyncCaller
      */
-    private final AsyncMethod method;
+    private final AsyncMethod                   method;
     /**
      * Time (in milliseconds) to wait until next call
      */
-    private final long        timeToWait;
+    private final long                          timeToWait;
     /**
      * Array of arguments. The needed arguments are dependent on which AsyncMethod is set.
      */
-    private final Object[]    args;
+    private final Object[]                      args;
 
     public boolean getRunningStatus(){return isRunning; }
     public void clearResponse(){
@@ -114,6 +114,9 @@ public class AsyncCaller extends Thread {
         this.method = method;
         this.timeToWait = timeToWait;
         this.args = args;
+        oneCallResponse = new Vector<>();
+        apiResponse = new Vector<>();
+        forecastResponse = new Vector<>();
         oneTime = false;
         isRunning = false;
     }
@@ -140,9 +143,9 @@ public class AsyncCaller extends Thread {
         try {
             while(!close){
                 isRunning = true;
-                clearResponse();
                 long now = Calendar.getInstance().getTimeInMillis();
                 if(now - lastExecution >= timeToWait){
+                    clearResponse();
                     lastExecution = now;
                     switch (method){
                         case oneCall1 ->

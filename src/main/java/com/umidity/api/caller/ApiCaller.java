@@ -180,7 +180,7 @@ public class ApiCaller extends Caller {
             l.onRequestCurrent(this, null);
         }
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
-        var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
+        ApiResponse response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
         var apiArg = new ApiArgument(response.getSingles());
 
         for(ApiListener l:apiListeners){

@@ -35,10 +35,11 @@ public class Main{
         Date time=new Date();
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.apiSettings.apikey, EUnits.Metric);
+
         Integer[] ids = new Integer[]{};
         ids = dbms.getCities().toArray(ids);
         asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, ids);
-        //AsyncCaller asyncCaller=new AsyncCaller(caller, AsyncCaller.AsyncMethod.byCityId,3600000, )
+
         userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
              MainFrame Frame=new MainFrame();

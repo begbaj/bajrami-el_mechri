@@ -1,6 +1,7 @@
 package com.umidity.api.response;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umidity.Coordinates;
@@ -58,11 +59,11 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     /**
      * City geo location
      */
-    public Coordinates coord;
+    public Coordinates coord = new Coordinates();
     /**
      * more info Weather condition codes
      */
-    public Weather[]   weather;
+    public Weather[]   weather = new Weather[]{};
     /**
      * Internal parameter
      */
@@ -70,23 +71,23 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     /**
      * Main information
      */
-    public Main         main;
+    public Main         main = new Main();
     /**
      * Wind information
      */
-    public Wind         wind;
+    public Wind         wind = new Wind();
     /**
      * Cloudiness information
      */
-    public Clouds       clouds;
+    public Clouds       clouds = new Clouds();
     /**
      * Rain information
      */
-    public RainSnow     rain;
+    public RainSnow     rain = new RainSnow();
     /**
      * Snow information
      */
-    public RainSnow     snow;
+    public RainSnow     snow = new RainSnow();
     /**
      *  Time of data calculation, unix, UTC
      */
@@ -94,7 +95,7 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     /**
      * System information
      */
-    public Sys          sys;
+    public Sys          sys = new Sys();
     /**
      * Shift in seconds from UTC
      */
@@ -193,11 +194,13 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     }
 
     @Override
+    @JsonIgnore
     public Coordinates getCoord() {
         return coord;
     }
 
     @Override
+    @JsonIgnore
     public int getHumidity() {
         return main.humidity;
     }
@@ -207,11 +210,13 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
      * @return
      */
     @Override
+    @JsonIgnore
     public Single getSingle(){
         return new Single(this);
     }
 
     @Override
+    @JsonIgnore
     public Single[] getSingles(){
         return Single.getSingles(new ApiResponse[]{this});
     }
