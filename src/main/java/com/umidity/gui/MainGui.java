@@ -201,6 +201,7 @@ public class MainGui implements ApiListener{
                 this.createStatistic(fromDate, toDate);
             }
         });
+
         this.datePickerFrom.addActionListener((e) -> {
             try {
                 if (((Date) datePickerFrom.getModel().getValue()).before((Date) datePickerTo.getModel().getValue())) {
@@ -373,7 +374,8 @@ public class MainGui implements ApiListener{
             double variance = StatsCalculator.variance(records, fromDate, toDate);
             String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), this.df.format(avg), this.df.format(variance)}};
             this.createTable(this.statisticsTable, statistics, this.statisticsColumnNames);
-        } catch (Exception var14) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
             this.enoughLabel.setText("Not enough records");
             simpleGraphButton.setEnabled(false);
