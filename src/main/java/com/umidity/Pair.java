@@ -17,7 +17,6 @@ public class Pair<T, Y>{
      */
     private Y value;
 
-
     /**
      * Create a new Pair object.
      * @param key first object.
