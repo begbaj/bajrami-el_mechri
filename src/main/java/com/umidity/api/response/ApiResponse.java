@@ -9,7 +9,7 @@ import com.umidity.ICoordinates;
 import com.umidity.IHumidity;
 import com.umidity.api.Single;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiResponse  implements Response, ICoordinates, IHumidity {
 
     public class Main implements IHumidity{
@@ -56,14 +56,15 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
         }
     }
 
+
     /**
      * City geo location
      */
-    public Coordinates coord = new Coordinates();
+    public Coordinates coord;
     /**
      * more info Weather condition codes
      */
-    public Weather[]   weather = new Weather[]{};
+    public Weather[]   weather;
     /**
      * Internal parameter
      */
@@ -71,23 +72,23 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     /**
      * Main information
      */
-    public Main         main = new Main();
+    public Main         main;
     /**
      * Wind information
      */
-    public Wind         wind = new Wind();
+    public Wind         wind;
     /**
      * Cloudiness information
      */
-    public Clouds       clouds = new Clouds();
+    public Clouds       clouds;
     /**
      * Rain information
      */
-    public RainSnow     rain = new RainSnow();
+    public RainSnow     rain;
     /**
      * Snow information
      */
-    public RainSnow     snow = new RainSnow();
+    public RainSnow     snow;
     /**
      *  Time of data calculation, unix, UTC
      */
@@ -95,7 +96,7 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     /**
      * System information
      */
-    public Sys          sys = new Sys();
+    public Sys          sys;
     /**
      * Shift in seconds from UTC
      */

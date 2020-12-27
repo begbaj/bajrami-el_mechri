@@ -11,23 +11,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AsyncCallerTest {
     AsyncCaller caller;
-
-    @AfterEach
-    void tearDown(){
-        caller = null;
-    }
-
     @Test
     void testByCityName(){
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
-                 1000,AsyncCaller.AsyncMethod.byCityName, "Senigallia", "","");
+                 10000,AsyncCaller.AsyncMethod.byCityName, "Senigallia", "","");
         try {
             caller.start();
-            Thread.sleep(2000);
-            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
-            caller.close();
             Thread.sleep(500);
+            caller.close();
+            caller.join();
             assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
         } catch (InterruptedException e) {
             fail();
         }
@@ -36,14 +32,17 @@ class AsyncCallerTest {
     @Test
     void testByCityId(){
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
-                 1000, AsyncCaller.AsyncMethod.byCityId, new int[]{3166740});
+                10000, AsyncCaller.AsyncMethod.byCityId, new int[]{3166740});
         try {
             caller.start();
-            Thread.sleep(2000);
-            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
-            caller.close();
             Thread.sleep(500);
+            caller.close();
+            caller.join();
+
             assertFalse(caller.getRunningStatus());
+            assertFalse(caller.isAlive());
+
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
         } catch (InterruptedException e) {
             fail();
         }

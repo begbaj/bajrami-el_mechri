@@ -14,11 +14,11 @@ public class AsyncCaller extends Thread {
     public enum AsyncMethod{
 
         /**
-         * Arguments: float lat, float lon, EnumSet< EExclude > excludes.
+         * Arguments: float lat, float lon, {@code EnumSet< EExclude >} excludes.
          */
         oneCall1,
         /**
-         * Arguments: float lat, float lon,long dt,  EnumSet< EExclude > excludes.
+         * Arguments: float lat, float lon,long dt,  {@code EnumSet< EExclude >} excludes.
          */
         oneCall2,
         /**
@@ -82,26 +82,21 @@ public class AsyncCaller extends Thread {
     /**
      * The api caller used for each api call.
      */
-    private final ApiCaller                     caller;
+    private       ApiCaller                     caller;
     /**
      * the selected method for this AsyncCaller
      */
-    private final AsyncMethod                   method;
+    private       AsyncMethod                   method;
     /**
      * Time (in milliseconds) to wait until next call
      */
-    private final long                          timeToWait;
+    private       long                          timeToWait;
     /**
      * Array of arguments. The needed arguments are dependent on which AsyncMethod is set.
      */
-    private final Object[]                      args;
+    private       Object[]                      args;
 
-    public boolean getRunningStatus(){return isRunning; }
-    public void clearResponse(){
-        oneCallResponse.clear();
-        apiResponse.clear();
-        forecastResponse.clear();
-    }
+
 
     /**
      * @param caller The api caller used for each api call.
@@ -121,22 +116,13 @@ public class AsyncCaller extends Thread {
         isRunning = false;
     }
 
+
     /**
      * Adds a listener to the listeners
      * @param listener
      */
     public void addListener(ApiListener listener){caller.addListener(listener);}
 
-    /**
-     * Stop the thread.
-     */
-    public void close(){ close = true; }
-
-    /**
-     * After a call is made, the thread will stop
-     * @param value
-     */
-    public void setOneTime(boolean value){ oneTime = value; }
 
     public void run() {
         long lastExecution = 0;
@@ -184,6 +170,19 @@ public class AsyncCaller extends Thread {
             isRunning = false;
         }
     }
+    /**
+     * Stop the thread.
+     */
+    public void close(){ close = true; }
+
+    /**
+     * After a call is made, the thread will stop
+     * @param value
+     */
+    public void setOneTime(boolean value){ oneTime = value; }
+    public boolean getRunningStatus(){return isRunning; }
+
+
 
     /**
      * Makes call to "By City Id" api. If there are more than one argument, it will make a call for each argument.
@@ -195,5 +194,11 @@ public class AsyncCaller extends Thread {
         for(Object o:args){
             apiResponse.add(caller.getByCityId(String.valueOf(o)));
         }
+    }
+
+    public void clearResponse(){
+        oneCallResponse.clear();
+        apiResponse.clear();
+        forecastResponse.clear();
     }
 }

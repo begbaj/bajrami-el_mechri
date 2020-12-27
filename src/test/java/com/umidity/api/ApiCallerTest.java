@@ -8,6 +8,7 @@ import com.umidity.api.caller.EExclude;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallResponse;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,6 +22,15 @@ class ApiCallerTest {
     @BeforeAll
     static void initAll() {
         caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
+    }
+
+    @BeforeEach
+    void setUp(){
+        try {
+            Thread.sleep(1000); //Wait between calls to avoid ddos detection systems
+        } catch (InterruptedException e) {
+            fail();
+        }
     }
 
     @Test
@@ -55,9 +65,9 @@ class ApiCallerTest {
     @Test
     void getByCityName() {
         try {
-            ApiResponse r1 = caller.getByCityName("Rome","","US");
-            ApiResponse r2 = caller.getByCityName("Rome","","IT");
-            assertNotEquals(r1.getCoord(), r2.getCoord());
+            ApiResponse r1 = caller.getByCityName("Rome","","us");
+            ApiResponse r2 = caller.getByCityName("Rome","","it");
+            assertNotEquals(r1.getCoord().lat, r2.getCoord().lat);
             assertNotNull(r1.main);
             assertNotNull(r2.main);
         } catch (IOException e) {

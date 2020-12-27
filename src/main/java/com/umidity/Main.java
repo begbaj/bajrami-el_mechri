@@ -7,6 +7,7 @@ import com.umidity.gui.*;
 import com.umidity.database.DatabaseManager;
 
 import java.util.Date;
+import java.util.Vector;
 
 
 public class Main{
@@ -35,10 +36,11 @@ public class Main{
         Date time=new Date();
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.apiSettings.apikey, EUnits.Metric);
-
-        Integer[] ids = new Integer[]{};
-        ids = dbms.getCities().toArray(ids);
-        asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, ids);
+        Vector<Integer> ids = new Vector<>();
+        for(var city:dbms.getCities()){
+            ids.add(city.getId());
+        };
+        asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, ids.toArray(Integer[]::new));
 
         userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
