@@ -1,14 +1,60 @@
 package com.umidity.api.response;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umidity.Coordinates;
 import com.umidity.ICoordinates;
 import com.umidity.IHumidity;
 import com.umidity.api.Single;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiResponse extends Response implements ICoordinates, IHumidity {
-    //TODO: documentazione necessaria
+
+    public class Main implements IHumidity{
+        /**
+         * Temperature
+         */
+        public float temp;
+        /**
+         *
+         */
+        public float temp_kf;
+        /**
+         * This temperature parameter accounts for the human perception of weather
+         */
+        public float feels_like;
+        /**
+         * Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
+         */
+        public float pressure;
+        /**
+         * Humidity in %
+         */
+        public int humidity;
+        /**
+         * Minimum temperature at the moment. This is minimal currently observed temperature (within large megalopolises and urban areas)
+         */
+        public float temp_min;
+        /**
+         * Maximum temperature at the moment. This is maximal currently observed temperature (within large megalopolises and urban areas)
+         */
+        public float temp_max;
+        /**
+         * Atmospheric pressure on the sea level, hPa
+         */
+        public float sea_level;
+        /**
+         * Atmospheric pressure on the ground level, hPa
+         */
+        public float grnd_level;
+
+        @Override
+        public int getHumidity() {
+            return humidity;
+        }
+    }
+
     /**
      * City geo location
      */
@@ -70,49 +116,6 @@ public class ApiResponse extends Response implements ICoordinates, IHumidity {
     public String       pop;
     public String       dt_txt;
 
-    public class Main implements IHumidity{
-        /**
-         * Temperature
-         */
-        public float temp;
-        /**
-         *
-         */
-        public float temp_kf;
-        /**
-         * This temperature parameter accounts for the human perception of weather
-         */
-        public float feels_like;
-        /**
-         * Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
-         */
-        public float pressure;
-        /**
-         * Humidity in %
-         */
-        public int humidity;
-        /**
-         * Minimum temperature at the moment. This is minimal currently observed temperature (within large megalopolises and urban areas)
-         */
-        public float temp_min;
-        /**
-         * Maximum temperature at the moment. This is maximal currently observed temperature (within large megalopolises and urban areas)
-         */
-        public float temp_max;
-        /**
-         * Atmospheric pressure on the sea level, hPa
-         */
-        public float sea_level;
-        /**
-         * Atmospheric pressure on the ground level, hPa
-         */
-        public float grnd_level;
-
-        @Override
-        public int getHumidity() {
-            return humidity;
-        }
-    }
 
     /**
      * Wind information
@@ -191,7 +194,7 @@ public class ApiResponse extends Response implements ICoordinates, IHumidity {
 
     @Override
     public Coordinates getCoord() {
-        return coord.getCoord();
+        return coord;
     }
 
     @Override

@@ -107,7 +107,7 @@ public class AsyncCaller extends Thread {
     private void getByCityId(Object... args) throws IOException {
         apiResponse.clear();
         for(Object o:args){
-            apiResponse.add(caller.getByCityId((String)o));
+            apiResponse.add(caller.getByCityId(o.toString()));
         }
     }
 }

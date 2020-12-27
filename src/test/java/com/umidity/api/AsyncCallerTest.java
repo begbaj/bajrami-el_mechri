@@ -34,4 +34,21 @@ class AsyncCallerTest {
         }
     }
 
+    @Test
+    void testByCityId(){
+        caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric),
+                AsyncCaller.AsyncMethod.byCityName, 1000, new int[]{});
+        try {
+            assertNull(caller.apiResponse);
+            caller.start();
+            Thread.sleep(2000);
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
+            caller.close();
+            Thread.sleep(500);
+            assertFalse(caller.getRunningStatus());
+        } catch (InterruptedException e) {
+            fail();
+        }
+    }
+
 }

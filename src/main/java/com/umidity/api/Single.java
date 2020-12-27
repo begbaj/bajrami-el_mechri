@@ -69,12 +69,11 @@ public class Single implements IHumidity, ICoordinates {
 
         cityName = response.name;
         cityId = response.id;
+        coord = response.coord;
         cityCountry = response.sys.country;
-        coord = response.getCoord();
 
 
         timestamp = Long.parseLong(response.dt);
-
     }
     /**
      * Creates a new Single object from a OneCallResponse, in ReadOnly mode.
@@ -100,7 +99,7 @@ public class Single implements IHumidity, ICoordinates {
         for(ApiResponse r: response){
             singles.add(new Single(r));
         }
-        return (Single[]) singles.toArray();
+        return singles.toArray(Single[]::new);
     }
 
     public int getHumidity() {

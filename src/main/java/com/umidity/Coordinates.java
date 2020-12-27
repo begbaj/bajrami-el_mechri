@@ -29,11 +29,7 @@ public class Coordinates implements ICoordinates {
     @Override
     @JsonIgnore
     public Coordinates getCoord() {
-        try{
-            return (Coordinates)this.clone();
-        }catch (CloneNotSupportedException e){
-            return this;
-        }
+        return this;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.umidity.api.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.umidity.Coordinates;
 import com.umidity.ICoordinates;
 import com.umidity.IHumidities;
@@ -8,6 +9,7 @@ import com.umidity.api.Single;
 
 import java.util.Vector;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ForecastResponse extends Response implements ICoordinates, IHumidities {
     public String cod;
     public int message;
@@ -31,7 +33,7 @@ public class ForecastResponse extends Response implements ICoordinates, IHumidit
     }
 
     public class City{
-        public long id;
+        public int id;
         public String name;
         public Coordinates coord;
         public String country;
@@ -47,8 +49,12 @@ public class ForecastResponse extends Response implements ICoordinates, IHumidit
      */
     @Override
     public Single getSingle(){
-        if(list.length > 0)
+        if(list.length > 0){
+            list[0].id = city.id;
+            list[0].coord = city.coord;
+            list[0].name = city.name;
             return new Single(list[0]);
+        }
         return null;
     }
 
@@ -59,6 +65,7 @@ public class ForecastResponse extends Response implements ICoordinates, IHumidit
     @Override
     public Single[] getSingles(){
         for(ApiResponse a:list){
+            a.id = city.id;
             a.coord = city.coord;
             a.name = city.name;
         }

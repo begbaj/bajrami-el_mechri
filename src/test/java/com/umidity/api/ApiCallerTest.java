@@ -166,4 +166,17 @@ class ApiCallerTest {
             fail();
         }
     }
+
+    @Test
+    void getForecastSingles(){
+        try {
+            ForecastResponse r1 = caller.getForecastByCityId("3166740");
+            assertNotNull(r1.getCoord());
+            assertNotNull(r1.getSingle().getCoord());
+            assertNotNull(r1.getSingles()[1].getCoord());
+        } catch (IOException e) {
+            fail();
+        }
+
+    }
 }
