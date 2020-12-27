@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainCli extends FrameManager implements InputFormListener {
-    protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
+    protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric);
     protected boolean close;
     protected ScreenMenu menu;
     protected TextInput input;

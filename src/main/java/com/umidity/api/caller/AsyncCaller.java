@@ -6,8 +6,10 @@ import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallResponse;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.EnumSet;
+import java.util.IllegalFormatConversionException;
 import java.util.Vector;
 
 public class AsyncCaller extends Thread {
@@ -104,7 +106,7 @@ public class AsyncCaller extends Thread {
      * @param method the selected method for this AsyncCaller.
      * @param args arguments needed for that method.
      */
-    public AsyncCaller(ApiCaller caller, long timeToWait, AsyncMethod method, Object... args) {
+    public AsyncCaller(ApiCaller caller, long timeToWait, AsyncMethod method, Object... args) throws InvalidParameterException {
         this.caller = caller;
         this.method = method;
         this.timeToWait = timeToWait;
@@ -112,6 +114,50 @@ public class AsyncCaller extends Thread {
         oneCallResponse = new Vector<>();
         apiResponse = new Vector<>();
         forecastResponse = new Vector<>();
+
+        try{
+            oneTime = true;
+            switch (method){
+                case oneCall1   -> {
+                    var a = (float)args[0];
+                    var b = (float)args[1];
+                    var c = (EnumSet<EExclude>)args[2];
+                }
+                case oneCall2   ->{
+                    var a = (float)args[0];
+                    var b = (float)args[1];
+                    var c= (long)args[2];
+                    var d = (EnumSet<EExclude>) args[3];
+                }
+                case byCityName ->{
+                    var a = (String)args[0];
+                    var b = (String)args[1];
+                    var c = (String)args[2];
+                }
+                case byCoordinates, forecastByCoordinates -> {
+                    var a = (float)args[0];
+                    var b = (float)args[1];
+                }
+                case byCityId   -> {
+                    var a = (int[]) args[0];
+                }
+                case byZipCode, forecastByZipCode ->{
+                    var a = (String)args[0];
+                    var b = (String)args[1];
+                }
+                case forecastByCityId  ->{
+                    var a = (String)args[0];
+                }
+                case forecastByCityName ->{
+                    var a = (String)args[0];
+                    var b = (String) args[1];
+                    var c = (String)args[1];
+                }
+            }
+        }catch (ClassCastException e){
+            throw new IllegalArgumentException();
+        }
+
         oneTime = false;
         isRunning = false;
     }
@@ -124,7 +170,7 @@ public class AsyncCaller extends Thread {
     public void addListener(ApiListener listener){caller.addListener(listener);}
 
 
-    public void run() {
+    public void run()  {
         long lastExecution = 0;
         try {
             while(!close){
@@ -134,42 +180,28 @@ public class AsyncCaller extends Thread {
                     clearResponse();
                     lastExecution = now;
                     switch (method){
-                        case oneCall1 ->
-                                oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (EnumSet<EExclude>)args[2]));
-                        case oneCall2 ->
-                                oneCallResponse.add(caller.oneCall((float)args[0],
-                                        (float)args[1], (long)args[2], (EnumSet<EExclude>) args[3]));
-                        case byCityName ->
-                                apiResponse.add(caller.getByCityName((String)args[0],
-                                        (String)args[1], (String)args[2]));
-                        case byCoordinates ->
-                                apiResponse.add(caller.getByCoordinates((float)args[0],
-                                        (float)args[1]));
-                        case byCityId -> getByCityId((int[])args[0]);
-                        case byZipCode ->
-                                apiResponse.add(caller.getByZipCode((String)args[0], (String)args[1]));
-                        case forecastByCityId ->
-                                forecastResponse.add(caller.getForecastByCityId((String)args[0]));
-                        case forecastByZipCode ->
-                                forecastResponse.add(caller.getForecastByZipCode((String)args[0],
-                                        (String)args[1]));
-                        case forecastByCityName ->
-                                forecastResponse.add(caller.getForecastByCityName((String)args[0],
-                                        (String) args[1],(String)args[1]));
-                        case forecastByCoordinates ->
-                                forecastResponse.add(caller.getForecastByCoordinates((float)args[0],
-                                        (float)args[1]));
-                        }
-                        if(oneTime)return;
+                        case oneCall1   -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (EnumSet<EExclude>)args[2]));
+                        case oneCall2   -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (long)args[2], (EnumSet<EExclude>) args[3]));
+                        case byCityName -> apiResponse.add(caller.getByCityName((String)args[0], (String)args[1], (String)args[2]));
+                        case byCoordinates -> apiResponse.add(caller.getByCoordinates((float)args[0], (float)args[1]));
+                        case byCityId   -> getByCityId((int[])args[0]);
+                        case byZipCode  -> apiResponse.add(caller.getByZipCode((String)args[0], (String)args[1]));
+                        case forecastByCityId  -> forecastResponse.add(caller.getForecastByCityId((String)args[0]));
+                        case forecastByZipCode -> forecastResponse.add(caller.getForecastByZipCode((String)args[0], (String)args[1]));
+                        case forecastByCityName -> forecastResponse.add(caller.getForecastByCityName((String)args[0], (String) args[1],(String)args[1]));
+                        case forecastByCoordinates -> forecastResponse.add(caller.getForecastByCoordinates((float)args[0], (float)args[1]));
+                    }
+                    if(oneTime)return;
                 }
             }
-            } catch (IOException e) {
+        }catch (IOException e){
             e.printStackTrace();
-        }finally {
+        } finally {
             close = false;
             isRunning = false;
         }
     }
+
     /**
      * Stop the thread.
      */
@@ -181,6 +213,7 @@ public class AsyncCaller extends Thread {
      */
     public void setOneTime(boolean value){ oneTime = value; }
     public boolean getRunningStatus(){return isRunning; }
+
 
 
 

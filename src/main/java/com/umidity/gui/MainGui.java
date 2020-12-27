@@ -333,7 +333,7 @@ public class MainGui implements ApiListener{
                     dcd.addValue(record.getHumidity(), "Humidity", new Date((new Timestamp(record.getTimestamp() * 1000)).getTime()));
                 }
 
-                JFreeChart jChart = ChartFactory.createLineChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+                JFreeChart jChart = ChartFactory.createLineChart("Humidity", null, null, dcd, PlotOrientation.VERTICAL, false, false, false);
                 CategoryPlot plot=jChart.getCategoryPlot();
                 plot.setRangeGridlinePaint(Color.black);
                 if(UIManager.getLookAndFeel().getID().equals("FlatLaf - FlatLaf Dark")) {
