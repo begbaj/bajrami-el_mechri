@@ -60,62 +60,79 @@ public class ApiResponse  implements Response, ICoordinates, IHumidity {
     /**
      * City geo location
      */
+    @JsonProperty("coord")
     public Coordinates coord;
     /**
      * more info Weather condition codes
      */
+    @JsonProperty("weather")
     public Weather[]   weather;
     /**
      * Internal parameter
      */
+    @JsonProperty("base")
     public String       base;
     /**
      * Main information
      */
+    @JsonProperty("main")
     public Main         main;
     /**
      * Wind information
      */
+    @JsonProperty("wind")
     public Wind         wind;
     /**
      * Cloudiness information
      */
+    @JsonProperty("clouds")
     public Clouds       clouds;
     /**
      * Rain information
      */
+    @JsonProperty("rain")
     public RainSnow     rain;
     /**
      * Snow information
      */
+    @JsonProperty("snow")
     public RainSnow     snow;
     /**
      *  Time of data calculation, unix, UTC
      */
+    @JsonProperty("dt")
     public String       dt;
     /**
      * System information
      */
+    @JsonProperty("sys")
     public Sys          sys;
     /**
      * Shift in seconds from UTC
      */
+    @JsonProperty("timezone")
     public int          timezone;
     /**
      *  City ID
      */
+    @JsonProperty("id")
     public int          id;
     /**
      * City name
      */
+    @JsonProperty("name")
     public String       name;
     /**
      * Internal parameter
      */
+    @JsonProperty("cod")
     public int          cod;
 
+    @JsonProperty("visibility")
     public int          visibility;
+    @JsonProperty("pop")
     public String       pop;
+    @JsonProperty("dt_txt")
     public String       dt_txt;
 
 

@@ -47,8 +47,6 @@ public class Main{
              MainFrame Frame=new MainFrame();
         }else{
             MainCli mainCli = new MainCli();
-
-            //mainCli.setRefreshRate(10);
             mainCli.run();
             Debugger.println("chiuso");
         }

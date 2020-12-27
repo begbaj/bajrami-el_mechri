@@ -20,7 +20,7 @@ public class ForecastResponse implements Response, ICoordinates, IHumidities {
 
     @Override
     public Coordinates getCoord() {
-        return city.coord.getCoord();
+        return city.coord;
     }
 
     @Override

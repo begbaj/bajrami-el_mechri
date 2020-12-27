@@ -21,13 +21,13 @@ class ApiCallerTest {
 
     @BeforeAll
     static void initAll() {
-        caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EMode.JSON, EUnits.Metric);
+        caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric);
     }
 
     @BeforeEach
     void setUp(){
         try {
-            Thread.sleep(1000); //Wait between calls to avoid ddos detection systems
+            Thread.sleep(1000); //Wait between calls to avoid saturation
         } catch (InterruptedException e) {
             fail();
         }

@@ -1,5 +1,6 @@
 package com.umidity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,7 +9,8 @@ import java.util.Objects;
 /**
  * Geo location coordinates.
  */
-public class Coordinates implements ICoordinates {
+public class Coordinates {
+
     /**
      * Latitude
      */
@@ -24,12 +26,6 @@ public class Coordinates implements ICoordinates {
     public Coordinates(float lat, float lon){
         this.lat = lat;
         this.lon = lon;
-    }
-
-    @Override
-    @JsonIgnore
-    public Coordinates getCoord() {
-        return this;
     }
 
     @Override
