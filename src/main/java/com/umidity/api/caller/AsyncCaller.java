@@ -137,7 +137,7 @@ public class AsyncCaller extends Thread {
                         case oneCall2 -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (long)args[2], (EnumSet<EExclude>) args[3]));
                         case byCityName -> apiResponse.add(caller.getByCityName((String)args[0], (String)args[1], (String)args[2]));
                         case byCoordinates -> apiResponse.add(caller.getByCoordinates((float)args[0], (float)args[1]));
-                        case byCityId -> getByCityId((int[])args[0]);
+                        case byCityId -> getByCityId((Integer[])args[0]);
                         case byZipCode -> apiResponse.add(caller.getByZipCode((String)args[0], (String)args[1]));
                         case forecastByCityId -> forecastResponse.add(caller.getForecastByCityId((String)args[0]));
                         case forecastByZipCode -> forecastResponse.add(caller.getForecastByZipCode((String)args[0], (String)args[1]));
@@ -172,7 +172,7 @@ public class AsyncCaller extends Thread {
      * @param args a list of city ids (a list of Strings)
      * @throws IOException
      */
-    private void getByCityId(int[] args) throws IOException {
+    private void getByCityId(Integer[] args) throws IOException {
         apiResponse.clear();
         for(Object o:args){
             apiResponse.add(caller.getByCityId(String.valueOf(o)));
@@ -181,42 +181,33 @@ public class AsyncCaller extends Thread {
 
     public void setArgs(Object... args) throws IllegalArgumentException{
         try{
-            oneTime = true;
             switch (method){
                 case oneCall1   -> {
-                    var a = (float)args[0];
-                    var b = (float)args[1];
-                    var c = (EnumSet<EExclude>)args[2];
+                    float a = (float)args[0];
+                    a = (float)args[1];
+                    EnumSet<EExclude> c = (EnumSet<EExclude>)args[2];
                 }
                 case oneCall2   ->{
-                    var a = (float)args[0];
-                    var b = (float)args[1];
-                    var c= (long)args[2];
-                    var d = (EnumSet<EExclude>) args[3];
+                    float a = (float)args[0];
+                    a = (float)args[1];
+                    long c= (long)args[2];
+                    EnumSet<EExclude> d = (EnumSet<EExclude>) args[3];
                 }
-                case byCityName ->{
-                    var a = (String)args[0];
-                    var b = (String)args[1];
-                    var c = (String)args[2];
+                case byCityName, forecastByCityName ->{
+                    String a = (String)args[0];
+                    a = (String)args[1];
+                    a = (String)args[2];
                 }
                 case byCoordinates, forecastByCoordinates -> {
-                    var a = (float)args[0];
-                    var b = (float)args[1];
+                    float a = (float)args[0];
+                    a = (float)args[1];
                 }
-                case byCityId   -> {
-                    var a = (int[]) args[0];
+                case byCityId, forecastByCityId -> {
+                    Integer[] a = (Integer[])args[0];
                 }
                 case byZipCode, forecastByZipCode ->{
-                    var a = (String)args[0];
-                    var b = (String)args[1];
-                }
-                case forecastByCityId  ->{
-                    var a = (String)args[0];
-                }
-                case forecastByCityName ->{
-                    var a = (String)args[0];
-                    var b = (String) args[1];
-                    var c = (String)args[1];
+                    String a = (String)args[0];
+                    a = (String)args[1];
                 }
             }
         }catch (ClassCastException e){

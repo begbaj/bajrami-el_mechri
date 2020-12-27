@@ -54,7 +54,7 @@ class AsyncCallerTest {
     @Test
     void testByCityId(){
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
-                10000, AsyncCaller.AsyncMethod.byCityId, new int[]{3166740});
+                10000, AsyncCaller.AsyncMethod.byCityId, (Object) new Integer[]{3166740});
         try {
             caller.start();
             Thread.sleep(500);
@@ -73,7 +73,7 @@ class AsyncCallerTest {
     @Test
     void testByCoord(){
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
-                10000, AsyncCaller.AsyncMethod.byCoordinates, new Coordinates(43.713056f,13.218333f));
+                10000, AsyncCaller.AsyncMethod.byCoordinates, 43.713056f,13.218333f);
         try {
             caller.start();
             Thread.sleep(500);

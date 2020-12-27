@@ -6,6 +6,7 @@ import com.umidity.api.response.ApiResponse;
 import com.umidity.cli.MainCli;
 import com.umidity.gui.*;
 import com.umidity.database.DatabaseManager;
+import org.jfree.chart.util.ArrayUtils;
 
 import java.util.Date;
 import java.util.Vector;
@@ -45,7 +46,7 @@ public class Main{
         for(var city:dbms.getCities()){
             ids.add(city.getId());
         };
-        asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, ids.toArray(Integer[]::new));
+        asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, ids);
 
         userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
