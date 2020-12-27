@@ -2,6 +2,7 @@ package com.umidity;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.umidity.api.caller.*;
+import com.umidity.api.response.ApiResponse;
 import com.umidity.cli.MainCli;
 import com.umidity.gui.*;
 import com.umidity.database.DatabaseManager;
@@ -23,10 +24,12 @@ public class Main{
     //TODO: api key nascosta [fatto? eccezioni?]
     //TODO: Main asyncaller [chiedi beg]
     //TODO: Maingui eventi asyncaller
-    //TODO: Maingui Utilizza Single
+    //TODO: Maingui Utilizza Single [fatto?]
     //TODO: Depreca cose inutili
     //TODO: Gestisci eccezioni grafici
     //TODO: Tema grafici
+    //TODO: Sistema search [fatto?]
+    //TODO: Inverti Date se al contrario?
 
     //TODO: PUSH(Fixed settings loading, fiex jdatepicker bug,
 
