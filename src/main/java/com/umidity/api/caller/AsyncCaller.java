@@ -49,8 +49,7 @@ public class AsyncCaller extends Thread {
     public void close(){ close = true; }
     public void setOneTime(boolean value){ oneTime = value; }
 
-    public void run()
-    {
+    public void run() {
         long lastExecution = 0;
         try {
             while(!close){
@@ -72,7 +71,7 @@ public class AsyncCaller extends Thread {
                         case byCoordinates ->
                                 apiResponse.add(caller.getByCoordinates((float)args[0],
                                         (float)args[1]));
-                        case byCityId -> getByCityId(args);
+                        case byCityId -> getByCityId((int[])args[0]);
                         case byZipCode ->
                                 apiResponse.add(caller.getByZipCode((String)args[0], (String)args[1]));
                         case forecastByCityId ->
@@ -104,10 +103,10 @@ public class AsyncCaller extends Thread {
      * @param args a list of city ids (a list of Strings)
      * @throws IOException
      */
-    private void getByCityId(Object... args) throws IOException {
+    private void getByCityId(int[] args) throws IOException {
         apiResponse.clear();
         for(Object o:args){
-            apiResponse.add(caller.getByCityId(o.toString()));
+            apiResponse.add(caller.getByCityId(String.valueOf(o)));
         }
     }
 }

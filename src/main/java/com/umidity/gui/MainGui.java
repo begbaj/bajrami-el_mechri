@@ -217,7 +217,8 @@ public class MainGui{
         this.saveCityRecordsCheckBox.addActionListener((e) -> {
             if (this.listenerOn) {
                 try {
-                    CityRecord city = new CityRecord(this.realtimeResponse.id, this.realtimeResponse.name, this.realtimeResponse.coord);
+                    CityRecord city = new CityRecord(this.realtimeResponse.id, this.realtimeResponse.name,
+                            this.realtimeResponse.coord);
                     if (this.saveCityRecordsCheckBox.isSelected()) {
                         boolean flag = this.DBMS.addCity(city);
                         if (flag) {
@@ -225,7 +226,8 @@ public class MainGui{
                         } else {
                             System.out.println("SOMETHING WRONG");
                         }
-                    } else if (JOptionPane.showConfirmDialog(this.panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
+                    } else if (JOptionPane.showConfirmDialog(this.panelMain,
+                            "Remove city and delete all its records?", "Message", 0) == 0) {
                         this.DBMS.removeCity(city);
                         this.nosuchLabel.setText("City removed!");
                     } else {
