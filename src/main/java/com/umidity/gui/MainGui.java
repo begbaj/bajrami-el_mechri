@@ -9,7 +9,6 @@ import com.umidity.api.caller.ApiListener;
 import com.umidity.Coordinates;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.database.CityRecord;
-import com.umidity.database.DatabaseManager;
 import com.umidity.database.HumidityRecord;
 import com.umidity.statistics.StatsCalculator;
 
@@ -63,6 +62,8 @@ public class MainGui implements ApiListener{
     private JToolBar toolbar;
     private JButton simpleGraphButton;
     private JButton recordsGraphButton;
+    private JLabel easterEggLabel;
+    private JLabel timeWarningLabel;
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
     Single realtimeResponse;
@@ -144,7 +145,7 @@ public class MainGui implements ApiListener{
                     this.recordsTable.setFillsViewportHeight(true);
                     this.cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(this.realtimeResponse.getCityId(), this.realtimeResponse.getCityName(), this.realtimeResponse.getCoord());
-                    HumidityRecord record = new HumidityRecord(realtimeResponse.getHumidity(), new Date(), city);
+                    HumidityRecord record = new HumidityRecord(realtimeResponse.getHumidity(), realtimeResponse.getTimestamp(), city);
                     this.listenerOn = false;
                     if (Main.dbms.cityisSaved(city)) {
                         this.saveCityRecordsCheckBox.setSelected(true);
@@ -201,15 +202,33 @@ public class MainGui implements ApiListener{
             }
         });
         this.datePickerFrom.addActionListener((e) -> {
-            if (this.timeStatsBox.getSelectedIndex() == 2) {
-                this.timeStatsBox.setSelectedIndex(2);
-
+            try {
+                if (((Date) datePickerFrom.getModel().getValue()).before((Date) datePickerTo.getModel().getValue())) {
+                    if (this.timeStatsBox.getSelectedIndex() == 2) {
+                        this.timeStatsBox.setSelectedIndex(2);
+                    }
+                    easterEggLabel.setText("");
+                    timeWarningLabel.setText("");
+                } else {
+                    easterEggLabel.setText("Time in Lordran is convoluted, but we ain't there.");
+                    timeWarningLabel.setText("Invalid Date order");
+                }
+            }catch (Exception ex){
             }
-
         });
         this.datePickerTo.addActionListener((e) -> {
-            if (this.timeStatsBox.getSelectedIndex() == 2) {
-                this.timeStatsBox.setSelectedIndex(2);
+            try {
+                if (((Date) datePickerFrom.getModel().getValue()).before((Date) datePickerTo.getModel().getValue())) {
+                    if (this.timeStatsBox.getSelectedIndex() == 2) {
+                        this.timeStatsBox.setSelectedIndex(2);
+                    }
+                    easterEggLabel.setText("");
+                    timeWarningLabel.setText("");
+                } else {
+                    easterEggLabel.setText("Time in Lordran is convoluted, but we ain't there.");
+                    timeWarningLabel.setText("Invalid Date order");
+                }
+            }catch (Exception ex){
             }
 
         });
@@ -251,14 +270,9 @@ public class MainGui implements ApiListener{
             }
 
         });
-        this.favouriteCityStart();
-        chartPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
 
-            }
-        });
+        this.favouriteCityStart();
+
         simpleGraphButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -315,7 +329,7 @@ public class MainGui implements ApiListener{
                 DefaultCategoryDataset dcd=new DefaultCategoryDataset();
                 List<HumidityRecord> records = Main.dbms.getHumidity(realtimeResponse.getCityId());
                 for(HumidityRecord record:records){
-                    dcd.addValue(record.getHumidity(), "Humidity", record.getDate());
+                    dcd.addValue(record.getHumidity(), "Humidity", new Date((new Timestamp(record.getTimestamp() * 1000)).getTime()));
                 }
 
                 JFreeChart jChart = ChartFactory.createLineChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
@@ -407,8 +421,6 @@ public class MainGui implements ApiListener{
         this.datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
         this.datePickerFrom.setVisible(true);
         this.datePickerTo.setEnabled(false);
-        chartPanel=new ChartPanel(null);
-        int c=3;
     }
 
     @Override

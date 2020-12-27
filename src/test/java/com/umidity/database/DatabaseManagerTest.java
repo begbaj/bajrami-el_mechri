@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,12 +52,12 @@ class DatabaseManagerTest {
     void notEqualHumidityInsertion(){
         var cityRecord1 = new CityRecord(3166740,"Senigallia", new Coordinates(13.21667f, 43.709259f));
         var cityRecord2 = new CityRecord(3183089,"Ancona", new Coordinates(13.51008f, 43.59816f));
-        var date = new Date();
-        var humidity11 = new HumidityRecord(50, date, cityRecord1 );
-        var humidity12 = new HumidityRecord(45, date, cityRecord1 );
+        var timestamp= Calendar.getInstance().getTimeInMillis();
+        var humidity11 = new HumidityRecord(50, timestamp, cityRecord1 );
+        var humidity12 = new HumidityRecord(45, timestamp, cityRecord1 );
 
-        var humidity21 = new HumidityRecord(50, date, cityRecord2 );
-        var humidity22 = new HumidityRecord(65, date, cityRecord2 );
+        var humidity21 = new HumidityRecord(50, timestamp, cityRecord2 );
+        var humidity22 = new HumidityRecord(65, timestamp, cityRecord2 );
 
         dbms.addHumidity(humidity11);
         dbms.addHumidity(humidity12);

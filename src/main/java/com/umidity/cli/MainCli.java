@@ -217,8 +217,8 @@ public class MainCli extends FrameManager implements InputFormListener {
                     HumidityRecord max = StatsCalculator.max(record, fromDate, toDate);
 
                     String text = "average: " + avg + "% \n" +
-                            "min: " + min.getHumidity() + "% in date " + min.getDate() + "\n" +
-                            "max: " + max.getHumidity() + "% in date " + max.getDate() + "\n";
+                            "min: " + min.getHumidity() + "% in date " + new Date(min.getTimestamp()) + "\n" +
+                            "max: " + max.getHumidity() + "% in date " + new Date(max.getTimestamp()) + "\n";
                     message.setText(text);
                     message.addEvent(new WaitForInput());
                     setPath("");
@@ -236,8 +236,8 @@ public class MainCli extends FrameManager implements InputFormListener {
                     HumidityRecord max = StatsCalculator.max(record, fromDate, toDate);
 
                     String text = "average: " + avg + "% \n" +
-                            "min: " + min.getHumidity() + "% in date " + min.getDate() + "\n" +
-                            "max: " + max.getHumidity() + "% in date " + max.getDate() + "\n";
+                            "min: " + min.getHumidity() + "% in date " + new Date(min.getTimestamp()) + "\n" +
+                            "max: " + max.getHumidity() + "% in date " + new Date(max.getTimestamp()) + "\n";
                     message.setText(text);
                     message.addEvent(new WaitForInput());
                     setPath("");

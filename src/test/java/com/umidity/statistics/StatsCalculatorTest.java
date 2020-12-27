@@ -21,21 +21,21 @@ class StatsCalculatorTest {
         records = new ArrayList<>();
 
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(10, cal.getTime(), city1));
+        records.add(new HumidityRecord(10, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(15, cal.getTime(), city1));
+        records.add(new HumidityRecord(15, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(20, cal.getTime(), city1));
+        records.add(new HumidityRecord(20, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(5, cal.getTime(), city1));
+        records.add(new HumidityRecord(5, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(60, cal.getTime(), city1));
+        records.add(new HumidityRecord(60, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(40, cal.getTime(), city1));
+        records.add(new HumidityRecord(40, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(15, cal.getTime(), city1));
+        records.add(new HumidityRecord(15, cal.getTimeInMillis(), city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(90, cal.getTime(), city1));
+        records.add(new HumidityRecord(90, cal.getTimeInMillis(), city1));
     }
 
     @Test

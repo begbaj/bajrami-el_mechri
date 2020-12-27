@@ -20,17 +20,18 @@ public class Main{
     //TODO: JavaDocs [da fare]
     //TODO: README.md [da fare]
 
-    //TODO: apicaller comune [fatto?]
-    //TODO: api key nascosta [fatto? eccezioni?]
-    //TODO: Main asyncaller [chiedi beg]
+    //TODO: apicaller comune [fatto]
+    //TODO: api key nascosta [fatto, eccezioni?]
+    //TODO: Main asyncaller [fatto]
     //TODO: Maingui eventi asyncaller
-    //TODO: Maingui Utilizza Single [fatto?]
+    //TODO: Maingui Utilizza Single [fatto]
     //TODO: Depreca cose inutili
-    //TODO: Gestisci eccezioni grafici
-    //TODO: Tema grafici
-    //TODO: Sistema search [fatto?]
-    //TODO: Inverti Date se al contrario?
+    //TODO: Gestisci eccezioni grafici [fatto]
+    //TODO: Tema grafici [fatto]
+    //TODO: Sistema search [fatto]
+    //TODO: Date easter egg [fatto]
     //TODO: OneCall utilizzo??
+    //TODO: Humidity Record TimeStamp
 
     //TODO: PUSH(
 
