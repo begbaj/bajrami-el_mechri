@@ -113,7 +113,7 @@ public class ApiCaller extends Caller {
      * @return
      * @throws IOException
      */
-    public OneCallResponse oneCall(float lat, float lon, long dt, EnumSet<EExclude> excludes) throws IOException{
+    public OneCallResponse oneCall(float lat, float lon, long dt) throws IOException{
         for(ApiListener l:apiListeners){
             l.onRequest(this, null);
             l.onRequestHistorical(this, null);
@@ -121,15 +121,6 @@ public class ApiCaller extends Caller {
 
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
         url.append("lat=" + lat + "&lon=" + lon + "&dt=" + dt);
-        if(excludes.size() > 0){
-            url.append("&exclude=");
-            boolean first = true;
-            if(excludes.contains(EExclude.current)){ url.append("current"); first = false;}
-            if(excludes.contains(EExclude.minutely)){ if(!first) url.append(","); url.append("minutely"); first = false;}
-            if(excludes.contains(EExclude.hourly)){ if(!first) url.append(","); url.append("hourly"); first = false;}
-            if(excludes.contains(EExclude.daily)){ if(!first) url.append(","); url.append("daily"); first = false;}
-            if(excludes.contains(EExclude.alerts)){ if(!first) url.append(","); url.append("alerts"); first = false;}
-        }
         url.append(endParams);
         var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
         var apiArg = new ApiArgument(response.getSingles());

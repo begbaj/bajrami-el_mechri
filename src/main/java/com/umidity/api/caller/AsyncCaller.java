@@ -134,7 +134,7 @@ public class AsyncCaller extends Thread {
                     lastExecution = now;
                     switch (method){
                         case oneCall1 -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (EnumSet<EExclude>)args[2]));
-                        case oneCall2 -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (long)args[2], (EnumSet<EExclude>) args[3]));
+                        case oneCall2 -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (long)args[2]));
                         case byCityName -> apiResponse.add(caller.getByCityName((String)args[0], (String)args[1], (String)args[2]));
                         case byCoordinates -> apiResponse.add(caller.getByCoordinates((float)args[0], (float)args[1]));
                         case byCityId -> getByCityId((Integer[])args[0]);

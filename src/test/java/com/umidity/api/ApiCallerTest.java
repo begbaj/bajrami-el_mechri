@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +36,7 @@ class ApiCallerTest {
     }
 
     @Test
-    void oneCall() {
+    void oneCall1() {
         EnumSet<EExclude> set1,set2;
         set1 = EnumSet.of(EExclude.alerts);
         set2 = EnumSet.allOf(EExclude.class);
@@ -58,8 +60,15 @@ class ApiCallerTest {
     }
 
     @Test
-    void testOneCall() {
-        //TODO: test per oncall historical
+    void OneCall2() {
+        var now = Calendar.getInstance().getTimeInMillis();
+        try {
+            OneCallResponse r1 = caller.oneCall(43.713056f, 13.218333f, now);
+            assertNotNull(r1.current);
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
