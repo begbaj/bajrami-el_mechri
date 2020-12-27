@@ -1,6 +1,7 @@
 package com.umidity.api.caller;
 
 import com.fasterxml.jackson.databind.*;
+import com.umidity.api.Single;
 import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallResponse;
@@ -11,41 +12,59 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 /**
- * This class handles every connection to the API. Set the appid
+ * This class handles every connection to the API.
  */
 public class ApiCaller extends Caller {
-
-
 
     /**
      * Api key used for making api calls
      */
-    private final String                       appid;
-    private com.umidity.api.caller.EMode  EMode;
-    private com.umidity.api.caller.EUnits EUnits;
-    private String                        endParams;
+    private final String    appid;
+    private EMode           emode;
+    private EUnits         eunits;
+    private String      endParams;
 
-    //TODO: Lista di appid, in modo da utilizzarne diverse per non rischiare di saturare la connessione
 
+    /**
+     * Api caller constructor.
+     * @param appid Api key.
+     * @param eunits Metric, Imperial
+     */
+    public ApiCaller(String appid, EUnits eunits){
+        this.appid = appid;
+        this.emode = EMode.JSON;
+        this.eunits = eunits;
+        updateEndParams();
+    }
     /**
      * Api caller constructor
      * @param appid Api key
      */
-    public ApiCaller(String appid, EMode EMode, EUnits EUnits){
+    @Deprecated
+    public ApiCaller(String appid, EMode emode, EUnits eunits){
         this.appid = appid;
-        this.EMode = EMode;
-        this.EUnits = EUnits;
-        setEndParams();
+        this.emode = emode;
+        this.eunits = eunits;
+        updateEndParams();
     }
 
-    public String getAppid(){ return appid; }
-    public EMode getMode(){ return EMode; }
-    public EUnits getUnit(){ return EUnits; }
-    public void setMode(EMode value){ EMode = value; setEndParams(); }
-    public void setUnit(EUnits value){ EUnits = value; setEndParams(); }
-
     /**
-     * make a "one call" call to api
+     * Update ending parameters for api calls.
+     */
+    private void updateEndParams(){
+        this.endParams = "&appid=" + getAppid();
+        //if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
+        if(eunits != eunits.Standard) this.endParams += "&units=" + eunits;
+    }
+
+    //region OneCall methods
+    /**
+     * Make a <em>oneCall</em> call to api.
+     * @param lat latitude
+     * @param lon longitude
+     * @param excludes objects to exclude from response (see openweather documentation for more info)
+     * @return
+     * @throws IOException
      */
     public OneCallResponse oneCall(float lat, float lon, EnumSet<EExclude> excludes) throws IOException{
 
@@ -56,9 +75,9 @@ public class ApiCaller extends Caller {
             forecast = false;
 
         for(ApiListener l:apiListeners){
-            l.onRequest(this, new ApiArgument(null));
-            if(current) l.onRequestCurrent(this, new ApiArgument(null));
-            if(forecast) l.onRequestForecast(this, new ApiArgument(null));
+            l.onRequest(this, null);
+            if(current) l.onRequestCurrent(this, null);
+            if(forecast) l.onRequestForecast(this, null);
         }
 
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
@@ -75,18 +94,24 @@ public class ApiCaller extends Caller {
         url.append(endParams);
 
         var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
+        var r = new ApiArgument(response.getSingles());
         for(ApiListener l:apiListeners){
             if(response != null);{
-                if(current) l.onReceiveCurrent(this, new ApiArgument<>(response));
-                if(forecast) l.onReceiveForecast(this, new ApiArgument<>(response));
-                l.onReceive(this, new ApiArgument<>(response));
+                if(current) l.onReceiveCurrent(this, r );
+                if(forecast) l.onReceiveForecast(this,r);
+                l.onReceive(this, r);
             }
         }
         return response;
     }
-
     /**
-     * make a "one call" call to api for historicals
+     * Make a <em>oneCall</em> call to api for historical data.
+     * @param lat latitude
+     * @param lon longitude
+     * @param dt timestamp (see openweather documentation for more info)
+     * @param excludes objects to exclude from response (see openweather documentation for more info)
+     * @return
+     * @throws IOException
      */
     public OneCallResponse oneCall(float lat, float lon, long dt, EnumSet<EExclude> excludes) throws IOException{
         for(ApiListener l:apiListeners){
@@ -107,7 +132,7 @@ public class ApiCaller extends Caller {
         }
         url.append(endParams);
         var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
-        ApiArgument apiArg = new ApiArgument<>(response);
+        var apiArg = new ApiArgument(response.getSingles());
         for(ApiListener l:apiListeners){
             if(response != null);{
                 l.onReceive(this, apiArg);
@@ -116,16 +141,9 @@ public class ApiCaller extends Caller {
         }
         return response;
     }
+    //endregion
 
-    /**
-     * automatically returns end parameters such as units, mode and appid
-     */
-    private void setEndParams(){
-        this.endParams = "&appid=" + appid;
-        //if(EMode != EMode.JSON) this.endParams += "&mode=" + EMode;
-        if(EUnits != EUnits.Standard) this.endParams += "&units=" + EUnits;
-    }
-
+    //region ApiResponse methods
     /**
      * Get ApiResponse by city name
      * @param cityName REQUIRED: city name
@@ -145,7 +163,7 @@ public class ApiCaller extends Caller {
                 + endParams;
 
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
@@ -163,14 +181,14 @@ public class ApiCaller extends Caller {
         }
         String url = "https://api.openweathermap.org/data/2.5/weather?id=" + cityId + endParams;
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
+
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
         }
         return response;
     }
-
     /**
      * Get ApiResponse by Coordinates
      * @param lat latitude
@@ -185,7 +203,8 @@ public class ApiCaller extends Caller {
         String url =  "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + endParams;
 
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
+
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
@@ -207,7 +226,7 @@ public class ApiCaller extends Caller {
                 + (!countryCode.equals("")? "," + countryCode : "" )
                 + endParams;
         var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
 
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
@@ -215,7 +234,9 @@ public class ApiCaller extends Caller {
         }
         return response;
     }
+    //endregion
 
+    //region ForecastResponse methods
     /**
      * Get ForecastResponse by city name
      * @param cityName REQUIRED: city name
@@ -235,7 +256,8 @@ public class ApiCaller extends Caller {
                 + endParams;
 
         var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
+
 
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
@@ -243,7 +265,6 @@ public class ApiCaller extends Caller {
         }
         return response;
     }
-
     /**
      * Get ForecastResponse by a single city id
      * @param cityId city id
@@ -256,7 +277,8 @@ public class ApiCaller extends Caller {
 
         String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + endParams;
         var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
+
 
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
@@ -264,7 +286,6 @@ public class ApiCaller extends Caller {
         }
         return response;
     }
-
     /**
      * Get ForecastResponse by Coordinates
      * @param lat latitude
@@ -279,7 +300,8 @@ public class ApiCaller extends Caller {
         String url =  "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + endParams;
 
         var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
+
 
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
@@ -303,7 +325,7 @@ public class ApiCaller extends Caller {
                 + endParams;
 
         var response = new ObjectMapper().readValue(new URL(url), ForecastResponse.class);
-        ApiArgument apiArg = new ApiArgument(response);
+        var apiArg = new ApiArgument(response.getSingles());
 
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
@@ -311,16 +333,37 @@ public class ApiCaller extends Caller {
         }
         return response;
     }
+    //endregion
 
-//    public static String getInRectangle(){ //funziona con il boundingbox, non penso lo useremo mai
-//        return = "api.openweathermap.org/data/2.5/box/city?bbox={bbox}&appid={API key}";
-//        return apicall;
-//    }
-//    public static String getInCircle(IQuery query, String appid, IParameters params){ // non credo ci servirà mai
-//        String apicall = "api.openweathermap.org/data/2.5/box/city?bbox=%s&appid=%s";
-//        return apicall;
-//    }
+    //region Getters and Setters
+    /**
+     * Get api key used by the ApiCaller
+     * @return
+     */
+    public String getAppid(){ return appid; }
 
+    /**
+     * Get response Mode (format of api response) set for this ApiCaller
+     * (!!! It should always be JSON, since Umidity parses api responses with Jackson)
+     * @return
+     */
+    public EMode getMode(){ return emode; }
+    /**
+     * Get the response units set for this ApiCaller
+     * @return
+     */
+    public EUnits getUnit(){ return eunits; }
 
-    
+    /**
+     * Set response Mode
+     * @param value
+     */
+    public void setMode(EMode value){ emode = value; updateEndParams(); }
+    /**
+     * Set response units
+     * @param value
+     */
+    public void setUnit(EUnits value){ eunits = value; updateEndParams(); }
+    //endregion
+
 }

@@ -9,7 +9,7 @@ import com.umidity.IHumidity;
 import com.umidity.api.Single;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ApiResponse extends Response implements ICoordinates, IHumidity {
+public class ApiResponse  implements Response, ICoordinates, IHumidity {
 
     public class Main implements IHumidity{
         /**

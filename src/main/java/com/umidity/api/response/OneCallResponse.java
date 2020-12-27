@@ -8,8 +8,9 @@ import com.umidity.ICoordinates;
 import com.umidity.IHumidity;
 import com.umidity.api.Single;
 
+//TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OneCallResponse extends Response implements ICoordinates, IHumidity {
+public class OneCallResponse implements Response, ICoordinates, IHumidity {
 
     @JsonProperty("lat")
     public float lat;

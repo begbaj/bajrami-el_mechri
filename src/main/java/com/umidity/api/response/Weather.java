@@ -1,6 +1,9 @@
 package com.umidity.api.response;
 
-public class Weather {
+/**
+ * General weather class. Used for parsing JSON responses to relative classes.
+ */
+class Weather {
     /**
      * Weather condition id
      */

@@ -1,7 +1,6 @@
 package com.umidity.api.caller;
 
 
-import com.umidity.Debugger;
 import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallResponse;
@@ -13,40 +12,127 @@ import java.util.Vector;
 
 public class AsyncCaller extends Thread {
     public enum AsyncMethod{
-        oneCall1, oneCall2,
-        byCityName, byCityId, byCoordinates, byZipCode,
-        forecastByCityName, forecastByCityId, forecastByCoordinates, forecastByZipCode,
+
+        /**
+         * Arguments: float lat, float lon, EnumSet< EExclude > excludes.
+         */
+        oneCall1,
+        /**
+         * Arguments: float lat, float lon,long dt,  EnumSet< EExclude > excludes.
+         */
+        oneCall2,
+        /**
+         * Arguments: String name, String zip (default = ""), String countryCode (default = "").
+         */
+        byCityName,
+        /**
+         * Arguments: int[] ids.
+         */
+        byCityId,
+        /**
+         * Arguments: float lat, float lon.
+         */
+        byCoordinates,
+        /**
+         * Arguments: String zipCode, String countryCode (default = "").
+         */
+        byZipCode,
+        /**
+         * Arguments: String name, String zip (default = ""), String countryCode (default = "").
+         */
+        forecastByCityName,
+        /**
+         * Arguments: int[] ids.
+         */
+        forecastByCityId,
+        /**
+         * Arguments: String zipCode, String countryCode (default = "").
+         */
+        forecastByCoordinates,
+        /**
+         * Arguments: String name, String zip (default = ""), String countryCode (default = "").
+         */
+        forecastByZipCode,
     }
 
-    private boolean close;
-    private boolean isRunning;
-    private boolean oneTime;
-    public  Vector<OneCallResponse> oneCallResponse;
-    public  Vector<ApiResponse> apiResponse;
-    public  Vector<ForecastResponse> forecastResponse;
-    private ApiCaller        caller;
-    private AsyncMethod      method;
-    private long ms;
-    private Object[] args;
+    /**
+     * Id true, the thread will stop.
+     */
+    private       boolean                    close;
+    /**
+     * Indicates whether the thread is running or not.
+     */
+    private       boolean                    isRunning;
+    /**
+     * If set to true, after <em>myAsyncCaller.Start()</em> is launched, the thread will run just one time and than it stops.
+     */
+    private       boolean                    oneTime;
+    /**
+     * A vector of oneCallResponses
+     */
+    public        Vector< OneCallResponse >  oneCallResponse;
+    /**
+     * A vector of ApiResponses
+     */
+    public        Vector< ApiResponse >      apiResponse;
+    /**
+     * A vector of ForecastResponses
+     */
+    public        Vector< ForecastResponse > forecastResponse;
+    /**
+     * The api caller used for each api call.
+     */
+    private final ApiCaller                  caller;
+    /**
+     * the selected method for this AsyncCaller
+     */
+    private final AsyncMethod method;
+    /**
+     * Time (in milliseconds) to wait until next call
+     */
+    private final long        timeToWait;
+    /**
+     * Array of arguments. The needed arguments are dependent on which AsyncMethod is set.
+     */
+    private final Object[]    args;
 
     public boolean getRunningStatus(){return isRunning; }
     public void clearResponse(){
-        oneCallResponse = null;
-        apiResponse = null;
-        forecastResponse = null;
+        oneCallResponse.clear();
+        apiResponse.clear();
+        forecastResponse.clear();
     }
 
-    public AsyncCaller(ApiCaller caller, AsyncMethod method, long ms, Object... args) {
+    /**
+     * @param caller The api caller used for each api call.
+     * @param timeToWait Time (in milliseconds) to wait between calls.
+     * @param method the selected method for this AsyncCaller.
+     * @param args arguments needed for that method.
+     */
+    public AsyncCaller(ApiCaller caller, long timeToWait, AsyncMethod method, Object... args) {
         this.caller = caller;
         this.method = method;
-        this.ms = ms;
+        this.timeToWait = timeToWait;
         this.args = args;
         oneTime = false;
         isRunning = false;
     }
 
+    /**
+     * Adds a listener to the listeners
+     * @param listener
+     */
     public void addListener(ApiListener listener){caller.addListener(listener);}
+
+    /**
+     * Stop the thread.
+     */
     public void close(){ close = true; }
+
+    /**
+     * After a call is made, the thread will stop
+     * @param value
+     */
     public void setOneTime(boolean value){ oneTime = value; }
 
     public void run() {
@@ -54,11 +140,10 @@ public class AsyncCaller extends Thread {
         try {
             while(!close){
                 isRunning = true;
-                oneCallResponse.clear();
-                apiResponse.clear();
-                forecastResponse.clear();
-                if(Calendar.getInstance().getTimeInMillis() - lastExecution >= ms){
-
+                clearResponse();
+                long now = Calendar.getInstance().getTimeInMillis();
+                if(now - lastExecution >= timeToWait){
+                    lastExecution = now;
                     switch (method){
                         case oneCall1 ->
                                 oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (EnumSet<EExclude>)args[2]));
@@ -94,7 +179,6 @@ public class AsyncCaller extends Thread {
         }finally {
             close = false;
             isRunning = false;
-            Debugger.println("AsyncCaller fermato!");
         }
     }
 

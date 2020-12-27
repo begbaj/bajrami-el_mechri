@@ -9,8 +9,9 @@ import com.umidity.api.Single;
 
 import java.util.Vector;
 
+//TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForecastResponse extends Response implements ICoordinates, IHumidities {
+public class ForecastResponse implements Response, ICoordinates, IHumidities {
     public String cod;
     public int message;
     public int cnt;
