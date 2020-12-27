@@ -25,7 +25,7 @@ class AsyncCallerTest {
             assertNull(caller.apiResponse);
             caller.start();
             Thread.sleep(2000);
-            assertEquals("Senigallia", caller.apiResponse.name);
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
             caller.close();
             Thread.sleep(500);
             assertFalse(caller.getRunningStatus());
