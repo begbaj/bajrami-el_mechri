@@ -7,7 +7,7 @@ import com.umidity.api.caller.EUnits;
 /**
  * This class provides the user settings
  */
-public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE PRE CONFIGURATI PER EVITARE ERRORI
+public class UserSettings {
 
     public class InterfaceSettings{
         /**
@@ -35,12 +35,19 @@ public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE 
             guiEnabled=true;
         }
     }
-    public class ApiSettings{
+    public class ApiSettings {
         /**
          * Show results with the unit mode selected
          */
         @JsonIgnore
         public EUnits units;
+
+        @JsonProperty
+        public String apikey;
+
+        public ApiSettings(){
+            apikey=""; //NON DOVREBBE DARE ERRORE FINCHE NON CARICO
+        }
     }
 
     /**
@@ -51,7 +58,7 @@ public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE 
     /**
      * Api related settings
      */
-    @JsonIgnore
+    @JsonProperty
     public ApiSettings apiSettings = new ApiSettings();
     /**
      * Username, only used to identify different settings on the same pc.
@@ -71,6 +78,7 @@ public class UserSettings { //TODO: IDEA:METTERE CHE POSSO ASSUMERE SOLO VALORE 
 
     public UserSettings(){
         interfaceSettings=new InterfaceSettings();
+        apiSettings=new ApiSettings();
     }
 
 }

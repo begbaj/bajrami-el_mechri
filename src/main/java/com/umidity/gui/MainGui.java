@@ -1,9 +1,9 @@
 package com.umidity.gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.umidity.api.caller.ApiCaller;
-import com.umidity.api.caller.EMode;
-import com.umidity.api.caller.EUnits;
+import com.umidity.Main;
+import com.umidity.api.caller.ApiListener;
 import com.umidity.api.response.ApiResponse;
 import com.umidity.Coordinates;
 import com.umidity.api.response.ForecastResponse;
@@ -28,6 +28,8 @@ import java.util.Properties;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.JDatePanel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -41,7 +43,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYDataset;
 
-public class MainGui {
+public class MainGui{
     public JPanel panelMain;
     private JTextField textField_City;
     private JButton buttonApi;
@@ -76,9 +78,10 @@ public class MainGui {
     DecimalFormatSymbols otherSymbols;
     DecimalFormat df;
     DefaultCategoryDataset dcd;
+    JDatePanelImpl datePanelFrom;
+    JDatePanelImpl datePanelTo;
 
-    public MainGui() {
-        createUIComponents();
+    public MainGui(){
         DBMS = new DatabaseManager();
         statsCalc = new StatsCalculator();
         recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
@@ -86,11 +89,19 @@ public class MainGui {
         listenerOn = true;
         currentLocale = Locale.getDefault();
         otherSymbols = new DecimalFormatSymbols(this.currentLocale);
-
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (Exception var3) {
-            System.err.println("Failed to initialize LaF");
+        Main.dbms.loadUserSettings();
+        if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light")) {
+            try {
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            } catch (Exception var3) {
+                System.err.println("Failed to initialize LaF");
+            }
+        }else{
+            try {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            } catch (Exception var3) {
+                System.err.println("Failed to initialize LaF");
+            }
         }
 
         this.otherSymbols.setDecimalSeparator('.');
@@ -100,7 +111,6 @@ public class MainGui {
         vectorRecordColumnNames.add("Temperature");
         vectorRecordColumnNames.add("Humidity");
         SwingUtilities.updateComponentTreeUI(this.panelMain);
-        ApiCaller caller = new ApiCaller("beb62ff92c75eefce173edf69bacd835", EMode.JSON, EUnits.Metric);
         this.createTable(this.recordsTable, (String[][])null, this.recordColumnNames);
         this.createTable(this.statisticsTable, (String[][])null, this.statisticsColumnNames);
         new JButton();
@@ -108,7 +118,7 @@ public class MainGui {
             try {
                 this.nosuchLabel.setText("");
                 SimpleDateFormat format = new SimpleDateFormat("dd-MM hh:00");
-                this.realtimeResponse = caller.getByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
+                this.realtimeResponse = Main.caller.getByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
                 Date date = new Date((new Timestamp(Long.parseLong(this.realtimeResponse.dt) * 1000L)).getTime());
                 String dateString = format.format(date);
                 Vector<Vector<String>> matrix = new Vector();
@@ -117,7 +127,7 @@ public class MainGui {
                 firstRow.add(Float.toString(this.realtimeResponse.main.temp));
                 firstRow.add(Float.toString((float)this.realtimeResponse.main.humidity) + "%");
                 matrix.add(firstRow);
-                ForecastResponse forecastResponse = caller.getForecastByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
+                ForecastResponse forecastResponse = Main.caller.getForecastByCityName(this.textField_City.getText(), this.textField_State.getText(), this.textField_ZIP.getText());
                 ApiResponse[] var10 = forecastResponse.list;
                 int var11 = var10.length;
 
@@ -128,7 +138,7 @@ public class MainGui {
                     Vector<String> nextRow = new Vector();
                     nextRow.add(datetimeString);
                     nextRow.add(Float.toString(f_record.main.temp));
-                    nextRow.add(Float.toString((float)f_record.main.humidity) + "%");
+                    nextRow.add(((float)f_record.main.humidity) + "%");
                     matrix.add(nextRow);
                 }
 
@@ -174,27 +184,30 @@ public class MainGui {
         });
         this.timeStatsBox.addActionListener((e) -> {
             Calendar cal;
-            Date toDate;
+            Date fromDate;
             if (this.timeStatsBox.getSelectedIndex() == 0) {
+                System.out.println("7 GIORNI");
                 cal = Calendar.getInstance();
                 cal.add(5, -7);
-                toDate = cal.getTime();
-                this.createStatistic(toDate, new Date());
+                fromDate = cal.getTime();
+                this.createStatistic(fromDate, new Date());
             } else if (this.timeStatsBox.getSelectedIndex() == 1) {
+                System.out.println("30 GIORNI");
                 cal = Calendar.getInstance();
                 cal.add(5, -30);
-                toDate = cal.getTime();
-                this.createStatistic(toDate, new Date());
-            } else if (!this.datePickerFrom.getJFormattedTextField().getText().equals("") && !this.datePickerTo.getJFormattedTextField().getText().equals("")) {
-                Date fromDate = (Date)this.datePickerFrom.getModel().getValue();
-                toDate = (Date)this.datePickerTo.getModel().getValue();
+                fromDate = cal.getTime();
+                this.createStatistic(fromDate, new Date());
+            } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
+                System.out.println("SCEGLIE L'UTENTE");
+                fromDate = (Date)this.datePickerFrom.getModel().getValue();
+                Date toDate = (Date)this.datePickerTo.getModel().getValue();
                 this.createStatistic(fromDate, toDate);
             }
-
         });
         this.datePickerFrom.addActionListener((e) -> {
             if (this.timeStatsBox.getSelectedIndex() == 2) {
                 this.timeStatsBox.setSelectedIndex(2);
+
             }
 
         });
@@ -372,8 +385,8 @@ public class MainGui {
         p.put("text.today", "Today");
         p.put("text.month", "Month");
         p.put("text.year", "Year");
-        JDatePanelImpl datePanelFrom = new JDatePanelImpl(modelFrom, p);
-        JDatePanelImpl datePanelTo = new JDatePanelImpl(modelTo, p);
+        datePanelFrom = new JDatePanelImpl(modelFrom, p);
+        datePanelTo = new JDatePanelImpl(modelTo, p);
         this.datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
         this.datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
         this.datePickerFrom.setVisible(true);
@@ -393,15 +406,4 @@ public class MainGui {
         chartPanel.validate();
         panelMain.validate();
     }
-
-//    private JFreeChart createChart(final XYDataset dataset) {
-//        final JFreeChart result = ChartFactory.createTimeSeriesChart(
-//                TITLE, "hh:mm:ss", "milliVolts", dataset, true, true, false);
-//        final XYPlot plot = result.getXYPlot();
-//        ValueAxis domain = plot.getDomainAxis();
-//        domain.setAutoRange(true);
-//        ValueAxis range = plot.getRangeAxis();
-//        range.setRange(-MINMAX, MINMAX);
-//        return result;
-//    }
 }

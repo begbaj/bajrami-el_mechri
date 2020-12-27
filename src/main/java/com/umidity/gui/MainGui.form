@@ -279,18 +279,6 @@
                   <text value="To"/>
                 </properties>
               </component>
-              <component id="b14ea" class="org.jdatepicker.impl.JDatePickerImpl" binding="datePickerFrom" custom-create="true">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="cd619" class="org.jdatepicker.impl.JDatePickerImpl" binding="datePickerTo" custom-create="true">
-                <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
-              </component>
               <component id="6a39d" class="javax.swing.JLabel" binding="enoughLabel">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -326,6 +314,18 @@
                 <properties>
                   <text value="Records Graph"/>
                 </properties>
+              </component>
+              <component id="b603e" class="org.jdatepicker.impl.JDatePickerImpl" binding="datePickerFrom" custom-create="true">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="3387a" class="org.jdatepicker.impl.JDatePickerImpl" binding="datePickerTo" custom-create="true">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
               </component>
             </children>
           </grid>

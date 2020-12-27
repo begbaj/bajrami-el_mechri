@@ -112,6 +112,7 @@ public class DatabaseManager {
         }
         return true;
     }
+
     public List<CityRecord> getCities(){
         List<CityRecord> records = new ArrayList<>();
         try {
@@ -242,7 +243,7 @@ public class DatabaseManager {
      */
     public void loadUserSettings() {
         try {
-            Main.userSettings=objectMapper.readValue(new File(basePath + "favourite.json"), new TypeReference<UserSettings>(){});
+            Main.userSettings=objectMapper.readValue(new File(basePath + "config.json"), new TypeReference<UserSettings>(){});
         }catch (MismatchedInputException | FileNotFoundException e){
             deleteFile(basePath + "config.json");
             createNewFile(basePath + "config.json");
