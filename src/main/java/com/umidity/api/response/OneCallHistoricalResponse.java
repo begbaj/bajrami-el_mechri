@@ -10,22 +10,13 @@ import com.umidity.api.Single;
 
 //TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OneCallHistoricalResponse extends Response implements ICoordinates, IHumidity {
+public class OneCallHistoricalResponse extends OneCall {
 
-    @JsonProperty("lat")
-    public float lat;
-    @JsonProperty("lon")
-    public float lon;
-    @JsonProperty("timezone")
-    public String timezone;
-    @JsonProperty("timezone_offset")
-    public long timezone_offset;
-    @JsonProperty("current")
-    public Classic current;
     @JsonProperty("hourly")
-    public Classic[] hourly;
+    public Hourly[] hourly;
 
-    public static class Classic{
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Hourly{
         public long dt;
         public long sunrise;
         public long sunset;
@@ -48,25 +39,5 @@ public class OneCallHistoricalResponse extends Response implements ICoordinates,
         public float pop;
     }
 
-    @Override
-    public int getHumidity() {
-        return current.humidity;
-    }
-    @Override
-    public Coordinates getCoord() {
-        return new Coordinates(lat,lon);
-    }
-
-    @Override
-    public Single getSingle() {
-        return null;
-    }
-
-    @Override
-    public Single[] getSingles() {
-        //TODO:fallo
-        return new Single[0];
-    }
-
-
+    public Hourly[] getHourly(){ return hourly;}
 }

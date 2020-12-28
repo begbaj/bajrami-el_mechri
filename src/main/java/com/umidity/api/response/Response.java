@@ -13,12 +13,19 @@ public abstract class Response implements ICoordinates, IHumidity {
 
     protected Coordinates coord;
     protected int humidity;
-    protected long timestamp;
     protected double temp;
+
+    protected long timestamp;
+    protected long sunrise;
+    protected long sunset;
+
     protected String cityName;
     protected int cityId;
     protected String cityZipCode;
     protected String cityCountry;
+
+    public Weather[] weather;
+
 
     /**
      * City coordinates (Latitude and Longitude)
@@ -28,14 +35,14 @@ public abstract class Response implements ICoordinates, IHumidity {
         return coord;
     }
     /**
-     * Get humidity level in %
+     * Get current humidity level in %
      */
     @JsonIgnore
     public int getHumidity() {
         return humidity;
     }
     /**
-     *  Time of data calculation, unix, UTC
+     *  Time of data calculation (Seconds from UNIX epoch) of current data.
      */
     @JsonIgnore
     public long getTimestamp() {
@@ -46,7 +53,7 @@ public abstract class Response implements ICoordinates, IHumidity {
      */
     @JsonIgnore
     public double getTemp() {
-        return temp;
+        return (double)temp;
     }
     /**
      * City name

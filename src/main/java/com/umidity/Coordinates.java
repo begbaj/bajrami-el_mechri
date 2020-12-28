@@ -25,6 +25,21 @@ public class Coordinates {
         this.lon = lon;
     }
 
+    public void setLat(float lat){
+        this.lat = lat;
+    }
+
+    public void setLon(float lon){
+        this.lon = lon;
+    }
+
+    public void setLat(double lat){
+        this.lat = Float.parseFloat(String.valueOf(lat));
+    }
+    public void setLon(double lon){
+        this.lon = Float.parseFloat(String.valueOf(lon));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

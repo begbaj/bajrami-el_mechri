@@ -3,73 +3,61 @@ package com.umidity.api.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.umidity.Coordinates;
 import com.umidity.ICoordinates;
 import com.umidity.IHumidity;
 import com.umidity.api.Single;
 
+import java.util.Map;
+
 //TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OneCallResponse extends Response implements ICoordinates, IHumidity {
+public class OneCallResponse extends OneCall{
 
-    @JsonProperty("lat")
-    public float lat;
-    @JsonProperty("lon")
-    public float lon;
+    //region Properties
     @JsonProperty("timezone")
-    public String timezone;
+    protected String timezone;
     @JsonProperty("timezone_offset")
-    public long timezone_offset;
-    @JsonProperty("current")
-    public Current current;
+    protected long timezoneOffset;
+
     @JsonProperty("minutely")
-    public Minutely[] minutely;
+    protected Minutely[] minutely;
     @JsonProperty("hourly")
-    public Hourly[] hourly;
+    protected Hourly[] hourly;
     @JsonProperty("daily")
-    public Daily[] daily;
+    protected Daily[] daily;
     @JsonProperty("alerts")
-    public Alerts[] alerts;
+    protected Alerts[] alerts;
 
+    //endregion
 
-    public static class Current{
-        public long dt;
-        public long sunrise;
-        public long sunset;
-        public float temp;
-        public float feels_like;
-        public int pressure;
-        public int humidity;
-        public float dew_point;
-        public int clouds;
-        public int uvi;
-        public int visibility;
-        public int wind_speed;
-        public int wind_deg;
-        public Weather[] weather;
-    }
+    //region Classes
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Minutely{
         public long dt;
-        public int precipitation;
+        public Number precipitation;
     }
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Hourly{
         public long dt;
-        public float temp;
-        public float feels_like;
-        public int pressure;
-        public int humidity;
-        public float dew_point;
-        public int uvi;
-        public int clouds;
+        public Number temp;
+        public Number feels_like;
+        public Number pressure;
+        public Number humidity;
+        public Number dew_point;
+        public Number uvi;
+        public Number clouds;
         public RainSnow rain;
         public RainSnow snow;
-        public int visibility;
-        public float wind_speed;
-        public int wind_deg;
+        public Number visibility;
+        public Number wind_speed;
+        public Number wind_deg;
         public Weather[] weather;
-        public float pop;
+        public Number pop;
 
     }
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Daily{
         public long dt;
         public long sunrise;
@@ -78,27 +66,28 @@ public class OneCallResponse extends Response implements ICoordinates, IHumidity
         public Temp feels_like;
         public int pressure;
         public int humidity;
-        public float dew_point;
-        public float wind_speed;
-        public int wind_deg;
+        public Number dew_point;
+        public Number wind_speed;
+        public Number wind_deg;
         @JsonIgnore
         public RainSnow rain;
         @JsonIgnore
         public RainSnow snow;
         public Weather[] weather;
-        public int clouds;
-        public float pop;
-        public int uvi;
+        public Number clouds;
+        public Number pop;
+        public Number uvi;
 
         public static class Temp{
-            public float day;
-            public float min;
-            public float max;
-            public float night;
-            public float eve;
-            public float morn;
+            public Number day;
+            public Number min;
+            public Number max;
+            public Number night;
+            public Number eve;
+            public Number morn;
         }
     }
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Alerts{
         public String sender_name;
         public String event;
@@ -106,38 +95,47 @@ public class OneCallResponse extends Response implements ICoordinates, IHumidity
         public long end;
         public String description;
     }
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RainSnow{
         @JsonProperty("1h")
         public Number oneH;
     }
+    //endregion
 
-    @Override
-    public int getHumidity() {
-        return current.humidity;
+    //region Getters
+    public double getFeelsLike() {
+        return feelsLike;
     }
-    @Override
-    public Coordinates getCoord() {
-        return new Coordinates(lat,lon);
+    public double getPressure() {
+        return pressure;
     }
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+    public double getWindDeg() {
+        return windDeg;
+    }
+    public double getWindGust() {
+        return windGust;
+    }
+    public String getTimezone() {
+        return timezone;
+    }
+    public long getTimezoneOffset() {
+        return timezoneOffset;
+    }
+    public Minutely[] getMinutely() {
+        return minutely;
+    }
+    public Hourly[] getHourly() {
+        return hourly;
+    }
+    public Daily[] getDaily() {
+        return daily;
+    }
+    public Alerts[] getAlerts() {
+        return alerts;
+    }
+    //endregion
 
-    /**
-     * Get a Single object about the current weather.
-     * @return
-     */
-    @Override
-    public Single getSingle(){
-        if(current != null)
-            return new Single(this);
-        return null;
-    }
-
-    /**
-     * Get a Single object about the current weather.
-     * @return
-     */
-    @Override
-    public Single[] getSingles(){
-        return null;
-    }
 }

@@ -47,13 +47,14 @@ class ApiCallerTest {
             OneCallResponse r2 = caller.oneCall(43.713056f, 13.218333f, set2 );
             assertNotNull(r1);
             assertAll("excluded",
-                    ()->assertNull(r2.alerts),
-                    ()->assertNull(r2.minutely),
-                    ()->assertNull(r2.hourly),
-                    ()->assertNull(r2.daily),
-                    ()->assertNull(r2.current)
+                    ()->assertNull(r2.getAlerts()),
+                    ()->assertNull(r2.getMinutely()),
+                    ()->assertNull(r2.getHourly()),
+                    ()->assertNull(r2.getDaily())
                     );
-            assertNull(r1.alerts);
+            assertEquals(0,r2.getTemp());
+            assertNull(r1.getAlerts());
+            assertNotEquals(0, r1.getHumidity());
         } catch (IOException e) {
             e.printStackTrace();
             fail();
@@ -63,8 +64,8 @@ class ApiCallerTest {
     @Test
     void OneCall2() {
         try {
-            OneCallHistoricalResponse r1 = caller.oneCall(43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis());
-            assertNotNull(r1.current);
+            OneCallHistoricalResponse r1 = caller.oneCall(43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis()/1000);
+            assertNotNull(r1.hourly);
         } catch (IOException e) {
             e.printStackTrace();
             fail();
@@ -152,9 +153,9 @@ class ApiCallerTest {
             assertNotNull(r1);
             assertNotNull(r2);
 
-            assertEquals(r1.city.name, "Senigallia");
+            assertEquals(r1.getCityName(), "Senigallia");
             assertTrue(r1.list.length > 0);
-            assertEquals(r2.city.name, "Seregno");
+            assertEquals(r2.getCityName(), "Seregno");
             assertTrue(r2.list.length > 0);
 
         } catch (IOException e) {
@@ -168,7 +169,7 @@ class ApiCallerTest {
             ForecastResponse r1 = caller.getForecastByCoordinates(43.713056f,13.218333f);
             assertNotNull(r1);
 
-            assertEquals(r1.city.name, "Senigallia");
+            assertEquals(r1.getCityName(), "Senigallia");
             assertTrue(r1.list.length > 0);
         } catch (IOException e) {
             fail();
@@ -180,7 +181,7 @@ class ApiCallerTest {
         try {
             ForecastResponse r1 = caller.getForecastByZipCode("60019", "it");
             assertNotNull(r1);
-            assertEquals(r1.city.name, "Roncitelli");
+            assertEquals(r1.getCityName(), "Roncitelli");
             assertTrue(r1.list.length > 0);
         } catch (IOException e) {
             fail();

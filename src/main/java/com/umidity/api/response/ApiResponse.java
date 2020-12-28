@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ApiResponse  extends Response {
+public class ApiResponse extends Response {
 
     //region Properties
     /**
@@ -21,7 +21,7 @@ public class ApiResponse  extends Response {
     public Weather[] weather;
 
     protected double feels_like;
-    protected double pressure;
+    protected int pressure;
     protected double temp_min;
     protected double temp_max;
     protected double sea_level;
@@ -46,8 +46,8 @@ public class ApiResponse  extends Response {
     @JsonProperty("coord")
     public void unpackCoord(Map<String, Object> coord){
         this.coord = new Coordinates(
-                Double.parseDouble(String.valueOf(coord.get("lat"))),
-                Double.parseDouble(String.valueOf(coord.get("lon"))));
+                Float.parseFloat(String.valueOf(coord.get("lat"))),
+                Float.parseFloat(String.valueOf(coord.get("lon"))));
     }
 
     @SuppressWarnings("unchecked")
@@ -58,7 +58,7 @@ public class ApiResponse  extends Response {
         if(main.get("temp_min") != null) this.temp_min = Double.parseDouble(String.valueOf(main.get("temp_min")));
         if(main.get("temp_max") != null) this.temp_max = Double.parseDouble(String.valueOf(main.get("temp_max")));
         if(main.get("humidity") != null) this.humidity = Integer.parseInt(String.valueOf(main.get("humidity")));
-        if(main.get("pressure") != null) this.pressure = Double.parseDouble(String.valueOf(main.get("pressure")));
+        if(main.get("pressure") != null) this.pressure = Integer.parseInt(String.valueOf(main.get("pressure")));
         if(main.get("sea_level") != null) this.sea_level = Double.parseDouble(String.valueOf(main.get("sea_level")));
         if(main.get("grnd_level") != null) this.grnd_level = Double.parseDouble(String.valueOf(main.get("grnd_level")));
     }
@@ -124,7 +124,7 @@ public class ApiResponse  extends Response {
     public void setFeelsLike(double feels_like) {
         this.feels_like = feels_like;
     }
-    public void setPressure(double pressure) {
+    public void setPressure(int pressure) {
         this.pressure = pressure;
     }
     public void setTempMin(double temp_min) {
@@ -206,7 +206,7 @@ public class ApiResponse  extends Response {
      * Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
      */
     @JsonIgnore
-    public double getPressure() {
+    public int getPressure() {
         return pressure;
     }
     /**

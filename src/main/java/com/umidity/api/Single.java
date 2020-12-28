@@ -36,18 +36,6 @@ public class Single extends Response {
     }
 
     /**
-     * Creates a new Single object from a OneCallResponse, in ReadOnly mode.
-     * @param response
-     */
-    public Single(OneCallResponse response){
-        isReadOnly = true;
-        humidity = response.getHumidity();
-        temp = response.current.temp;;
-        coord = response.getCoord();
-        timestamp = response.current.dt;
-    }
-
-    /**
      * Returns an array og Single objects from an array of ApiResponses
      * @param response
      * @return

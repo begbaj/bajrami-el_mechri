@@ -49,8 +49,8 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertNull(caller.oneCallResponse.elementAt(0).alerts);
-            assertNotNull(caller.oneCallResponse.elementAt(0).current);
+            assertNull(caller.oneCallResponse.elementAt(0).getAlerts());
+            assertNotNull(caller.oneCallResponse.elementAt(0).getAlerts());
         } catch (InterruptedException e) {
             fail();
         }
@@ -59,7 +59,7 @@ class AsyncCallerTest {
     @Test
     void testOneCall2(){
         caller = new AsyncCaller( new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric),
-                10000,AsyncCaller.AsyncMethod.oneCall2, 43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis());
+                10000,AsyncCaller.AsyncMethod.oneCall2, 43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis()/1000);
         try {
             caller.start();
             Thread.sleep(500);
@@ -69,7 +69,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertNotNull(caller.oneCallResponse.elementAt(0).current);
+            assertNotNull(caller.oneCallHistoricalResponse.elementAt(0).hourly);
         } catch (InterruptedException e) {
             fail();
         }
@@ -164,7 +164,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).city.name);
+            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }
@@ -183,7 +183,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).city.name);
+            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }
@@ -202,7 +202,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).city.name);
+            assertEquals("Senigallia", caller.forecastResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }
@@ -221,7 +221,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Roncitelli", caller.forecastResponse.elementAt(0).city.name);
+            assertEquals("Roncitelli", caller.forecastResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }

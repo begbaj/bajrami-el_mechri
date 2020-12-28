@@ -7,10 +7,8 @@ import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.api.response.OneCallResponse;
 
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.EnumSet;
-import java.util.IllegalFormatConversionException;
 import java.util.Vector;
 
 public class AsyncCaller extends Thread {
@@ -60,24 +58,24 @@ public class AsyncCaller extends Thread {
     /**
      * Id true, the thread will stop.
      */
-    private boolean                  close;
+    private boolean close;
     /**
      * Indicates whether the thread is running or not.
      */
-    private boolean                          isRunning;
+    private boolean isRunning;
     /**
      * If set to true, after <em>myAsyncCaller.Start()</em> is launched, the thread will run just one time and than it stops.
      */
-    private boolean                          oneTime;
+    private boolean oneTime;
     /**
      * A vector of oneCallResponses
      */
-    public  Vector<OneCallResponse>          oneCallResponse;
-    public  Vector<OneCallHistoricalResponse>  oneCallHistoricalResponse;
+    public  Vector<OneCallResponse> oneCallResponse;
+    public  Vector<OneCallHistoricalResponse> oneCallHistoricalResponse;
     /**
      * A vector of ApiResponses
      */
-    public  Vector<ApiResponse>      apiResponse;
+    public  Vector<ApiResponse> apiResponse;
     /**
      * A vector of ForecastResponses
      */
@@ -85,19 +83,19 @@ public class AsyncCaller extends Thread {
     /**
      * The api caller used for each api call.
      */
-    private ApiCaller                caller;
+    private ApiCaller caller;
     /**
      * the selected method for this AsyncCaller
      */
-    private AsyncMethod              method;
+    private AsyncMethod method;
     /**
      * Time (in milliseconds) to wait until next call
      */
-    private long                     timeToWait;
+    private long timeToWait;
     /**
      * Array of arguments. The needed arguments are dependent on which AsyncMethod is set.
      */
-    private Object[]                 args;
+    private Object[] args;
 
     /**
      * @param caller The api caller used for each api call.
@@ -110,9 +108,11 @@ public class AsyncCaller extends Thread {
         this.caller = caller;
         setArgs(args);
         this.timeToWait = timeToWait;
+
         oneCallResponse = new Vector<>();
         apiResponse = new Vector<>();
         forecastResponse = new Vector<>();
+        oneCallHistoricalResponse = new Vector<>();
 
         oneTime = false;
         isRunning = false;
@@ -175,7 +175,7 @@ public class AsyncCaller extends Thread {
      */
     private void getByCityId(Integer[] args) throws IOException {
         apiResponse.clear();
-        for(Object o:args){
+        for(Integer o:args){
             apiResponse.add(caller.getByCityId(String.valueOf(o)));
         }
     }
@@ -187,7 +187,7 @@ public class AsyncCaller extends Thread {
      */
     private void getForecastByCityId(Integer[] args) throws IOException {
         forecastResponse.clear();
-        for(Object o:args){
+        for(Integer o:args){
             forecastResponse.add(caller.getForecastByCityId(String.valueOf(o)));
         }
     }
@@ -233,6 +233,7 @@ public class AsyncCaller extends Thread {
         oneCallResponse.clear();
         apiResponse.clear();
         forecastResponse.clear();
+        oneCallHistoricalResponse.clear();
     }
 
 }
