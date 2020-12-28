@@ -72,8 +72,8 @@ public class MainGui implements ApiListener, RecordsListener {
 
     boolean listenerOn;
     Single realtimeResponse;
-    String[] recordColumnNames;
-    String[] statisticsColumnNames;
+    Vector<String> recordColumnNames;
+    Vector<String> statisticsColumnNames;
     DecimalFormatSymbols otherSymbols;
     DecimalFormat df;
     JDatePanelImpl datePanelFrom;
@@ -84,8 +84,8 @@ public class MainGui implements ApiListener, RecordsListener {
 
         //Main.dbms.loadUserSettings();
 
-        Vector<String> recordColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
-        Vector<String> statisticsColumnNames =new Vector<>(Arrays.asList("DateTime", "Temperature", "Humidity"));
+        recordColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
+        statisticsColumnNames =new Vector<>(Arrays.asList("DateTime", "Temperature", "Humidity"));
 
         listenerOn = true;
 
@@ -408,7 +408,10 @@ public class MainGui implements ApiListener, RecordsListener {
             double avg = StatsCalculator.avg(records, fromDate, toDate);
             double variance = StatsCalculator.variance(records, fromDate, toDate);
             Vector<Vector<String>> statistics = new Vector<Vector<String>>();
-            {{Double.toString(min), Double.toString(max), df.format(avg), df.format(variance)}};
+            statistics.add(new Vector<String>(Arrays.asList(Double.toString(min),
+                                                            Double.toString(max),
+                                                            df.format(avg),
+                                                            df.format(variance))));
             updateTable(statisticsTable, statistics, statisticsColumnNames);
         } catch (Exception ex) {
             updateTable(statisticsTable, null, statisticsColumnNames);
