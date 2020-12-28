@@ -94,7 +94,7 @@ public class MainGui implements ApiListener, RecordsListener {
         df = new DecimalFormat("###.##", otherSymbols);
         format = new SimpleDateFormat("dd-MM HH:00");
 
-        changeTheme(Main.userSettings.interfaceSettings.guiUserTheme);
+        changeTheme(Main.userSettings.getGuiTheme());
         SwingUtilities.updateComponentTreeUI(panelMain);
 
         updateTable(recordsTable, null, recordColumnNames);
@@ -270,48 +270,15 @@ public class MainGui implements ApiListener, RecordsListener {
             public void actionPerformed(ActionEvent e) {
                 DefaultCategoryDataset dcd=new DefaultCategoryDataset();
                 List<HumidityRecord> records = Main.dbms.getHumidity(realtimeResponse.getCityId());
-                Calendar cal;
-                Date fromDate=new Date();
-                Date toDate=new Date();
-                if (timeStatsBox.getSelectedIndex() == 0) {
-                    cal = Calendar.getInstance();
-                    cal.add(5, -7);
-                    fromDate = cal.getTime();
-                } else if (timeStatsBox.getSelectedIndex() == 1) {
-                    cal = Calendar.getInstance();
-                    cal.add(5, -30);
-                    fromDate = cal.getTime();
-                } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
-                    fromDate = (Date)datePickerFrom.getModel().getValue();
-                    toDate = (Date)datePickerTo.getModel().getValue();
-                }
-                double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
-                double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
-                double avg = StatsCalculator.avg(records, fromDate, toDate);
+                Date[] dates=getDateRange();
+                double min = StatsCalculator.min(records, dates[0], dates[1]).getHumidity();
+                double max = StatsCalculator.max(records, dates[0], dates[1]).getHumidity();
+                double avg = StatsCalculator.avg(records, dates[0], dates[1]);
                 dcd.setValue(min, "Humidity", "Min");
                 dcd.setValue(max, "Humidity", "Max");
                 dcd.setValue(avg, "Humidity", "Avg");
 
-                JFreeChart jChart = ChartFactory.createBarChart("Humidity", null, null, dcd, PlotOrientation.VERTICAL, false, false, false);
-                CategoryPlot plot=jChart.getCategoryPlot();
-                plot.setRangeGridlinePaint(Color.BLACK);
-                if(UIManager.getLookAndFeel().getID().equals("FlatLaf - FlatLaf Dark")) {
-                    jChart.setBackgroundPaint(new Color(60, 60, 60));
-                    jChart.getTitle().setPaint(Color.LIGHT_GRAY);
-                    plot.setOutlinePaint(Color.GRAY);
-                    plot.getRangeAxis().setTickLabelPaint(Color.LIGHT_GRAY);
-                    plot.getDomainAxis().setTickLabelPaint(Color.LIGHT_GRAY);
-                }
-                ChartPanel chartpanel=new ChartPanel(jChart);
-                chartpanel.setPreferredSize(new Dimension(400, 400));
-
-                JFrame chartFrame = new JFrame();
-                chartFrame.setTitle("Humidity Simple Graph");
-                chartFrame.add(chartpanel);
-                chartFrame.setVisible(true);
-                chartFrame.setSize(500,400);
-                chartFrame.pack();
-                chartFrame.setLocationRelativeTo(null);
+                createGraph("Humidity Simple Graph", new Dimension(400, 400), dcd, false);
             }
         });
 
@@ -324,31 +291,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     dcd.addValue(record.getHumidity(), "Humidity", new Date((new Timestamp(record.getTimestamp() * 1000)).getTime()));
                 }
 
-                JFreeChart jChart = ChartFactory.createLineChart("Humidity", null, null, dcd, PlotOrientation.VERTICAL, false, false, false);
-                CategoryPlot plot=jChart.getCategoryPlot();
-                plot.setRangeGridlinePaint(Color.black);
-                if(Main.userSettings.getGuiTheme().equals("Dark")) {
-                    jChart.setBackgroundPaint(new Color(60, 60, 60));
-                    jChart.getTitle().setPaint(Color.LIGHT_GRAY);
-                    plot.setOutlinePaint(Color.GRAY);
-                    plot.getRangeAxis().setTickLabelPaint(Color.LIGHT_GRAY);
-                    plot.getDomainAxis().setTickLabelPaint(Color.LIGHT_GRAY);
-                }
-
-                final LineAndShapeRenderer renderer = new LineAndShapeRenderer();
-                renderer.setSeriesShapesVisible(0, true);
-                plot.setRenderer(renderer);
-
-                ChartPanel chartpanel=new ChartPanel(jChart);
-                chartpanel.setPreferredSize(new Dimension(1000, 400));
-
-                JFrame chartFrame = new JFrame();
-                chartFrame.setTitle("Humidity Records Graph");
-                chartFrame.add(chartpanel);
-                chartFrame.setVisible(true);
-                chartFrame.setSize(1000,400);
-                chartFrame.pack();
-                chartFrame.setLocationRelativeTo(null);
+                createGraph("Humidity Records Graph", new Dimension(1000, 400), dcd, true);
             }
         });
 
@@ -489,12 +432,67 @@ public class MainGui implements ApiListener, RecordsListener {
         }
     }
 
+    public Date[] getDateRange(){
+        Calendar cal=Calendar.getInstance();
+        Date[] dates= new Date[2];
+        if (timeStatsBox.getSelectedIndex() == 0) {
+            cal.add(5, -7);
+            dates[0] = cal.getTime();
+            dates[1] = new Date();
+        } else if (timeStatsBox.getSelectedIndex() == 1) {
+            cal.add(5, -30);
+            dates[0] = cal.getTime();
+            dates[1] = new Date();
+        } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
+            dates[0] = (Date)datePickerFrom.getModel().getValue();
+            dates[1] = (Date)datePickerTo.getModel().getValue();
+        }
+        return dates;
+    }
+
     @Override
     public void onReceiveCurrent(Object sender, ApiArgument arg) {
         if(realtimeResponse!=null){
             if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
                 Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
             }
+    }
+
+    private void createGraph(String title, Dimension dimension, DefaultCategoryDataset dcd, boolean isRecordsGraph){
+        JFreeChart jChart;
+
+        if(isRecordsGraph)
+            jChart = ChartFactory.createLineChart("Humidity", null, null, dcd,
+                                                    PlotOrientation.VERTICAL, false, false, false);
+        else
+            jChart = ChartFactory.createBarChart("Humidity", null, null, dcd,
+                    PlotOrientation.VERTICAL, false, false, false);
+
+        CategoryPlot plot=jChart.getCategoryPlot();
+
+        if(isRecordsGraph) {
+            LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+            renderer.setSeriesShapesVisible(0, true);
+            plot.setRenderer(renderer);
+        }
+
+        plot.setRangeGridlinePaint(Color.black);
+        if(Main.userSettings.getGuiTheme().equals("Dark")) {
+            jChart.setBackgroundPaint(new Color(60, 60, 60));
+            jChart.getTitle().setPaint(Color.LIGHT_GRAY);
+            plot.setOutlinePaint(Color.GRAY);
+            plot.getRangeAxis().setTickLabelPaint(Color.LIGHT_GRAY);
+            plot.getDomainAxis().setTickLabelPaint(Color.LIGHT_GRAY);
+        }
+
+        ChartPanel chartpanel=new ChartPanel(jChart);
+        chartpanel.setPreferredSize(dimension);
+        JFrame chartFrame = new JFrame();
+        chartFrame.setTitle(title);
+        chartFrame.add(chartpanel);
+        chartFrame.setVisible(true);
+        chartFrame.pack();
+        chartFrame.setLocationRelativeTo(null);
     }
 
 

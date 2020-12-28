@@ -1,5 +1,6 @@
 package com.umidity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umidity.api.caller.EUnits;
 
@@ -83,10 +84,12 @@ public class UserSettings {
         return cliTheme;
     }
     @JsonProperty("cli_prompt")
+    @JsonIgnore
     public String getCliPrompt() {
         return cliPrompt;
     }
     @JsonProperty("api_units")
+    @JsonIgnore
     public EUnits getUnits() {
         return units;
     }
