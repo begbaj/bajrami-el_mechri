@@ -7,9 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,7 +69,7 @@ class DatabaseManagerTest {
 
     @Test
     void test() {
-        dbms.setUserSettings();
+        dbms.saveUserSettings();
         dbms.addCity(new CityRecord(3166740,"Senigallia", new Coordinates(13.21667f, 43.709259f)));
         dbms.addCity(new CityRecord(3183089,"Ancona", new Coordinates(13.51008f, 43.59816f)));
         dbms.addCity(new CityRecord(3169070,"Roma", new Coordinates(12.4839f, 41.894741f)));

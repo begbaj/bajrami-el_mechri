@@ -8,7 +8,6 @@ import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.UserSettings;
 import com.umidity.Coordinates;
-import com.umidity.api.caller.ApiListener;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -290,7 +289,7 @@ public class DatabaseManager {
         }catch (MismatchedInputException | FileNotFoundException e){
             deleteFile(basePath + "config.json");
             createNewFile(basePath + "config.json");
-            setUserSettings();
+            saveUserSettings();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -299,7 +298,7 @@ public class DatabaseManager {
     /**
      * Saves settings into file
      */
-    public void setUserSettings() {
+    public void saveUserSettings() {
         createNewFile(basePath + "config.json");
         try {
             writer.writeValue(Paths.get(basePath + "config.json").toFile(), Main.userSettings);

@@ -95,6 +95,7 @@ public class MainGui implements ApiListener, RecordsListener {
         format = new SimpleDateFormat("dd-MM HH:00");
 
         changeTheme(Main.userSettings.interfaceSettings.guiUserTheme);
+        SwingUtilities.updateComponentTreeUI(panelMain);
 
         updateTable(recordsTable, null, recordColumnNames);
         updateTable(statisticsTable, null, statisticsColumnNames);
@@ -107,6 +108,7 @@ public class MainGui implements ApiListener, RecordsListener {
                 else if(!textField_ZIP.getText().equals(""))
                     realtimeResponse= new Single(Main.caller.getByZipCode(textField_ZIP.getText(), textField_State.getText()));
                 else nosuchLabel.setText("You must specify the area!");
+
                 if(!nosuchLabel.getText().equals("You must specify the area!")) {
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
@@ -114,9 +116,9 @@ public class MainGui implements ApiListener, RecordsListener {
                     firstRow.add(Double.toString(realtimeResponse.getTemp()));
                     firstRow.add(realtimeResponse.getHumidity() + "%");
                     matrix.add(firstRow);
+
                     ForecastResponse forecastResponse = Main.caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
                     Single[] forecastRecords = forecastResponse.getSingles();
-
                     for (int counter = 0; counter < forecastRecords.length; ++counter) {
                         Single f_record = forecastRecords[counter];
                         Date datetime = new Date((new Timestamp(f_record.getTimestamp() * 1000)).getTime());
@@ -128,16 +130,12 @@ public class MainGui implements ApiListener, RecordsListener {
                         matrix.add(nextRow);
                     }
 
-                    //Controlla create Table
-                    recordsTable.setModel(new DefaultTableModel(matrix, recordColumnNames));
-                    recordsTable.setFillsViewportHeight(true);
+                    updateTable(recordsTable, matrix, recordColumnNames);
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
-                    HumidityRecord record = new HumidityRecord(realtimeResponse.getHumidity(), realtimeResponse.getTimestamp(), city);
                     listenerOn = false;
                     if (Main.dbms.cityisSaved(city)) {
                         saveCityRecordsCheckBox.setSelected(true);
-                        //Main.dbms.addHumidity(record);
                         timeStatsBox.setSelectedIndex(0);
                         setPanelEnabled(statisticPanel, true);
                     } else {

@@ -3,11 +3,9 @@ package com.umidity.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import com.formdev.flatlaf.*;
 import com.umidity.Main;
 import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
@@ -51,7 +49,7 @@ public class SettingsGui implements RecordsListener {
                             MainGui.changeTheme("Dark");
                             Main.userSettings.setGuiTheme("Dark");
                         }
-                        Main.dbms.setUserSettings();
+                        Main.dbms.saveUserSettings();
 
                     } catch( Exception ex ) {
                         System.err.println( "Failed to initialize LaF" );
@@ -83,7 +81,7 @@ public class SettingsGui implements RecordsListener {
                 }else {
                         Main.userSettings.interfaceSettings.guiUserTheme="Dark";
                 }
-                Main.dbms.setUserSettings();
+                Main.dbms.saveUserSettings();
             }
         });
         interfaceComboBox.addActionListener(new ActionListener() {
@@ -95,7 +93,7 @@ public class SettingsGui implements RecordsListener {
                 }else {
                     Main.userSettings.interfaceSettings.guiEnabled=false;
                 }
-                Main.dbms.setUserSettings();
+                Main.dbms.saveUserSettings();
             }
         });
     }
