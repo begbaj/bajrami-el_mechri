@@ -15,10 +15,10 @@ public abstract class OneCall extends Response {
     @JsonProperty("current")
     public void unpackCurrent(Map<String, Object> map){
         if(map.get("dt") != null) this.timestamp = Integer.parseInt(String.valueOf(map.get("dt")));
-        if(map.get("sunrise") != null) this.sunrise = Integer.parseInt(String.valueOf(map.get("sunrise")));
-        if(map.get("sunset") != null) this.sunset = Integer.parseInt(String.valueOf(map.get("sunset")));
-        if(map.get("temp") != null) this.temp = Integer.parseInt(String.valueOf(map.get("temp")));
-        if(map.get("feels_like") != null) this.feelsLike = Integer.parseInt(String.valueOf(map.get("feels_like")));
+        if(map.get("sunrise") != null) this.sunrise = Long.parseLong(String.valueOf(map.get("sunrise")));
+        if(map.get("sunset") != null) this.sunset = Long.parseLong(String.valueOf(map.get("sunset")));
+        if(map.get("temp") != null) this.temp = Double.parseDouble(String.valueOf(map.get("temp")));
+        if(map.get("feels_like") != null) this.feelsLike = Double.parseDouble(String.valueOf(map.get("feels_like")));
         if(map.get("humidity") != null) this.humidity = Integer.parseInt(String.valueOf(map.get("humidity")));
         if(map.get("pressure") != null) this.pressure = Double.parseDouble(String.valueOf(map.get("pressure")));
         if(map.get("wind_gust") != null) this.windGust = Double.parseDouble(String.valueOf(map.get("wind_gust")));
