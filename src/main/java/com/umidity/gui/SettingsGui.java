@@ -3,9 +3,11 @@ package com.umidity.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import com.formdev.flatlaf.*;
 import com.umidity.Main;
 import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
@@ -13,6 +15,7 @@ import com.umidity.database.RecordsListener;
 
 public class SettingsGui implements RecordsListener {
 
+    //region JTools
     private JComboBox guiComboBox;
     public JPanel panelSettings;
     private JTabbedPane tabbedPane1;
@@ -23,23 +26,10 @@ public class SettingsGui implements RecordsListener {
     private JComboBox cliComboBox;
     private JComboBox interfaceComboBox;
     private JLabel noCityLabel;
+    //endregion
 
     public SettingsGui(){
-
-        Main.dbms.loadUserSettings();
-        if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light"))
-            guiComboBox.setSelectedIndex(0);
-        else
-            guiComboBox.setSelectedIndex(1);
-        if(Main.userSettings.interfaceSettings.cliUserTheme.equals("Light"))
-            cliComboBox.setSelectedIndex(0);
-        else
-            cliComboBox.setSelectedIndex(1);
-        if(Main.userSettings.interfaceSettings.guiEnabled)
-            interfaceComboBox.setSelectedIndex(0);
-        else
-            interfaceComboBox.setSelectedIndex(1);
-
+        init();
         guiComboBox.addActionListener(e -> {
                     try {
                         if (guiComboBox.getSelectedIndex() == 0) {
@@ -72,30 +62,43 @@ public class SettingsGui implements RecordsListener {
             }
 
         });
-        cliComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(cliComboBox.getSelectedIndex()==0){
-                        Main.userSettings.interfaceSettings.guiUserTheme="Light";
+        cliComboBox.addActionListener(e -> {
+            if (cliComboBox.getSelectedIndex() == 0) {
+                Main.userSettings.interfaceSettings.guiUserTheme = "Light";
 
-                }else {
-                        Main.userSettings.interfaceSettings.guiUserTheme="Dark";
-                }
-                Main.dbms.saveUserSettings();
+            } else {
+                Main.userSettings.interfaceSettings.guiUserTheme = "Dark";
             }
+            Main.dbms.saveUserSettings();
         });
-        interfaceComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(interfaceComboBox.getSelectedIndex()==0){
-                    Main.userSettings.interfaceSettings.guiEnabled=true;
+        interfaceComboBox.addActionListener(e -> {
+            if(interfaceComboBox.getSelectedIndex()==0){
+                Main.userSettings.interfaceSettings.guiEnabled=true;
 
-                }else {
-                    Main.userSettings.interfaceSettings.guiEnabled=false;
-                }
-                Main.dbms.saveUserSettings();
+            }else {
+                Main.userSettings.interfaceSettings.guiEnabled=false;
             }
+            Main.dbms.saveUserSettings();
         });
+    }
+
+    /**
+     * Perform initialization actions
+     */
+    private void init(){
+        switch (Main.userSettings.interfaceSettings.guiUserTheme){
+            case "Dark" -> guiComboBox.setSelectedIndex(1);
+            default -> guiComboBox.setSelectedIndex(0);
+        }
+        switch (Main.userSettings.interfaceSettings.cliUserTheme){
+            case "Dark" -> cliComboBox.setSelectedIndex(1);
+            default -> cliComboBox.setSelectedIndex(0);
+        }
+        if (Main.userSettings.interfaceSettings.guiEnabled) {
+            interfaceComboBox.setSelectedIndex(0);
+        } else {
+            interfaceComboBox.setSelectedIndex(1);
+        }
     }
 
     public void createCityTable(){
