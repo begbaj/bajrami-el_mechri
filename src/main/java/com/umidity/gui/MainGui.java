@@ -8,6 +8,7 @@ import com.umidity.api.caller.ApiArgument;
 import com.umidity.api.caller.ApiListener;
 import com.umidity.Coordinates;
 import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.api.response.OneCallResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
@@ -377,7 +378,7 @@ public class MainGui implements ApiListener{
                     List<HumidityRecord> records=new ArrayList<>();
                     CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                     for(int i=0; i<6; i++){
-                        OneCallResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
+                        OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
                         for(var x:response.hourly){
                             records.add(new HumidityRecord(x.humidity, x.dt, city));
                         }
@@ -387,7 +388,7 @@ public class MainGui implements ApiListener{
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-
+                timeStatsBox.setSelectedIndex(0);
             }
         });
     }

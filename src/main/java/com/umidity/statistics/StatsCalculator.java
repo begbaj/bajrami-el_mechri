@@ -150,7 +150,7 @@ public class StatsCalculator {
         double count = 0;
         if(!records.isEmpty()) {
             for (HumidityRecord record : records) {
-                    if(new Date(record.getTimestamp()).after(from) && new Date(record.getTimestamp()*1000).before(to)){
+                    if(new Date(record.getTimestamp()*1000).after(from) && new Date(record.getTimestamp()*1000).before(to)){
                         avg += record.getHumidity();
                         count++;
                     }
@@ -212,7 +212,7 @@ public class StatsCalculator {
         double sum = 0;
         if (!records.isEmpty()) {
             for (HumidityRecord record : records) {
-                    if(new Date(record.getTimestamp()).after(from) && new Date(record.getTimestamp()*1000).before(to)  )
+                    if(new Date(record.getTimestamp()*1000).after(from) && new Date(record.getTimestamp()*1000).before(to)  )
                         sum = Math.pow(record.getHumidity() - avg, 2);
             }
             return sum / records.size();

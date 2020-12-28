@@ -36,8 +36,10 @@ public class OneCallHistoricalResponse implements Response, ICoordinates, IHumid
         public float dew_point;
         public int uvi;
         public int clouds;
-        public float rain;
-        public float snow;
+        @JsonIgnore
+        public int rain;
+        @JsonIgnore
+        public int snow;
         public int visibility;
         public float wind_speed;
         public float wind_gust;

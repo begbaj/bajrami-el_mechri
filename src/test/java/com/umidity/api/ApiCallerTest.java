@@ -6,6 +6,7 @@ import com.umidity.api.caller.EUnits;
 import com.umidity.api.response.ApiResponse;
 import com.umidity.api.caller.EExclude;
 import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.api.response.OneCallResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +63,7 @@ class ApiCallerTest {
     @Test
     void OneCall2() {
         try {
-            OneCallResponse r1 = caller.oneCall(43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis());
+            OneCallHistoricalResponse r1 = caller.oneCall(43.713056f, 13.218333f, Calendar.getInstance().getTimeInMillis());
             assertNotNull(r1.current);
         } catch (IOException e) {
             e.printStackTrace();
