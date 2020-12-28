@@ -249,6 +249,9 @@ public class MainGui implements ApiListener{
                         boolean flag = Main.dbms.addCity(city);
                         if (flag) {
                             nosuchLabel.setText("City added!");
+                            Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(realtimeResponse));
+                            setPanelEnabled(statisticPanel, true);
+                            timeStatsBox.setSelectedIndex(0);
                             updateAsynCaller();
                         } else {
                             System.out.println("SOMETHING WRONG");
@@ -256,6 +259,8 @@ public class MainGui implements ApiListener{
                     } else if (JOptionPane.showConfirmDialog(panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
                         Main.dbms.removeCity(city);
                         nosuchLabel.setText("City removed!");
+                        createTable(statisticsTable, null, statisticsColumnNames);
+                        setPanelEnabled(statisticPanel, false);
                         updateAsynCaller();
                     } else {
                         listenerOn = false;
