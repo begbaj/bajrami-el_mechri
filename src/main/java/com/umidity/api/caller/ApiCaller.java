@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.*;
 import com.umidity.api.Single;
 import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.api.response.OneCallResponse;
 
 import java.io.IOException;
@@ -112,7 +113,7 @@ public class ApiCaller extends Caller {
      * @return
      * @throws IOException
      */
-    public OneCallResponse oneCall(float lat, float lon, long dt) throws IOException{
+    public OneCallHistoricalResponse oneCall(float lat, float lon, long dt) throws IOException{
         for(ApiListener l:apiListeners){
             l.onRequest(this, null);
             l.onRequestHistorical(this, null);
@@ -121,7 +122,7 @@ public class ApiCaller extends Caller {
         StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall/timemachine?");
         url.append("lat=" + lat + "&lon=" + lon + "&dt=" + dt);
         url.append(endParams);
-        var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);
+        var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallHistoricalResponse.class);
         var apiArg = new ApiArgument(response.getSingles());
         for(ApiListener l:apiListeners){
             if(response != null);{

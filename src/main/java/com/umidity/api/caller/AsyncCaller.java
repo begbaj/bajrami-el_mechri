@@ -3,6 +3,7 @@ package com.umidity.api.caller;
 
 import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.api.response.OneCallResponse;
 
 import java.io.IOException;
@@ -63,15 +64,16 @@ public class AsyncCaller extends Thread {
     /**
      * Indicates whether the thread is running or not.
      */
-    private boolean                  isRunning;
+    private boolean                          isRunning;
     /**
      * If set to true, after <em>myAsyncCaller.Start()</em> is launched, the thread will run just one time and than it stops.
      */
-    private boolean                  oneTime;
+    private boolean                          oneTime;
     /**
      * A vector of oneCallResponses
      */
-    public  Vector<OneCallResponse>  oneCallResponse;
+    public  Vector<OneCallResponse>          oneCallResponse;
+    public  Vector<OneCallHistoricalResponse>  oneCallHistoricalResponse;
     /**
      * A vector of ApiResponses
      */
@@ -133,7 +135,7 @@ public class AsyncCaller extends Thread {
                     lastExecution = now;
                     switch (method){
                         case oneCall1 -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (EnumSet<EExclude>)args[2]));
-                        case oneCall2 -> oneCallResponse.add(caller.oneCall((float)args[0], (float)args[1], (long)args[2]));
+                        case oneCall2 -> oneCallHistoricalResponse.add(caller.oneCall((float)args[0], (float)args[1], (long)args[2]));
                         case byCityName -> apiResponse.add(caller.getByCityName((String)args[0], (String)args[1], (String)args[2]));
                         case byCoordinates -> apiResponse.add(caller.getByCoordinates((float)args[0], (float)args[1]));
                         case byCityId -> getByCityId((Integer[])args[0]);
