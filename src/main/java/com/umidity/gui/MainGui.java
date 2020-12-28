@@ -132,7 +132,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     listenerOn = false;
                     if (Main.dbms.cityisSaved(city)) {
                         saveCityRecordsCheckBox.setSelected(true);
-                        Main.dbms.addHumidity(record);
+                        //Main.dbms.addHumidity(record);
                         timeStatsBox.setSelectedIndex(0);
                         setPanelEnabled(statisticPanel, true);
                     } else {
@@ -216,7 +216,7 @@ public class MainGui implements ApiListener, RecordsListener {
                         boolean flag = Main.dbms.addCity(city);
                         if (flag) {
                             nosuchLabel.setText("City added!");
-                            Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(realtimeResponse));
+                            searchButton.doClick();
                             setPanelEnabled(statisticPanel, true);
                             timeStatsBox.setSelectedIndex(0);
                             updateAsynCaller();
@@ -482,8 +482,12 @@ public class MainGui implements ApiListener, RecordsListener {
 
     @Override
     public void onReceiveCurrent(Object sender, ApiArgument arg) {
-     Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
+        if(realtimeResponse!=null){
+            if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
+                Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
+            }
     }
+
 
     @Override
     public void onReceiveForecast(Object sender, ApiArgument arg) {
@@ -529,6 +533,7 @@ public class MainGui implements ApiListener, RecordsListener {
                 saveCityRecordsCheckBox.setSelected(false);
                 setPanelEnabled(statisticPanel, false);
                 nosuchLabel.setText("City removed!");
+                createTable(statisticsTable, null, statisticsColumnNames);
                 listenerOn=true;
             }
         }

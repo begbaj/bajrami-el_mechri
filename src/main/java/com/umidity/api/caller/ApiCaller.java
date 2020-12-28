@@ -251,7 +251,6 @@ public class ApiCaller extends Caller {
 
 
         for(ApiListener l:apiListeners){
-            l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
         }
         return response;
@@ -272,7 +271,6 @@ public class ApiCaller extends Caller {
 
 
         for(ApiListener l:apiListeners){
-            l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
         }
         return response;
@@ -295,7 +293,6 @@ public class ApiCaller extends Caller {
 
 
         for(ApiListener l:apiListeners){
-            l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
         }
         return response;
@@ -319,7 +316,6 @@ public class ApiCaller extends Caller {
         var apiArg = new ApiArgument(response.getSingles());
 
         for(ApiListener l:apiListeners){
-            l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);
         }
         return response;
