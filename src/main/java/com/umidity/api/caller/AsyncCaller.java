@@ -14,7 +14,6 @@ import java.util.Vector;
 
 public class AsyncCaller extends Thread {
     public enum AsyncMethod{
-
         /**
          * Arguments: float lat, float lon, {@code EnumSet< EExclude >} excludes.
          */
@@ -28,9 +27,17 @@ public class AsyncCaller extends Thread {
          */
         byCityName,
         /**
+         * Arguments: String name, String zip (default = ""), String countryCode (default = "").
+         */
+        forecastByCityName,
+        /**
          * Arguments: int[] ids.
          */
         byCityId,
+        /**
+         * Arguments: int[] ids.
+         */
+        forecastByCityId,
         /**
          * Arguments: float lat, float lon.
          */
@@ -38,19 +45,11 @@ public class AsyncCaller extends Thread {
         /**
          * Arguments: String zipCode, String countryCode (default = "").
          */
-        byZipCode,
-        /**
-         * Arguments: String name, String zip (default = ""), String countryCode (default = "").
-         */
-        forecastByCityName,
-        /**
-         * Arguments: int[] ids.
-         */
-        forecastByCityId,
+        forecastByCoordinates,
         /**
          * Arguments: String zipCode, String countryCode (default = "").
          */
-        forecastByCoordinates,
+        byZipCode,
         /**
          * Arguments: String name, String zip (default = ""), String countryCode (default = "").
          */
@@ -60,43 +59,43 @@ public class AsyncCaller extends Thread {
     /**
      * Id true, the thread will stop.
      */
-    private       boolean                       close;
+    private boolean                  close;
     /**
      * Indicates whether the thread is running or not.
      */
-    private       boolean                       isRunning;
+    private boolean                  isRunning;
     /**
      * If set to true, after <em>myAsyncCaller.Start()</em> is launched, the thread will run just one time and than it stops.
      */
-    private       boolean                       oneTime;
+    private boolean                  oneTime;
     /**
      * A vector of oneCallResponses
      */
-    public        Vector< OneCallResponse >     oneCallResponse;
+    public  Vector<OneCallResponse>  oneCallResponse;
     /**
      * A vector of ApiResponses
      */
-    public        Vector< ApiResponse >         apiResponse;
+    public  Vector<ApiResponse>      apiResponse;
     /**
      * A vector of ForecastResponses
      */
-    public        Vector< ForecastResponse >    forecastResponse;
+    public  Vector<ForecastResponse> forecastResponse;
     /**
      * The api caller used for each api call.
      */
-    private       ApiCaller                     caller;
+    private ApiCaller                caller;
     /**
      * the selected method for this AsyncCaller
      */
-    private       AsyncMethod                   method;
+    private AsyncMethod              method;
     /**
      * Time (in milliseconds) to wait until next call
      */
-    private       long                          timeToWait;
+    private long                     timeToWait;
     /**
      * Array of arguments. The needed arguments are dependent on which AsyncMethod is set.
      */
-    private       Object[]                      args;
+    private Object[]                 args;
 
     /**
      * @param caller The api caller used for each api call.
@@ -123,7 +122,7 @@ public class AsyncCaller extends Thread {
      */
     public void addListener(ApiListener listener){caller.addListener(listener);}
 
-    public void run()  {
+    public void run(){
         long lastExecution = 0;
         try {
             while(!close){
@@ -226,6 +225,7 @@ public class AsyncCaller extends Thread {
         }
         this.args = args;
     }
+    public void setMethod(AsyncCaller.AsyncMethod method){ this.method = method; }
 
     public void clearResponse(){
         oneCallResponse.clear();
