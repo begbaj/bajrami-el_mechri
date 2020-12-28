@@ -1,8 +1,11 @@
 package com.umidity.database;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.umidity.api.Single;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -47,5 +50,19 @@ public class HumidityRecord {
     @Override
     public int hashCode() {
         return Objects.hash(timestamp, city);
+    }
+
+    static public HumidityRecord singleToHumidityRecord(Single single){
+        return new HumidityRecord(single.getHumidity(),
+                single.getTimestamp(),
+                new CityRecord(single.getCityId(), single.getCityName(), single.getCoord()));
+    }
+
+    static public List<HumidityRecord> singlesToHumidityRecord(List<Single> singles) {
+        List<HumidityRecord> records = new ArrayList<>();
+        for (var s : singles) {
+            records.add(singleToHumidityRecord(s));
+        }
+        return records;
     }
 }

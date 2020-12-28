@@ -118,7 +118,7 @@ public class ApiCaller extends Caller {
             l.onRequestHistorical(this, null);
         }
 
-        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall?");
+        StringBuilder url = new StringBuilder("https://api.openweathermap.org/data/2.5/onecall/timemachine?");
         url.append("lat=" + lat + "&lon=" + lon + "&dt=" + dt);
         url.append(endParams);
         var response = new ObjectMapper().readValue(new URL(url.toString()), OneCallResponse.class);

@@ -7,8 +7,8 @@ import com.umidity.api.Single;
 import com.umidity.api.caller.ApiArgument;
 import com.umidity.api.caller.ApiListener;
 import com.umidity.Coordinates;
-import com.umidity.api.caller.AsyncCaller;
 import com.umidity.api.response.ForecastResponse;
+import com.umidity.api.response.OneCallResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
 import com.umidity.statistics.StatsCalculator;
@@ -21,12 +21,8 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -38,6 +34,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class MainGui implements ApiListener{
@@ -65,6 +62,7 @@ public class MainGui implements ApiListener{
     private JButton recordsGraphButton;
     private JLabel easterEggLabel;
     private JLabel timeWarningLabel;
+    private JButton getLast5DaysButton;
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
     Single realtimeResponse;
@@ -81,8 +79,12 @@ public class MainGui implements ApiListener{
 
     public MainGui(){
 
-        recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
         statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
+        Vector<String> recordColumnNames = new Vector();
+        recordColumnNames.add("DateTime");
+        recordColumnNames.add("Temperature");
+        recordColumnNames.add("Humidity");
+
 
         listenerOn = true;
         currentLocale = Locale.getDefault();
@@ -106,11 +108,8 @@ public class MainGui implements ApiListener{
 
         otherSymbols.setDecimalSeparator('.');
         df = new DecimalFormat("###.##", otherSymbols);
-        Vector<String> vectorRecordColumnNames = new Vector();
-        vectorRecordColumnNames.add("DateTime");
-        vectorRecordColumnNames.add("Temperature");
-        vectorRecordColumnNames.add("Humidity");
-        createTable(recordsTable, null, recordColumnNames);
+
+        createTable(recordsTable, null, this.recordColumnNames);
         createTable(statisticsTable, null, statisticsColumnNames);
 
         SwingUtilities.updateComponentTreeUI(panelMain);
@@ -146,7 +145,7 @@ public class MainGui implements ApiListener{
                         matrix.add(nextRow);
                     }
 
-                    recordsTable.setModel(new DefaultTableModel(matrix, vectorRecordColumnNames));
+                    recordsTable.setModel(new DefaultTableModel(matrix, recordColumnNames));
                     recordsTable.setFillsViewportHeight(true);
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
@@ -218,7 +217,7 @@ public class MainGui implements ApiListener{
                     timeWarningLabel.setText("");
                 } else {
                     easterEggLabel.setText("Time in Lordran is convoluted, but we ain't there.");
-                    timeWarningLabel.setText("Invalid Date order");
+                    timeWarningLabel.setText("Invalid Date range!");
                 }
             }catch (Exception ex){
             }
@@ -234,7 +233,7 @@ public class MainGui implements ApiListener{
                     timeWarningLabel.setText("");
                 } else {
                     easterEggLabel.setText("Time in Lordran is convoluted, but we ain't there.");
-                    timeWarningLabel.setText("Invalid Date order");
+                    timeWarningLabel.setText("Invalid Date range!");
                 }
             }catch (Exception ex){
             }
@@ -299,7 +298,7 @@ public class MainGui implements ApiListener{
                     cal = Calendar.getInstance();
                     cal.add(5, -30);
                     fromDate = cal.getTime();
-                } else if (datePickerFrom.getJFormattedTextField().getText().equals("") && datePickerTo.getJFormattedTextField().getText().equals("")) {
+                } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
                     fromDate = (Date)datePickerFrom.getModel().getValue();
                     toDate = (Date)datePickerTo.getModel().getValue();
                 }
@@ -352,6 +351,10 @@ public class MainGui implements ApiListener{
                     plot.getRangeAxis().setTickLabelPaint(Color.LIGHT_GRAY);
                     plot.getDomainAxis().setTickLabelPaint(Color.LIGHT_GRAY);
                 }
+                final LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+                renderer.setSeriesShapesVisible(0, true);
+                plot.setRenderer(renderer);
+
                 ChartPanel chartpanel=new ChartPanel(jChart);
                 chartpanel.setPreferredSize(new Dimension(1000, 400));
 
@@ -366,6 +369,27 @@ public class MainGui implements ApiListener{
         });
 
         favouriteCityStart();
+        getLast5DaysButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Calendar cal = Calendar.getInstance();
+                try {
+                    List<HumidityRecord> records=new ArrayList<>();
+                    CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
+                    for(int i=0; i<6; i++){
+                        OneCallResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
+                        for(var x:response.hourly){
+                            records.add(new HumidityRecord(x.humidity, x.dt, city));
+                        }
+                        cal.add(5, -1);
+                    }
+                    Main.dbms.addHumidity(records);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
     }
 
     public void createTable(JTable table, String[][] data, Object[] columnNames) {
@@ -456,7 +480,7 @@ public class MainGui implements ApiListener{
 
     @Override
     public void onReceiveHistorical(Object sender, ApiArgument arg) {
-
+       Main.dbms.addHumidity(HumidityRecord.singlesToHumidityRecord(Arrays.asList(arg.getResponses())));
     }
 
     @Override

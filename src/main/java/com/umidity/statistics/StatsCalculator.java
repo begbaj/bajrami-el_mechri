@@ -20,9 +20,10 @@ public class StatsCalculator {
         //TODO: e se ce ne fossero due o più con lo stesso valore????
         HumidityRecord min = null;
         try{
+            records.stream().forEach(x->System.out.println(new Date(x.getTimestamp()*1000)));
             min = records.stream()
-                    .filter(x -> new Date(x.getTimestamp()).after(from))
-                    .filter(x -> new Date(x.getTimestamp()).before(to))
+                    .filter(x -> new Date(x.getTimestamp()*1000).after(from))
+                    .filter(x -> new Date(x.getTimestamp()*1000).before(to))
                     .min(Comparator.comparing(HumidityRecord::getHumidity))
                     .orElseThrow(NoSuchElementException::new);
         }catch (NoSuchElementException e){
@@ -97,8 +98,8 @@ public class StatsCalculator {
         HumidityRecord max = null;
         try{
             max = records.stream()
-                    .filter(x -> new Date(x.getTimestamp()).after(from))
-                    .filter(x -> new Date(x.getTimestamp()).before(to))
+                    .filter(x -> new Date(x.getTimestamp()*1000).after(from))
+                    .filter(x -> new Date(x.getTimestamp()*1000).before(to))
                     .max(Comparator.comparing(HumidityRecord::getHumidity))
                     .orElseThrow(NoSuchElementException::new);
         }catch (NoSuchElementException e){ return null; }
@@ -149,7 +150,7 @@ public class StatsCalculator {
         double count = 0;
         if(!records.isEmpty()) {
             for (HumidityRecord record : records) {
-                    if(new Date(record.getTimestamp()).after(from) && new Date(record.getTimestamp()).before(to)){
+                    if(new Date(record.getTimestamp()).after(from) && new Date(record.getTimestamp()*1000).before(to)){
                         avg += record.getHumidity();
                         count++;
                     }
@@ -211,7 +212,7 @@ public class StatsCalculator {
         double sum = 0;
         if (!records.isEmpty()) {
             for (HumidityRecord record : records) {
-                    if(new Date(record.getTimestamp()).after(from) && new Date(record.getTimestamp()).before(to)  )
+                    if(new Date(record.getTimestamp()).after(from) && new Date(record.getTimestamp()*1000).before(to)  )
                         sum = Math.pow(record.getHumidity() - avg, 2);
             }
             return sum / records.size();

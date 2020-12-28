@@ -198,6 +198,35 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
+    public void addHumidity(List<HumidityRecord> humidityRecords){
+        HashSet<HumidityRecord> records = new HashSet<>();
+        try {
+            for(var r:getHumidity(humidityRecords.get(0).getCity().getId())){
+                records.add(r);
+            }
+            for(var r:humidityRecords) {
+                records.add(r);
+            }
+            writer.writeValue(Paths.get(basePath +humidityRecords.get(0).getCity().getId()+".json").toFile(), records);
+        }
+        catch (MismatchedInputException e){
+            try {
+                records = new HashSet<>();
+                for(var r:humidityRecords) {
+                    records.add(r);
+                }
+                writer.writeValue(Paths.get(basePath+humidityRecords.get(0).getCity().getId() + ".json").toFile(), records);
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Return all humidity record of the city(with *city_id* as id)
      * @param city_id city's id
