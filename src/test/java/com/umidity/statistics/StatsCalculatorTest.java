@@ -21,27 +21,27 @@ class StatsCalculatorTest {
         records = new ArrayList<>();
 
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(10, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(10, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(15, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(15, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(20, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(20, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(5, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(5, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(60, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(60, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(40, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(40, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(15, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(15, cal.getTimeInMillis()/1000, city1));
         cal.add(Calendar.DATE, -1);
-        records.add(new HumidityRecord(90, cal.getTimeInMillis(), city1));
+        records.add(new HumidityRecord(90, cal.getTimeInMillis()/1000, city1));
     }
 
     @Test
     void testMin1() {
-        assertEquals(5.0, StatsCalculator.min(records, new Date(), true).getHumidity());
         Calendar cal = Calendar.getInstance();
+        assertEquals(5.0, StatsCalculator.min(records, cal.getTime(), true).getHumidity());
         cal.add(Calendar.DATE, -4);
         assertEquals(10.0, StatsCalculator.min(records, cal.getTime(), false).getHumidity());
     }

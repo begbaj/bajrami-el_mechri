@@ -50,7 +50,7 @@ class AsyncCallerTest {
             assertFalse(caller.isAlive());
 
             assertNull(caller.oneCallResponse.elementAt(0).getAlerts());
-            assertNotNull(caller.oneCallResponse.elementAt(0).getAlerts());
+            assertNotNull(caller.oneCallResponse.elementAt(0).getHourly());
         } catch (InterruptedException e) {
             fail();
         }
@@ -69,7 +69,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertNotNull(caller.oneCallHistoricalResponse.elementAt(0).hourly);
+            assertNotNull(caller.oneCallHistoricalResponse.elementAt(0).getHourly());
         } catch (InterruptedException e) {
             fail();
         }
