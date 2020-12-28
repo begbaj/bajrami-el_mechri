@@ -15,6 +15,7 @@ public class UserSettings {
          */
         @JsonProperty
         public String guiUserTheme; //TODO: temi per la gui
+
         /**
          * Theme used by the user
          */
@@ -76,6 +77,9 @@ public class UserSettings {
 
     public void setGuiTheme(String theme){
         interfaceSettings.guiUserTheme = theme;
+    }
+    public String getGuiUserTheme() {
+        return interfaceSettings.guiUserTheme;
     }
     //TODO: altre impostazioni utili
 

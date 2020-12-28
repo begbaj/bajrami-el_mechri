@@ -327,13 +327,14 @@ public class MainGui implements ApiListener, RecordsListener {
                 JFreeChart jChart = ChartFactory.createLineChart("Humidity", null, null, dcd, PlotOrientation.VERTICAL, false, false, false);
                 CategoryPlot plot=jChart.getCategoryPlot();
                 plot.setRangeGridlinePaint(Color.black);
-                if(UIManager.getLookAndFeel().getID().equals("FlatLaf - FlatLaf Dark")) {
+                if(Main.userSettings.getGuiUserTheme().equals("Dark")) {
                     jChart.setBackgroundPaint(new Color(60, 60, 60));
                     jChart.getTitle().setPaint(Color.LIGHT_GRAY);
                     plot.setOutlinePaint(Color.GRAY);
                     plot.getRangeAxis().setTickLabelPaint(Color.LIGHT_GRAY);
                     plot.getDomainAxis().setTickLabelPaint(Color.LIGHT_GRAY);
                 }
+
                 final LineAndShapeRenderer renderer = new LineAndShapeRenderer();
                 renderer.setSeriesShapesVisible(0, true);
                 plot.setRenderer(renderer);
