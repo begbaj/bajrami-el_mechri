@@ -8,6 +8,7 @@ import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.UserSettings;
 import com.umidity.Coordinates;
+import com.umidity.api.caller.ApiListener;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -18,6 +19,7 @@ import java.util.*;
 
 public class DatabaseManager {
 
+    ArrayList<RecordsListener> listeners=new ArrayList<>();
     final ObjectMapper objectMapper=new ObjectMapper();
     final ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter()); //TODO: per salvare spazio, rimuovere pretty printer!
     private String basePath;
@@ -25,12 +27,15 @@ public class DatabaseManager {
     public DatabaseManager(){
         basePath = "records/";
     }
+
     public DatabaseManager(String newPath){
         newPath = newPath.trim();
         if(newPath.charAt(newPath.length()-1) != '/')
             newPath += "/";
         basePath = newPath;
     }
+
+    public void addListener(RecordsListener listener){listeners.add(listener);}
 
     /**
      * Delete a file or a directory in the given path. If it is a directory,
@@ -72,6 +77,7 @@ public class DatabaseManager {
         File cityRecordsFile = new File(path);
         cityRecordsFile.delete();
     }
+
     /**
      * This method creates a new Database deleting, if existing, the one present in the indicated <em>basePath</em>
      * (default is "records/")
@@ -110,6 +116,9 @@ public class DatabaseManager {
             e.printStackTrace();
             return false;
         }
+        for(RecordsListener l:listeners){
+            l.onChangedCities();
+        }
         return true;
     }
 
@@ -131,6 +140,7 @@ public class DatabaseManager {
         }
         return records;
     }
+
     public boolean removeCity(CityRecord cityRecord) {
         boolean flag = false;
         List<CityRecord> records = getCities();
@@ -151,6 +161,9 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
         }
+        for(RecordsListener l:listeners){
+            l.onChangedCities();
+        }
         return flag;
     }
 
@@ -163,6 +176,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public CityRecord getFavouriteCity(){
         CityRecord cityRecord=new CityRecord(-1, "", new Coordinates(-1, -1));
         try{
@@ -281,6 +295,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     /**
      * Saves settings into file
      */
@@ -292,6 +307,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public void createNewFile(String path){
         File yourFile = new File(path);
         yourFile.getParentFile().mkdirs(); //CREA LE DIRECTORY SOPRA
