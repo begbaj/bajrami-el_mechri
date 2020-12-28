@@ -123,7 +123,7 @@ public class MainGui implements ApiListener, RecordsListener {
                         matrix.add(nextRow);
                     }
 
-                    //Controlla create Table
+                    //TODO: Controlla create Table
                     recordsTable.setModel(new DefaultTableModel(matrix, vRecordColumnNames));
                     recordsTable.setFillsViewportHeight(true);
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
@@ -351,27 +351,24 @@ public class MainGui implements ApiListener, RecordsListener {
         getLast5DaysButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread thread = new Thread(){
-                    public void run(){
-                        System.out.println("Thread Running");
-                        Calendar cal = Calendar.getInstance();
-                        try {
-                            List<HumidityRecord> records=new ArrayList<>();
-                            CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
-                            for(int i=0; i<6; i++){
-                                OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
-                                for(var x:response.hourly){
-                                    records.add(new HumidityRecord(x.humidity, x.dt, city));
-                                }
-                                cal.add(5, -1);
+                Thread thread = new Thread(() -> {
+                    Calendar cal = Calendar.getInstance();
+                    try {
+                        List<HumidityRecord> records=new ArrayList<>();
+                        CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
+                        for(int i=0; i<6; i++){
+                            OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
+                            for(var x:response.hourly){
+                                records.add(new HumidityRecord(x.humidity, x.dt, city));
                             }
-                            Main.dbms.addHumidity(records);
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
+                            cal.add(5, -1);
                         }
-                        timeStatsBox.setSelectedIndex(0);
+                        Main.dbms.addHumidity(records);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
                     }
-                };
+                    timeStatsBox.setSelectedIndex(0);
+                });
 
                 thread.start();
             }
@@ -487,7 +484,6 @@ public class MainGui implements ApiListener, RecordsListener {
                 Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
             }
     }
-
 
     @Override
     public void onReceiveForecast(Object sender, ApiArgument arg) {

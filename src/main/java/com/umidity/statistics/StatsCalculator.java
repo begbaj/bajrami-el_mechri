@@ -19,7 +19,6 @@ public class StatsCalculator {
     public static HumidityRecord min(List<HumidityRecord> records, Date from, Date to){
         HumidityRecord min = null;
         try{
-            records.stream().forEach(x->System.out.println(new Date(x.getTimestamp()*1000)));
             min = records.stream()
                     .filter(x -> new Date(x.getTimestamp()*1000).after(from))
                     .filter(x -> new Date(x.getTimestamp()*1000).before(to))
