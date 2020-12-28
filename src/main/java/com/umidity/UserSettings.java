@@ -1,91 +1,101 @@
 package com.umidity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umidity.api.caller.EUnits;
+
+import java.util.Vector;
 
 /**
  * This class provides the user settings
  */
 public class UserSettings {
 
-    public class InterfaceSettings{
-        /**
-         * Theme used by the user
-         */
-        @JsonProperty
-        public String guiUserTheme; //TODO: temi per la gui
-
-        /**
-         * Theme used by the user
-         */
-        @JsonProperty
-        public String cliUserTheme; //TODO: temi per la cli
-        /**
-         * If true, the GUI will be launched instead of CLI by default.
-         */
-        @JsonProperty
-        public boolean guiEnabled;
-
-        @JsonIgnore
-        public String prompt;
-
-        public InterfaceSettings(){
-            guiUserTheme="Light";
-            cliUserTheme="Light";
-            guiEnabled=true;
-        }
-    }
-    public class ApiSettings {
-        /**
-         * Show results with the unit mode selected
-         */
-        @JsonIgnore
-        public EUnits units;
-
-        @JsonProperty
-        public String apikey;
-
-        public ApiSettings(){
-            apikey=""; //NON DOVREBBE DARE ERRORE FINCHE NON CARICO
-        }
-    }
-
+    //region Properties
     /**
-     * Interface related settings
+     * If true, the GUI will be launched instead of CLI by default.
      */
-    @JsonProperty
-    public InterfaceSettings interfaceSettings = new InterfaceSettings();
+    private boolean guiEnabled;
     /**
-     * Api related settings
+     * Theme used by the user
      */
-    @JsonProperty
-    public ApiSettings apiSettings = new ApiSettings();
+    private String guiTheme;
     /**
-     * Username, only used to identify different settings on the same pc.
-     * Its an identifier.
+     * Theme used by the user
      */
-    @JsonIgnore
-    public String username;
+    private String cliTheme;
+    /**
+     * Custom prompt for cli
+     */
+    private String cliPrompt;
+    /**
+     * Show results with the unit mode selected
+     */
+    private EUnits units;
+    private String apikey;
     /**
      * Array of the city ids the user marked as favorites.
      * These will also automatically generate statistics.
      * Max 10 cities at a time.
      */
-    @JsonIgnore
-    public String[] cityIds = new String[10];
+    private Vector<String> cityIds = new Vector<>();
+    //endregion
 
-    public void setGuiTheme(String theme){
-        interfaceSettings.guiUserTheme = theme;
-    }
-    public String getGuiUserTheme() {
-        return interfaceSettings.guiUserTheme;
-    }
-    //TODO: altre impostazioni utili
 
     public UserSettings(){
-        interfaceSettings=new InterfaceSettings();
-        apiSettings=new ApiSettings();
+        guiEnabled=true;
+        guiTheme ="Light";
+        cliTheme ="Light";
+        apikey="";
     }
 
+    public void setGuiTheme(String theme){
+        guiTheme = theme;
+    }
+    public void setGuiEnabled(boolean guiEnabled) {
+        this.guiEnabled = guiEnabled;
+    }
+    public void setCliTheme(String cliUserTheme) {
+        this.cliTheme = cliUserTheme;
+    }
+    public void setCliPrompt(String cliPrompt) {
+        this.cliPrompt = cliPrompt;
+    }
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
+    public void setCityIds(Vector<String> cityIds) {
+        this.cityIds = cityIds;
+    }
+    public void setUnits(EUnits units) {
+        this.units = units;
+    }
+
+    @JsonProperty("gui")
+    public boolean isGuiEnabled() {
+        return guiEnabled;
+    }
+    @JsonProperty("gui_theme")
+    public String getGuiTheme() {
+        return guiTheme;
+    }
+    @JsonProperty("cli_theme")
+    public String getCliTheme() {
+        return cliTheme;
+    }
+    @JsonProperty("cli_prompt")
+    public String getCliPrompt() {
+        return cliPrompt;
+    }
+    @JsonProperty("api_units")
+    public EUnits getUnits() {
+        return units;
+    }
+    @JsonProperty("api_key")
+    public String getApikey() {
+        return apikey;
+    }
+    @JsonProperty("cities")
+    public Vector<String> getCityIds() {
+        return cityIds;
+    }
 }

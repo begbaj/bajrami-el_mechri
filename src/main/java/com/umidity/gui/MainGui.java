@@ -327,7 +327,7 @@ public class MainGui implements ApiListener, RecordsListener {
                 JFreeChart jChart = ChartFactory.createLineChart("Humidity", null, null, dcd, PlotOrientation.VERTICAL, false, false, false);
                 CategoryPlot plot=jChart.getCategoryPlot();
                 plot.setRangeGridlinePaint(Color.black);
-                if(Main.userSettings.getGuiUserTheme().equals("Dark")) {
+                if(Main.userSettings.getGuiTheme().equals("Dark")) {
                     jChart.setBackgroundPaint(new Color(60, 60, 60));
                     jChart.getTitle().setPaint(Color.LIGHT_GRAY);
                     plot.setOutlinePaint(Color.GRAY);

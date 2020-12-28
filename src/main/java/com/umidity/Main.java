@@ -41,15 +41,15 @@ public class Main{
         Debugger.setActive(true); //TODO: da rimuovere in release
 
         dbms.loadUserSettings();
-        caller = new ApiCaller(userSettings.apiSettings.apikey, EUnits.Metric);
+        caller = new ApiCaller(userSettings.getApikey(), EUnits.Metric);
         Vector<Integer> ids = new Vector<>();
         for(var city:dbms.getCities()){
             ids.add(city.getId());
         }
         asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, (Object) ids.toArray(Integer[]::new));
 
-        userSettings.interfaceSettings.guiEnabled = true;
-        if(userSettings.interfaceSettings.guiEnabled){
+        userSettings.setGuiEnabled(true);
+        if(userSettings.isGuiEnabled()){
             new MainFrame();
         }else{
             new MainCli().run();

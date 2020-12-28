@@ -64,19 +64,19 @@ public class SettingsGui implements RecordsListener {
         });
         cliComboBox.addActionListener(e -> {
             if (cliComboBox.getSelectedIndex() == 0) {
-                Main.userSettings.interfaceSettings.guiUserTheme = "Light";
+                Main.userSettings.setGuiTheme("Light");
 
             } else {
-                Main.userSettings.interfaceSettings.guiUserTheme = "Dark";
+                Main.userSettings.setGuiTheme("Dark");
             }
             Main.dbms.saveUserSettings();
         });
         interfaceComboBox.addActionListener(e -> {
             if(interfaceComboBox.getSelectedIndex()==0){
-                Main.userSettings.interfaceSettings.guiEnabled=true;
+                Main.userSettings.setGuiEnabled(true);
 
             }else {
-                Main.userSettings.interfaceSettings.guiEnabled=false;
+                Main.userSettings.setGuiEnabled(false);
             }
             Main.dbms.saveUserSettings();
         });
@@ -86,15 +86,15 @@ public class SettingsGui implements RecordsListener {
      * Perform initialization actions
      */
     private void init(){
-        switch (Main.userSettings.interfaceSettings.guiUserTheme){
+        switch (Main.userSettings.getGuiTheme()){
             case "Dark" -> guiComboBox.setSelectedIndex(1);
             default -> guiComboBox.setSelectedIndex(0);
         }
-        switch (Main.userSettings.interfaceSettings.cliUserTheme){
+        switch (Main.userSettings.getCliTheme()){
             case "Dark" -> cliComboBox.setSelectedIndex(1);
             default -> cliComboBox.setSelectedIndex(0);
         }
-        if (Main.userSettings.interfaceSettings.guiEnabled) {
+        if (Main.userSettings.isGuiEnabled()) {
             interfaceComboBox.setSelectedIndex(0);
         } else {
             interfaceComboBox.setSelectedIndex(1);

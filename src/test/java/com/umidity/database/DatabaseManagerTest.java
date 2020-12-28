@@ -19,12 +19,11 @@ class DatabaseManagerTest {
         dbms = new DatabaseManager("test/records/");
         settings = new UserSettings();
 
-        settings.apiSettings.units = EUnits.Metric;
-        settings.interfaceSettings.guiEnabled = true;
-        settings.interfaceSettings.cliUserTheme = "default";
-        settings.interfaceSettings.guiUserTheme = "default";
-        settings.interfaceSettings.prompt = ">";
-        settings.username = "test";
+        settings.setUnits(EUnits.Metric);
+        settings.setGuiEnabled(true);
+        settings.setCliTheme("default");
+        settings.setGuiTheme("default");
+        settings.setCliPrompt(">");
         dbms.recreate();
 
     }
