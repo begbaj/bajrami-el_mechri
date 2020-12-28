@@ -25,6 +25,7 @@ public class DatabaseManager {
     public DatabaseManager(){
         basePath = "records/";
     }
+
     public DatabaseManager(String newPath){
         newPath = newPath.trim();
         if(newPath.charAt(newPath.length()-1) != '/')
@@ -72,6 +73,7 @@ public class DatabaseManager {
         File cityRecordsFile = new File(path);
         cityRecordsFile.delete();
     }
+
     /**
      * This method creates a new Database deleting, if existing, the one present in the indicated <em>basePath</em>
      * (default is "records/")
@@ -131,6 +133,7 @@ public class DatabaseManager {
         }
         return records;
     }
+
     public boolean removeCity(CityRecord cityRecord) {
         boolean flag = false;
         List<CityRecord> records = getCities();
@@ -163,6 +166,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public CityRecord getFavouriteCity(){
         CityRecord cityRecord=new CityRecord(-1, "", new Coordinates(-1, -1));
         try{
@@ -281,6 +285,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     /**
      * Saves settings into file
      */
@@ -292,6 +297,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public void createNewFile(String path){
         File yourFile = new File(path);
         yourFile.getParentFile().mkdirs(); //CREA LE DIRECTORY SOPRA

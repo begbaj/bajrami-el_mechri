@@ -9,7 +9,6 @@ import com.umidity.api.caller.ApiListener;
 import com.umidity.Coordinates;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallHistoricalResponse;
-import com.umidity.api.response.OneCallResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
 import com.umidity.statistics.StatsCalculator;
@@ -66,54 +65,33 @@ public class MainGui implements ApiListener{
     private JButton getLast5DaysButton;
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
+
+    boolean listenerOn;
     Single realtimeResponse;
-    StatsCalculator statsCalc;
     String[] recordColumnNames;
     String[] statisticsColumnNames;
-    boolean listenerOn;
-    Locale currentLocale;
     DecimalFormatSymbols otherSymbols;
     DecimalFormat df;
-    DefaultCategoryDataset dcd;
     JDatePanelImpl datePanelFrom;
     JDatePanelImpl datePanelTo;
+    SimpleDateFormat format;
 
     public MainGui(){
 
-        statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
-        Vector<String> recordColumnNames = new Vector();
-        recordColumnNames.add("DateTime");
-        recordColumnNames.add("Temperature");
-        recordColumnNames.add("Humidity");
+        Main.dbms.loadUserSettings();
 
+        statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
+        recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
+        Vector<String> vRecordColumnNames=new Vector<>(Arrays.asList(recordColumnNames));
+        Vector<String> vStasticsColumnNames=new Vector<>(Arrays.asList(statisticsColumnNames));
 
         listenerOn = true;
-        currentLocale = Locale.getDefault();
-        otherSymbols = new DecimalFormatSymbols(currentLocale);
-        Main.dbms.loadUserSettings();
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM hh:00");
 
-        if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light")) {
-            try {
-                UIManager.setLookAndFeel(new FlatLightLaf());
-            } catch (Exception e) {
-                System.err.println("Failed to initialize LaF");
-            }
-        }else{
-            try {
-                UIManager.setLookAndFeel(new FlatDarkLaf());
-            } catch (Exception e) {
-                System.err.println("Failed to initialize LaF");
-            }
-        }
+        formatSetup();
+        themeSetup();
 
-        otherSymbols.setDecimalSeparator('.');
-        df = new DecimalFormat("###.##", otherSymbols);
-
-        createTable(recordsTable, null, this.recordColumnNames);
+        createTable(recordsTable, null, recordColumnNames);
         createTable(statisticsTable, null, statisticsColumnNames);
-
-        SwingUtilities.updateComponentTreeUI(panelMain);
 
         searchButton.addActionListener((e) -> {
             try {
@@ -124,13 +102,11 @@ public class MainGui implements ApiListener{
                     realtimeResponse= new Single(Main.caller.getByZipCode(textField_ZIP.getText(), textField_State.getText()));
                 else nosuchLabel.setText("You must specify the area!");
                 if(!nosuchLabel.getText().equals("You must specify the area!")) {
-                    Date date = new Date((new Timestamp(realtimeResponse.getTimestamp() * 1000)).getTime());
-                    String dateString = format.format(date);
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
-                    firstRow.add(dateString);
+                    firstRow.add(format.format(new Date(realtimeResponse.getTimestamp()*1000)));
                     firstRow.add(Double.toString(realtimeResponse.getTemp()));
-                    firstRow.add((float) realtimeResponse.getHumidity() + "%");
+                    firstRow.add(realtimeResponse.getHumidity() + "%");
                     matrix.add(firstRow);
                     ForecastResponse forecastResponse = Main.caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
                     Single[] forecastRecords = forecastResponse.getSingles();
@@ -146,7 +122,8 @@ public class MainGui implements ApiListener{
                         matrix.add(nextRow);
                     }
 
-                    recordsTable.setModel(new DefaultTableModel(matrix, recordColumnNames));
+                    //Controlla create Table
+                    recordsTable.setModel(new DefaultTableModel(matrix, vRecordColumnNames));
                     recordsTable.setFillsViewportHeight(true);
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
@@ -166,10 +143,10 @@ public class MainGui implements ApiListener{
                     setFavouriteCityCheckBox.setSelected(Main.dbms.getFavouriteCity().getId() == city.getId());
                     listenerOn = true;
                 }
-            } catch (FileNotFoundException var17) {
+            } catch (FileNotFoundException ex) {
                 nosuchLabel.setText("Can't find any area with such parameters");
-            } catch (IOException var18) {
-                var18.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         });
 
@@ -183,6 +160,7 @@ public class MainGui implements ApiListener{
                 public void windowLostFocus(WindowEvent e) {
                     SwingUtilities.updateComponentTreeUI(panelMain);
                     Main.dbms.setUserSettings();
+                    searchButton.doClick();
                 }
             };
             settingsGui.addWindowFocusListener(hi);
@@ -268,7 +246,7 @@ public class MainGui implements ApiListener{
                         listenerOn = true;
                     }
                 } catch (Exception ex) {
-                    nosuchLabel.setText("You have to search it first");
+                    nosuchLabel.setText("You have to search for an area first");
                     listenerOn = false;
                     saveCityRecordsCheckBox.setSelected(false);
                     listenerOn = true;
@@ -279,10 +257,17 @@ public class MainGui implements ApiListener{
 
         setFavouriteCityCheckBox.addActionListener((e) -> {
             if (listenerOn) {
-                if (setFavouriteCityCheckBox.isSelected()) {
-                    Main.dbms.setFavouriteCity(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord()));
-                } else {
-                    Main.dbms.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1.0F, -1.0F)));
+                try {
+                    if (setFavouriteCityCheckBox.isSelected()) {
+                        Main.dbms.setFavouriteCity(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord()));
+                    } else {
+                        Main.dbms.setFavouriteCity(new CityRecord(-1, "", new Coordinates(-1.0F, -1.0F)));
+                    }
+                }catch (Exception ex){
+                    nosuchLabel.setText("You have to search for an area first");
+                    listenerOn = false;
+                    setFavouriteCityCheckBox.setSelected(false);
+                    listenerOn = true;
                 }
             }
 
@@ -315,7 +300,7 @@ public class MainGui implements ApiListener{
                 dcd.setValue(max, "Humidity", "Max");
                 dcd.setValue(avg, "Humidity", "Avg");
 
-                JFreeChart jChart = ChartFactory.createBarChart("Humidity", (String)null, (String)null, dcd, PlotOrientation.VERTICAL, false, false, false);
+                JFreeChart jChart = ChartFactory.createBarChart("Humidity", null, null, dcd, PlotOrientation.VERTICAL, false, false, false);
                 CategoryPlot plot=jChart.getCategoryPlot();
                 plot.setRangeGridlinePaint(Color.BLACK);
                 if(UIManager.getLookAndFeel().getID().equals("FlatLaf - FlatLaf Dark")) {
@@ -374,28 +359,36 @@ public class MainGui implements ApiListener{
             }
         });
 
-        favouriteCityStart();
         getLast5DaysButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Calendar cal = Calendar.getInstance();
-                try {
-                    List<HumidityRecord> records=new ArrayList<>();
-                    CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
-                    for(int i=0; i<6; i++){
-                        OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
-                        for(var x:response.hourly){
-                            records.add(new HumidityRecord(x.humidity, x.dt, city));
+                Thread thread = new Thread(){
+                    public void run(){
+                        System.out.println("Thread Running");
+                        Calendar cal = Calendar.getInstance();
+                        try {
+                            List<HumidityRecord> records=new ArrayList<>();
+                            CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
+                            for(int i=0; i<6; i++){
+                                OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
+                                for(var x:response.hourly){
+                                    records.add(new HumidityRecord(x.humidity, x.dt, city));
+                                }
+                                cal.add(5, -1);
+                            }
+                            Main.dbms.addHumidity(records);
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
                         }
-                        cal.add(5, -1);
+                        timeStatsBox.setSelectedIndex(0);
                     }
-                    Main.dbms.addHumidity(records);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                timeStatsBox.setSelectedIndex(0);
+                };
+
+                thread.start();
             }
         });
+
+        favouriteCityStart();
     }
 
     public void createTable(JTable table, String[][] data, Object[] columnNames) {
@@ -417,7 +410,7 @@ public class MainGui implements ApiListener{
             String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), df.format(avg), df.format(variance)}};
             createTable(statisticsTable, statistics, statisticsColumnNames);
         } catch (Exception ex) {
-            createTable(statisticsTable, (String[][])null, statisticsColumnNames);
+            createTable(statisticsTable, null, statisticsColumnNames);
             enoughLabel.setText("Not enough records");
             simpleGraphButton.setEnabled(false);
             recordsGraphButton.setEnabled(false);
@@ -428,11 +421,9 @@ public class MainGui implements ApiListener{
     void setPanelEnabled(JPanel panel, Boolean isEnabled) {
         panel.setEnabled(isEnabled);
         Component[] components = panel.getComponents();
-        Component[] var4 = components;
-        int var5 = components.length;
 
-        for(int var6 = 0; var6 < var5; ++var6) {
-            Component component = var4[var6];
+        for(int i = 0; i < components.length; ++i) {
+            Component component = components[i];
             if (component instanceof JPanel) {
                 setPanelEnabled((JPanel)component, isEnabled);
             }
@@ -448,7 +439,33 @@ public class MainGui implements ApiListener{
             textField_City.setText(favouriteCity.getName());
             searchButton.doClick();
         }
+        else{
+            setPanelEnabled(statisticPanel, false);
+        }
+    }
 
+    public void themeSetup(){
+        if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light")) {
+            try {
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            } catch (Exception e) {
+                System.err.println("Failed to initialize LaF");
+            }
+        }else{
+            try {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            } catch (Exception e) {
+                System.err.println("Failed to initialize LaF");
+            }
+        }
+        SwingUtilities.updateComponentTreeUI(panelMain);
+    }
+
+    public void formatSetup(){
+        otherSymbols=new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator('.');
+        df = new DecimalFormat("###.##", otherSymbols);
+        format = new SimpleDateFormat("dd-MM HH:00");
     }
 
     private void createUIComponents() {
@@ -470,13 +487,13 @@ public class MainGui implements ApiListener{
         Vector<Integer> ids = new Vector<>();
         for(var city:Main.dbms.getCities()){
             ids.add(city.getId());
-        };
+        }
          Main.asyncCaller.setArgs((Object) ids.toArray(Integer[]::new));
     }
 
     @Override
     public void onReceiveCurrent(Object sender, ApiArgument arg) {
-
+     //TODO: -----> Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
     }
 
     @Override

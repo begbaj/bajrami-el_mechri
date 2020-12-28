@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -12,7 +15,7 @@ import com.umidity.Main;
 import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
 
-public class SettingsGui {
+public class SettingsGui implements FocusListener {
 
     private JComboBox guiComboBox;
     public JPanel panelSettings;
@@ -23,9 +26,10 @@ public class SettingsGui {
     private JPanel User;
     private JComboBox cliComboBox;
     private JComboBox interfaceComboBox;
+    private JLabel noCityLabel;
 
     public SettingsGui() {
-
+        panelSettings.addFocusListener(this);
         Main.dbms.loadUserSettings();
         if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light"))
             guiComboBox.setSelectedIndex(0);
@@ -57,18 +61,26 @@ public class SettingsGui {
                     }
                 }
                 Main.dbms.setUserSettings();
-                SwingUtilities.updateComponentTreeUI(panelSettings);
+
+                Arrays.stream(JFrame.getFrames()).forEach(x->SwingUtilities.updateComponentTreeUI(x.getComponent(0)));
             });
 
 
         tabbedPane1.addChangeListener(e -> {
             if(tabbedPane1.getSelectedIndex()==1){
                 createCityTable();
+                noCityLabel.setText("");
             }
         });
         deleteButton.addActionListener(e -> {
-            Main.dbms.removeCity(new CityRecord(Integer.parseInt((String)cityTable.getValueAt(cityTable.getSelectedRow(), 1)), "", new Coordinates(-1,-1)));
-            createCityTable();
+            try {
+                Main.dbms.removeCity(new CityRecord(Integer.parseInt((String)cityTable.getValueAt(cityTable.getSelectedRow(), 1)), "", new Coordinates(-1,-1)));
+                createCityTable();
+                noCityLabel.setText("");
+            }catch (Exception exception){
+                noCityLabel.setText("No city selected!");
+            }
+
         });
         cliComboBox.addActionListener(new ActionListener() {
             @Override
@@ -111,6 +123,17 @@ public class SettingsGui {
         cityTable.setModel(new DefaultTableModel(data,header));
         cityTable.setFillsViewportHeight(true);
         cityTable.setDefaultEditor(Object.class, null);
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+            createCityTable();
+            System.out.println("Focus gained");
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+
     }
 }
 
