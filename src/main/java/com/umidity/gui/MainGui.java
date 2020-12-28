@@ -398,7 +398,7 @@ public class MainGui implements ApiListener, RecordsListener {
     }
 
     public void createStatistic(Date fromDate, Date toDate) {
-        try {
+        if(realtimeResponse!=null){
             simpleGraphButton.setEnabled(true);
             recordsGraphButton.setEnabled(true);
             enoughLabel.setText("");
@@ -413,7 +413,7 @@ public class MainGui implements ApiListener, RecordsListener {
                                                             df.format(avg),
                                                             df.format(variance))));
             updateTable(statisticsTable, statistics, statisticsColumnNames);
-        } catch (Exception ex) {
+        }else{
             updateTable(statisticsTable, null, statisticsColumnNames);
             enoughLabel.setText("Not enough records");
             simpleGraphButton.setEnabled(false);
