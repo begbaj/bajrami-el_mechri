@@ -1,9 +1,4 @@
 package com.umidity;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 /**
@@ -14,15 +9,17 @@ public class Coordinates {
     /**
      * Latitude
      */
-    @JsonProperty("lat")
     public float lat;
     /**
      * Longitude
      */
-    @JsonProperty("lon")
     public float lon;
 
     public Coordinates(){}
+    public Coordinates(double lat, double lon){
+        this.lat = Float.parseFloat(String.valueOf(lat));
+        this.lon = Float.parseFloat(String.valueOf(lon));
+    }
     public Coordinates(float lat, float lon){
         this.lat = lat;
         this.lon = lon;

@@ -11,7 +11,7 @@ import java.util.Vector;
 
 //TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForecastResponse implements Response, ICoordinates, IHumidities {
+public class ForecastResponse extends Response implements ICoordinates, IHumidities {
     public String cod;
     public int message;
     public int cnt;
@@ -28,8 +28,9 @@ public class ForecastResponse implements Response, ICoordinates, IHumidities {
         Vector<Pair<Long,Integer>> humidities = new Vector<>();
 
         for(ApiResponse a:list){
-            humidities.add(new Pair<>(Long.parseLong(a.dt), a.main.getHumidity()));
+            humidities.add(new Pair<>(a.getTimestamp(), a.getHumidity()));
         }
+
         return humidities;
     }
 
@@ -51,9 +52,9 @@ public class ForecastResponse implements Response, ICoordinates, IHumidities {
     @Override
     public Single getSingle(){
         if(list.length > 0){
-            list[0].id = city.id;
-            list[0].coord = city.coord;
-            list[0].name = city.name;
+            list[0].setCityId(city.id);
+            list[0].setCoord(city.coord);
+            list[0].setCityName(city.name);
             return new Single(list[0]);
         }
         return null;
@@ -66,9 +67,9 @@ public class ForecastResponse implements Response, ICoordinates, IHumidities {
     @Override
     public Single[] getSingles(){
         for(ApiResponse a:list){
-            a.id = city.id;
-            a.coord = city.coord;
-            a.name = city.name;
+            a.setCityId(city.id);
+            a.setCoord(city.coord);
+            a.setCityName(city.name);
         }
         if(list.length > 0)
             return Single.getSingles(list);

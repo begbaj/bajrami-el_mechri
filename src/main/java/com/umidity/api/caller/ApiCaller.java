@@ -153,8 +153,8 @@ public class ApiCaller extends Caller {
                 + (!countryCode.equals("") ? "," + countryCode : "")
                 + endParams;
 
-        var response = new ObjectMapper().readValue(new URL(url), ApiResponse.class);
-        var apiArg = new ApiArgument(response.getSingles());
+        ApiResponse response = new ObjectMapper().readerFor(ApiResponse.class).readValue(new URL(url));
+        ApiArgument apiArg = new ApiArgument(response.getSingles());
         for(ApiListener l:apiListeners){
             l.onReceiveCurrent(this, apiArg);
             l.onReceive(this, apiArg);

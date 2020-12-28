@@ -88,7 +88,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }
@@ -107,7 +107,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }
@@ -126,7 +126,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Senigallia", caller.apiResponse.elementAt(0).name);
+            assertEquals("Senigallia", caller.apiResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }
@@ -145,7 +145,7 @@ class AsyncCallerTest {
             assertFalse(caller.getRunningStatus());
             assertFalse(caller.isAlive());
 
-            assertEquals("Roncitelli", caller.apiResponse.elementAt(0).name);
+            assertEquals("Roncitelli", caller.apiResponse.elementAt(0).getCityName());
         } catch (InterruptedException e) {
             fail();
         }

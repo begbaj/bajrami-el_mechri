@@ -19,7 +19,7 @@ import java.util.*;
 public class DatabaseManager {
 
     final ObjectMapper objectMapper=new ObjectMapper();
-    final ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+    final ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter()); //TODO: per salvare spazio, rimuovere pretty printer!
     private String basePath;
 
     public DatabaseManager(){

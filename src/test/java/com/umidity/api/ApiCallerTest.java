@@ -77,8 +77,9 @@ class ApiCallerTest {
             ApiResponse r1 = caller.getByCityName("Rome","","us");
             ApiResponse r2 = caller.getByCityName("Rome","","it");
             assertNotEquals(r1.getCoord().lat, r2.getCoord().lat);
-            assertNotNull(r1.main);
-            assertNotNull(r2.main);
+            assertEquals("Rome", r1.getCityName());
+            assertEquals("Rome",r2.getCityName());
+            assertNotEquals(r1.getCoord(), r2.getCoord());
         } catch (IOException e) {
             fail();
         }
@@ -93,10 +94,10 @@ class ApiCallerTest {
             assertNotNull(r1);
             assertNotNull(r2);
 
-            assertEquals(r1.name, "Senigallia");
-            assertEquals(r2.name, "Seregno");
-            assertNotNull(r1.main);
-            assertNotNull(r2.main);
+            assertEquals(r1.getCityName(), "Senigallia");
+            assertEquals(r2.getCityName(), "Seregno");
+            assertNotNull(r1.getHumidity());
+            assertNotNull(r2.getHumidity());
 
         } catch (IOException e) {
             fail();
@@ -110,8 +111,8 @@ class ApiCallerTest {
             ApiResponse r1 = caller.getByCoordinates(43.713056f,13.218333f);
             assertNotNull(r1);
 
-            assertEquals(r1.name, "Senigallia");
-            assertNotNull(r1.main);
+            assertEquals(r1.getCityName(), "Senigallia");
+            assertNotNull(r1.getHumidity());
         } catch (IOException e) {
             fail();
         }
@@ -122,8 +123,8 @@ class ApiCallerTest {
         try {
             ApiResponse r1 = caller.getByZipCode("60019", "it");
             assertNotNull(r1);
-            assertEquals(r1.name, "Roncitelli");
-            assertNotNull(r1.main);
+            assertEquals(r1.getCityName(), "Roncitelli");
+            assertNotNull(r1.getHumidity());
         } catch (IOException e) {
             fail();
         }

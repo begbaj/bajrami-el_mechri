@@ -10,7 +10,7 @@ import com.umidity.api.Single;
 
 //TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OneCallHistoricalResponse implements Response, ICoordinates, IHumidity {
+public class OneCallHistoricalResponse extends Response implements ICoordinates, IHumidity {
 
     @JsonProperty("lat")
     public float lat;
@@ -46,11 +46,6 @@ public class OneCallHistoricalResponse implements Response, ICoordinates, IHumid
         public int wind_deg;
         public Weather[] weather;
         public float pop;
-    }
-
-    public static class RainSnow{
-        @JsonProperty("1h")
-        public Number oneH;
     }
 
     @Override

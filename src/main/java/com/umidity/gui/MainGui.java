@@ -129,7 +129,7 @@ public class MainGui implements ApiListener{
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
                     firstRow.add(dateString);
-                    firstRow.add(Float.toString(realtimeResponse.getTemp()));
+                    firstRow.add(Double.toString(realtimeResponse.getTemp()));
                     firstRow.add((float) realtimeResponse.getHumidity() + "%");
                     matrix.add(firstRow);
                     ForecastResponse forecastResponse = Main.caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
@@ -141,7 +141,7 @@ public class MainGui implements ApiListener{
                         String datetimeString = format.format(datetime);
                         Vector<String> nextRow = new Vector();
                         nextRow.add(datetimeString);
-                        nextRow.add(Float.toString(f_record.getTemp()));
+                        nextRow.add(Double.toString(f_record.getTemp()));
                         nextRow.add(((float) f_record.getHumidity()) + "%");
                         matrix.add(nextRow);
                     }
