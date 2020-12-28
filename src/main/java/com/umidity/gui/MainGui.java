@@ -11,6 +11,7 @@ import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
+import com.umidity.database.RecordsListener;
 import com.umidity.statistics.StatsCalculator;
 
 import java.awt.*;
@@ -37,7 +38,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class MainGui implements ApiListener{
+public class MainGui implements ApiListener, RecordsListener {
     public JPanel panelMain;
     private JTextField textField_City;
     private JButton searchButton;
@@ -152,18 +153,6 @@ public class MainGui implements ApiListener{
 
         settingsbutton.addActionListener((e) -> {
             SettingsFrame settingsGui = new SettingsFrame();
-            WindowFocusListener hi = new WindowFocusListener() {
-                public void windowGainedFocus(WindowEvent e) {
-                    SwingUtilities.updateComponentTreeUI(panelMain);
-                }
-
-                public void windowLostFocus(WindowEvent e) {
-                    SwingUtilities.updateComponentTreeUI(panelMain);
-                    Main.dbms.setUserSettings();
-                    searchButton.doClick();
-                }
-            };
-            settingsGui.addWindowFocusListener(hi);
         });
 
         timeStatsBox.addActionListener((e) -> {
@@ -493,7 +482,7 @@ public class MainGui implements ApiListener{
 
     @Override
     public void onReceiveCurrent(Object sender, ApiArgument arg) {
-     //TODO: -----> Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
+     Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
     }
 
     @Override
@@ -503,7 +492,6 @@ public class MainGui implements ApiListener{
 
     @Override
     public void onReceiveHistorical(Object sender, ApiArgument arg) {
-       Main.dbms.addHumidity(HumidityRecord.singlesToHumidityRecord(Arrays.asList(arg.getResponses())));
     }
 
     @Override
@@ -529,5 +517,20 @@ public class MainGui implements ApiListener{
     @Override
     public void onRequest(Object sender, ApiArgument arg) {
 
+    }
+
+    //TODO: realtimecity?????????
+    @Override
+    public void onChangedCities() {
+        if(recordColumnNames!=null){
+            if(!Main.dbms.cityisSaved(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord())))
+            {
+                listenerOn=false;
+                saveCityRecordsCheckBox.setSelected(false);
+                setPanelEnabled(statisticPanel, false);
+                nosuchLabel.setText("City removed!");
+                listenerOn=true;
+            }
+        }
     }
 }

@@ -42,7 +42,6 @@ public class Main{
         Date time=new Date();
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.apiSettings.apikey, EUnits.Metric);
-
         Vector<Integer> ids = new Vector<>();
         for(var city:dbms.getCities()){
             ids.add(city.getId());

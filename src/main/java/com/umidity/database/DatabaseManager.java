@@ -8,6 +8,7 @@ import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.UserSettings;
 import com.umidity.Coordinates;
+import com.umidity.api.caller.ApiListener;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -18,6 +19,7 @@ import java.util.*;
 
 public class DatabaseManager {
 
+    ArrayList<RecordsListener> listeners=new ArrayList<>();
     final ObjectMapper objectMapper=new ObjectMapper();
     final ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter()); //TODO: per salvare spazio, rimuovere pretty printer!
     private String basePath;
@@ -32,6 +34,8 @@ public class DatabaseManager {
             newPath += "/";
         basePath = newPath;
     }
+
+    public void addListener(RecordsListener listener){listeners.add(listener);}
 
     /**
      * Delete a file or a directory in the given path. If it is a directory,
@@ -112,6 +116,9 @@ public class DatabaseManager {
             e.printStackTrace();
             return false;
         }
+        for(RecordsListener l:listeners){
+            l.onChangedCities();
+        }
         return true;
     }
 
@@ -153,6 +160,9 @@ public class DatabaseManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        for(RecordsListener l:listeners){
+            l.onChangedCities();
         }
         return flag;
     }

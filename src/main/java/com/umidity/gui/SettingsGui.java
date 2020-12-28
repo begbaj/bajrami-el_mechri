@@ -2,10 +2,7 @@ package com.umidity.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -14,8 +11,9 @@ import com.formdev.flatlaf.*;
 import com.umidity.Main;
 import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
+import com.umidity.database.RecordsListener;
 
-public class SettingsGui implements FocusListener {
+public class SettingsGui implements RecordsListener {
 
     private JComboBox guiComboBox;
     public JPanel panelSettings;
@@ -28,8 +26,8 @@ public class SettingsGui implements FocusListener {
     private JComboBox interfaceComboBox;
     private JLabel noCityLabel;
 
-    public SettingsGui() {
-        panelSettings.addFocusListener(this);
+    public SettingsGui(){
+
         Main.dbms.loadUserSettings();
         if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light"))
             guiComboBox.setSelectedIndex(0);
@@ -126,14 +124,8 @@ public class SettingsGui implements FocusListener {
     }
 
     @Override
-    public void focusGained(FocusEvent e) {
+    public void onChangedCities() {
             createCityTable();
-            System.out.println("Focus gained");
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-
     }
 }
 

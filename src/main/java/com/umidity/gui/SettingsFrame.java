@@ -1,11 +1,15 @@
 package com.umidity.gui;
+import com.umidity.Main;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SettingsFrame extends JFrame {
 
     public SettingsFrame() {
-        this.setContentPane(new SettingsGui().panelSettings);
+        SettingsGui settingsGui=new SettingsGui();
+        this.setContentPane(settingsGui.panelSettings);
+        Main.dbms.addListener(settingsGui);
         this.setVisible(true);
         this.setTitle("Settings");
         this.setSize(300, 300 );
