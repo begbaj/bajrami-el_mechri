@@ -20,18 +20,6 @@ public class Coordinates {
         this.lat = Float.parseFloat(String.valueOf(lat));
         this.lon = Float.parseFloat(String.valueOf(lon));
     }
-    public Coordinates(float lat, float lon){
-        this.lat = lat;
-        this.lon = lon;
-    }
-
-    public void setLat(float lat){
-        this.lat = lat;
-    }
-
-    public void setLon(float lon){
-        this.lon = lon;
-    }
 
     public void setLat(double lat){
         this.lat = Float.parseFloat(String.valueOf(lat));
