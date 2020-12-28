@@ -74,6 +74,9 @@ public class UserSettings {
     @JsonIgnore
     public String[] cityIds = new String[10];
 
+    public void setGuiTheme(String theme){
+        interfaceSettings.guiUserTheme = theme;
+    }
     //TODO: altre impostazioni utili
 
     public UserSettings(){

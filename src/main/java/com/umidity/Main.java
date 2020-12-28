@@ -39,7 +39,7 @@ public class Main{
 
     public static void main(String[] args){
         Debugger.setActive(true); //TODO: da rimuovere in release
-        Date time=new Date();
+
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.apiSettings.apikey, EUnits.Metric);
         Vector<Integer> ids = new Vector<>();
@@ -50,10 +50,9 @@ public class Main{
 
         userSettings.interfaceSettings.guiEnabled = true;
         if(userSettings.interfaceSettings.guiEnabled){
-             MainFrame Frame=new MainFrame();
+            new MainFrame();
         }else{
-            MainCli mainCli = new MainCli();
-            mainCli.run();
+            new MainCli().run();
             Debugger.println("chiuso");
         }
     }

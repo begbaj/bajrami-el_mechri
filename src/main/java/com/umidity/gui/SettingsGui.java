@@ -43,25 +43,19 @@ public class SettingsGui implements RecordsListener {
             interfaceComboBox.setSelectedIndex(1);
 
         guiComboBox.addActionListener(e -> {
-                if(guiComboBox.getSelectedIndex()==0){
                     try {
-                        UIManager.setLookAndFeel( new FlatLightLaf() );
-                        Main.userSettings.interfaceSettings.guiUserTheme="Light";
-                    } catch( Exception ex ) {
-                        System.err.println( "Failed to initialize LaF" );
-                    }
-                }else {
-                    try {
-                        UIManager.setLookAndFeel( new FlatDarkLaf() );
-                        Main.userSettings.interfaceSettings.guiUserTheme="Dark";
-                    } catch( Exception ex ) {
-                        System.err.println( "Failed to initialize LaF" );
-                    }
-                }
-                Main.dbms.setUserSettings();
+                        if (guiComboBox.getSelectedIndex() == 0) {
+                            MainGui.changeTheme("Light");
+                            Main.userSettings.setGuiTheme("Light");
+                        } else {
+                            MainGui.changeTheme("Dark");
+                            Main.userSettings.setGuiTheme("Dark");
+                        }
+                        Main.dbms.setUserSettings();
 
-                Arrays.stream(JFrame.getFrames()).forEach(x->SwingUtilities.updateComponentTreeUI(x.getComponent(0)));
-            });
+                    } catch( Exception ex ) {
+                        System.err.println( "Failed to initialize LaF" );
+        }});
 
 
         tabbedPane1.addChangeListener(e -> {

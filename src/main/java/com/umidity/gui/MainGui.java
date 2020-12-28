@@ -2,6 +2,7 @@ package com.umidity.gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.api.Single;
 import com.umidity.api.caller.ApiArgument;
@@ -39,6 +40,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class MainGui implements ApiListener, RecordsListener {
+    //region JTools
     public JPanel panelMain;
     private JTextField textField_City;
     private JButton searchButton;
@@ -66,6 +68,7 @@ public class MainGui implements ApiListener, RecordsListener {
     private JButton getLast5DaysButton;
     private ChartPanel chartPanel;
     private ChartPanel chartRecordsPanel;
+    //endregion
 
     boolean listenerOn;
     Single realtimeResponse;
@@ -79,20 +82,22 @@ public class MainGui implements ApiListener, RecordsListener {
 
     public MainGui(){
 
-        Main.dbms.loadUserSettings();
+        //Main.dbms.loadUserSettings();
 
-        statisticsColumnNames = new String[]{"Min", "Max", "Avg", "Variance"};
-        recordColumnNames = new String[]{"DateTime", "Temperature", "Humidity"};
-        Vector<String> vRecordColumnNames=new Vector<>(Arrays.asList(recordColumnNames));
-        Vector<String> vStasticsColumnNames=new Vector<>(Arrays.asList(statisticsColumnNames));
+        Vector<String> recordColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
+        Vector<String> statisticsColumnNames =new Vector<>(Arrays.asList("DateTime", "Temperature", "Humidity"));
 
         listenerOn = true;
 
-        formatSetup();
-        themeSetup();
+        otherSymbols=new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator('.');
+        df = new DecimalFormat("###.##", otherSymbols);
+        format = new SimpleDateFormat("dd-MM HH:00");
 
-        createTable(recordsTable, null, recordColumnNames);
-        createTable(statisticsTable, null, statisticsColumnNames);
+        changeTheme(Main.userSettings.interfaceSettings.guiUserTheme);
+
+        updateTable(recordsTable, null, recordColumnNames);
+        updateTable(statisticsTable, null, statisticsColumnNames);
 
         searchButton.addActionListener((e) -> {
             try {
@@ -124,7 +129,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     }
 
                     //Controlla create Table
-                    recordsTable.setModel(new DefaultTableModel(matrix, vRecordColumnNames));
+                    recordsTable.setModel(new DefaultTableModel(matrix, recordColumnNames));
                     recordsTable.setFillsViewportHeight(true);
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
@@ -137,7 +142,7 @@ public class MainGui implements ApiListener, RecordsListener {
                         setPanelEnabled(statisticPanel, true);
                     } else {
                         saveCityRecordsCheckBox.setSelected(false);
-                        createTable(statisticsTable, (String[][]) null, statisticsColumnNames);
+                        updateTable(statisticsTable, null, statisticsColumnNames);
                         setPanelEnabled(statisticPanel, false);
                     }
 
@@ -226,7 +231,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     } else if (JOptionPane.showConfirmDialog(panelMain, "Remove city and delete all its records?", "Message", 0) == 0) {
                         Main.dbms.removeCity(city);
                         nosuchLabel.setText("City removed!");
-                        createTable(statisticsTable, null, statisticsColumnNames);
+                        updateTable(statisticsTable, null, statisticsColumnNames);
                         setPanelEnabled(statisticPanel, false);
                         updateAsynCaller();
                     } else {
@@ -380,7 +385,13 @@ public class MainGui implements ApiListener, RecordsListener {
         favouriteCityStart();
     }
 
-    public void createTable(JTable table, String[][] data, Object[] columnNames) {
+    /**
+     * Update content of a table.
+     * @param table table to update
+     * @param data data to insert
+     * @param columnNames column names
+     */
+    public void updateTable(JTable table, Vector<Vector<String>> data, Vector<String> columnNames) {
         table.setModel(new DefaultTableModel(data, columnNames));
         table.setFillsViewportHeight(true);
         table.setDefaultEditor(Object.class, null);
@@ -396,10 +407,11 @@ public class MainGui implements ApiListener, RecordsListener {
             double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
             double avg = StatsCalculator.avg(records, fromDate, toDate);
             double variance = StatsCalculator.variance(records, fromDate, toDate);
-            String[][] statistics = new String[][]{{Double.toString(min), Double.toString(max), df.format(avg), df.format(variance)}};
-            createTable(statisticsTable, statistics, statisticsColumnNames);
+            Vector<Vector<String>> statistics = new Vector<Vector<String>>();
+            {{Double.toString(min), Double.toString(max), df.format(avg), df.format(variance)}};
+            updateTable(statisticsTable, statistics, statisticsColumnNames);
         } catch (Exception ex) {
-            createTable(statisticsTable, null, statisticsColumnNames);
+            updateTable(statisticsTable, null, statisticsColumnNames);
             enoughLabel.setText("Not enough records");
             simpleGraphButton.setEnabled(false);
             recordsGraphButton.setEnabled(false);
@@ -434,27 +446,7 @@ public class MainGui implements ApiListener, RecordsListener {
     }
 
     public void themeSetup(){
-        if(Main.userSettings.interfaceSettings.guiUserTheme.equals("Light")) {
-            try {
-                UIManager.setLookAndFeel(new FlatLightLaf());
-            } catch (Exception e) {
-                System.err.println("Failed to initialize LaF");
-            }
-        }else{
-            try {
-                UIManager.setLookAndFeel(new FlatDarkLaf());
-            } catch (Exception e) {
-                System.err.println("Failed to initialize LaF");
-            }
-        }
-        SwingUtilities.updateComponentTreeUI(panelMain);
-    }
 
-    public void formatSetup(){
-        otherSymbols=new DecimalFormatSymbols(Locale.getDefault());
-        otherSymbols.setDecimalSeparator('.');
-        df = new DecimalFormat("###.##", otherSymbols);
-        format = new SimpleDateFormat("dd-MM HH:00");
     }
 
     private void createUIComponents() {
@@ -478,6 +470,21 @@ public class MainGui implements ApiListener, RecordsListener {
             ids.add(city.getId());
         }
          Main.asyncCaller.setArgs((Object) ids.toArray(Integer[]::new));
+    }
+
+    public static void changeTheme(String theme){
+        try {
+            if(theme == "Light") UIManager.setLookAndFeel(new FlatLightLaf());
+            else if (theme == "Dark") UIManager.setLookAndFeel(new FlatDarkLaf());
+            else{
+                Debugger.println("Tema selezionato non valido");
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to initialize LaF");
+        }finally {
+            Arrays.stream(JFrame.getFrames()).forEach(x -> SwingUtilities.updateComponentTreeUI(x.getComponent(0)));
+        }
     }
 
     @Override
@@ -533,7 +540,7 @@ public class MainGui implements ApiListener, RecordsListener {
                 saveCityRecordsCheckBox.setSelected(false);
                 setPanelEnabled(statisticPanel, false);
                 nosuchLabel.setText("City removed!");
-                createTable(statisticsTable, null, statisticsColumnNames);
+                updateTable(statisticsTable, null, statisticsColumnNames);
                 listenerOn=true;
             }
         }
