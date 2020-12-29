@@ -19,7 +19,7 @@ public class ApiCaller extends Caller {
     /**
      * Api key used for making api calls
      */
-    private final String    appid;
+    private String    appid;
     private EMode           emode;
     private EUnits         eunits;
     private String      endParams;
@@ -340,6 +340,10 @@ public class ApiCaller extends Caller {
      */
     public EUnits getUnit(){ return eunits; }
 
+    /**
+     * Launch an exception that can be listened by all apiListeners
+     * @param e
+     */
     void launchException(Exception e){
         for(var l: apiListeners){
             l.onException(this, e);
@@ -356,6 +360,14 @@ public class ApiCaller extends Caller {
      * @param value
      */
     public void setUnit(EUnits value){ eunits = value; updateEndParams(); }
+    /**
+     * Set new appid
+     * @param appid
+     */
+    public void setAppid(String appid){
+        this.appid = appid;
+        updateEndParams();
+    }
     //endregion
 
 }

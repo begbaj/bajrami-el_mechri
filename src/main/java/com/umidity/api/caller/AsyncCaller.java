@@ -55,6 +55,7 @@ public class AsyncCaller extends Thread {
         forecastByZipCode,
     }
 
+    //region Properties
     /**
      * Id true, the thread will stop.
      */
@@ -70,16 +71,19 @@ public class AsyncCaller extends Thread {
     /**
      * A vector of oneCallResponses
      */
-    public  Vector<OneCallResponse> oneCallResponse;
-    public  Vector<OneCallHistoricalResponse> oneCallHistoricalResponse;
+    public Vector<OneCallResponse> oneCallResponse;
+    /**
+     * A vector of oneCallHistoricalResponse
+     */
+    public Vector<OneCallHistoricalResponse> oneCallHistoricalResponse;
     /**
      * A vector of ApiResponses
      */
-    public  Vector<ApiResponse> apiResponse;
+    public Vector<ApiResponse> apiResponse;
     /**
      * A vector of ForecastResponses
      */
-    public  Vector<ForecastResponse> forecastResponse;
+    public Vector<ForecastResponse> forecastResponse;
     /**
      * The api caller used for each api call.
      */
@@ -96,6 +100,7 @@ public class AsyncCaller extends Thread {
      * Array of arguments. The needed arguments are dependent on which AsyncMethod is set.
      */
     private Object[] args;
+    //endregion
 
     /**
      * @param caller The api caller used for each api call.
@@ -124,6 +129,9 @@ public class AsyncCaller extends Thread {
      */
     public void addListener(ApiListener listener){caller.addListener(listener);}
 
+    /**
+     * You should not run this
+     */
     public void run(){
         long lastExecution = 0;
         try {
@@ -155,19 +163,12 @@ public class AsyncCaller extends Thread {
             isRunning = false;
         }
     }
-
     /**
      * Stop the thread.
      */
     public void close(){ close = true; }
 
-    /**
-     * After a call is made, the thread will stop
-     * @param value
-     */
-    public void setOneTime(boolean value){ oneTime = value; }
-    public boolean getRunningStatus(){return isRunning; }
-
+    //region Setters and Getters
     /**
      * Makes call to "By City Id" api. If there are more than one argument, it will make a call for each argument.
      * @param args a list of city ids (a list of Strings)
@@ -179,7 +180,6 @@ public class AsyncCaller extends Thread {
             apiResponse.add(caller.getByCityId(String.valueOf(o)));
         }
     }
-
     /**
      * Makes call to "Forecast By City Id" api. If there are more than one argument, it will make a call for each argument.
      * @param args a list of city ids (a list of Strings)
@@ -191,7 +191,22 @@ public class AsyncCaller extends Thread {
             forecastResponse.add(caller.getForecastByCityId(String.valueOf(o)));
         }
     }
+    /**
+     * Get current running status. If thread is running, returns true, false otherwise.
+     * @return
+     */
+    public boolean getRunningStatus(){return isRunning; }
 
+    /**
+     * After a call is made, the thread will stop
+     * @param value
+     */
+    public void setOneTime(boolean value){ oneTime = value; }
+    /**
+     * Set new arguments
+     * @param args
+     * @throws IllegalArgumentException
+     */
     public void setArgs(Object... args) throws IllegalArgumentException{
         try{
             switch (method){
@@ -227,8 +242,23 @@ public class AsyncCaller extends Thread {
         }
         this.args = args;
     }
+    /**
+     * Set new method
+     * @param method
+     */
     public void setMethod(AsyncCaller.AsyncMethod method){ this.method = method; }
+    /**
+     * Set new appid
+     * @param appid
+     */
+    public void setAppid(String appid){
+        caller.setAppid(appid);
+    }
+    //endregion
 
+    /**
+     * Clear all previously stored responses
+     */
     public void clearResponse(){
         oneCallResponse.clear();
         apiResponse.clear();

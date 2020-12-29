@@ -148,20 +148,17 @@ api in maniera asincrona oppure periodiche. Essendo AsyncCaller un processo avvi
 avere un valore di ritorno dalle chiamate in maniera diretta; per questo motivo, abbiamo utilizzato una gestione di eventi
 personalizzata:
 `
- public interface ApiListener {
- 
-     void onReceiveCurrent(Object sender, ApiArgument arg);
-     void onReceiveForecast(Object sender, ApiArgument arg);
-     void onReceiveHistorical(Object sender, ApiArgument arg);
-     void onReceive(Object sender, ApiArgument arg);
- 
-     void onRequestCurrent(Object sender, ApiArgument arg);
-     void onRequestForecast(Object sender, ApiArgument arg);
-     void onRequestHistorical(Object sender, ApiArgument arg);
-     void onRequest(Object sender, ApiArgument arg);
- 
- }
- `
+
+    void onReceiveCurrent(Object sender, ApiArgument arg);
+    void onReceiveForecast(Object sender, ApiArgument arg);
+    void onReceiveHistorical(Object sender, ApiArgument arg);
+    void onReceive(Object sender, ApiArgument arg);
+    void onRequestCurrent(Object sender, ApiArgument arg);
+    void onRequestForecast(Object sender, ApiArgument arg);
+    void onRequestHistorical(Object sender, ApiArgument arg);
+    void onRequest(Object sender, ApiArgument arg);
+    
+`
 
 
 
