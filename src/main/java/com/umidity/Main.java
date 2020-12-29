@@ -1,14 +1,12 @@
 package com.umidity;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.umidity.api.caller.*;
-import com.umidity.api.response.ApiResponse;
+import com.umidity.api.caller.ApiCaller;
+import com.umidity.api.caller.AsyncCaller;
+import com.umidity.api.caller.EUnits;
 import com.umidity.cli.MainCli;
-import com.umidity.gui.*;
 import com.umidity.database.DatabaseManager;
-import org.jfree.chart.util.ArrayUtils;
+import com.umidity.gui.MainFrame;
 
-import java.util.Date;
 import java.util.Vector;
 
 
@@ -38,7 +36,7 @@ public class Main{
 
 
     public static void main(String[] args){
-        Debugger.setActive(true); //TODO: da rimuovere in release
+        Debugger.setActive(false); //TODO: da rimuovere in release
 
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.getApikey(), EUnits.Metric);
@@ -47,7 +45,7 @@ public class Main{
             ids.add(city.getId());
         }
         asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, (Object) ids.toArray(Integer[]::new));
-
+        asyncCaller.start();
         userSettings.setGuiEnabled(true);
         if(userSettings.isGuiEnabled()){
             new MainFrame();

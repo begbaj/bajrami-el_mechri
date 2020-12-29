@@ -2,32 +2,18 @@ package com.umidity.gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.umidity.Coordinates;
 import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.api.Single;
 import com.umidity.api.caller.ApiArgument;
 import com.umidity.api.caller.ApiListener;
-import com.umidity.Coordinates;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.database.CityRecord;
 import com.umidity.database.HumidityRecord;
 import com.umidity.database.RecordsListener;
 import com.umidity.statistics.StatsCalculator;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -38,6 +24,20 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.*;
 
 public class MainGui implements ApiListener, RecordsListener {
     //region JTools
@@ -504,6 +504,7 @@ public class MainGui implements ApiListener, RecordsListener {
         if(realtimeResponse!=null){
             if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
                 Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
+                Debugger.println("Richiesta effettuata: " + arg.getResponse().getCityName() + " " + arg.getResponse().getHumidity());
             }
     }
 
