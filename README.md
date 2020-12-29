@@ -124,15 +124,15 @@ Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo s
 
 ### GUI
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
-ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker](#Dependencies),
-e di quelli utilizzati per la creazioni di grafici [LIB. jFree, LINK ALLE DEPENDENCIES SOTTO].
+ad eccezione di quelli utilizzati per la selezione delle date ([jDatePicker](#Dependencies)),
+e di quelli utilizzati per la creazioni di grafici ([jFreeChart](#Dependencies)).
 
 
 [MOSTRA JDATEPICKER][MOSTRA GRAFICI]
 
 
 E' stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
-[LIB. FlatLaf, LINK ALLE DEPENDENCIES SOTTO]
+([FlatLaf](#Dependencies))
 
 
 [MOSTRA LIGHT][MOSTRA DARK][GIF CAMBIAMENTO DA SETTINGS?]
@@ -155,7 +155,7 @@ Nota Bene: lo stato va indicato tramite lo "State Code"
 ### Database Manager
 Il Database Manager si occupa di salvare su file, come oggetti JSON, le impostazioni e la lista delle città salvate 
 con relativi dati acquisiti. 
-Per riuscirci ci siamo serviti della classe ObjectMapper della [LIB. Jackson, LINK DEPENDENCIES]
+Per riuscirci ci siamo serviti della classe ObjectMapper della libreria [Jackson](#Dependencies)
 usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di serializzare e deserializzare gli oggetti.
 
 Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
