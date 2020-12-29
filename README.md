@@ -65,7 +65,30 @@ Permette di visualizzare l'andamento dell'umidità di tutti i record registrati.
 
 
 #### Getting started: CLI
-WIP
+L'utilizzo di Umidity in versione cli è intesa per un utilizzo rapido, dove la quantità di operazioni rimane limitata alla sessione in corso.
+Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città alla volta, senza la possibilità di salvare le città nè di effettuare controlli periodici.
+I dati non vengono dunque archiviati ma solo visualizzati al momento e poi cancellati.
+
+![immagine cli - primo avvio]()
+
+
+All'avvio la cli presenta subito le operazioni disponibili:
+1. Attuale
+2. Previsioni
+3. Passaggio a gui (Richiede riavvio)
+4. Chiudi
+
+###### Get by city name
+La ricerca per nome città avviene in tre passaggi:
+1. (Richiesto) Inserimento nome città
+2. (Opzionale) Inserimento [codice postale](#zip-code)
+3. (Opzionale) Inserimento [codice stato](#state-code)
+
+
+**Nei campi opzionali è sufficiente premere invio per andare avanti, tuttavia, se si inseriscono dati non corretti è probabile che non si visualizzeranno le informazioni corrette**
+
+![immagine cli - esempio risposta]()
+
 
 
 

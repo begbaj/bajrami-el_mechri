@@ -45,9 +45,9 @@ public class Main{
             ids.add(city.getId());
         }
         asyncCaller = new AsyncCaller(caller, 3600000, AsyncCaller.AsyncMethod.byCityId, (Object) ids.toArray(Integer[]::new));
-        asyncCaller.start();
-        userSettings.setGuiEnabled(true);
+        userSettings.setGuiEnabled(userSettings.isGuiEnabled());
         if(userSettings.isGuiEnabled()){
+            asyncCaller.start();
             new MainFrame();
         }else{
             new MainCli().run();

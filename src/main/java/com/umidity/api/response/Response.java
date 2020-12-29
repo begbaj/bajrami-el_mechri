@@ -85,6 +85,7 @@ public abstract class Response implements ICoordinates, IHumidity {
         return cityCountry;
     }
 
+
     /**
      * Get a Single object representation of this object
      * @return

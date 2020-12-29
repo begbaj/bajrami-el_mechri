@@ -1,4 +1,6 @@
 package com.umidity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 /**
@@ -26,6 +28,11 @@ public class Coordinates {
     }
     public void setLon(double lon){
         this.lon = Float.parseFloat(String.valueOf(lon));
+    }
+
+    @JsonIgnore
+    public String toString(){
+        return "lat: " + lat + " ~ lon:" + lon;
     }
 
     @Override

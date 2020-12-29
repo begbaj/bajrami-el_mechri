@@ -3,11 +3,14 @@ package com.umidity.cli;
 import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.api.caller.ApiCaller;
-import com.umidity.api.caller.EMode;
 import com.umidity.api.caller.EUnits;
-import com.umidity.cli.frames.*;
-import com.umidity.cli.frames.eventHandlers.*;
-import com.umidity.cli.frames.forms.*;
+import com.umidity.cli.frames.Frame;
+import com.umidity.cli.frames.FrameManager;
+import com.umidity.cli.frames.eventHandlers.InputFormArgument;
+import com.umidity.cli.frames.eventHandlers.InputFormListener;
+import com.umidity.cli.frames.forms.ScreenMenu;
+import com.umidity.cli.frames.forms.ScreenText;
+import com.umidity.cli.frames.forms.TextInput;
 import com.umidity.cli.frames.forms.formEvents.WaitEvent;
 import com.umidity.cli.frames.forms.formEvents.WaitForInput;
 import com.umidity.database.HumidityRecord;
@@ -82,6 +85,10 @@ public class MainCli extends FrameManager implements InputFormListener {
             case "main" -> mainMenu();
             case "currentByCityName" -> currentByCityName();
             case "forecastByCityName" -> forecastByCityName();
+            case "toggleGui" -> {
+                Main.userSettings.setGuiEnabled(!Main.userSettings.isGuiEnabled());
+                Main.dbms.saveUserSettings();
+                setPath("main"); }
             case "pastStatistics" -> pastStatistics();
             case "quit" -> this.close = true;
             default -> path = "main";
@@ -91,13 +98,13 @@ public class MainCli extends FrameManager implements InputFormListener {
     protected void beforeUpdate(){
         title.enable();
         title.setVisibility(true);
-        changePath();
     }
 
     @Override
     protected void afterUpdate(){
         if(!append) input.openStream();
         else input.appendStream();
+        changePath();
     }
 
     private void mainMenu(){
@@ -106,12 +113,14 @@ public class MainCli extends FrameManager implements InputFormListener {
         menu.setVisibility(true);
         menu.clearMenuEntries();
         menu.setText("Select one of the following:");
-        menu.addMenuEntry("Get current humidity by city name", "currentByCityName");
-        menu.addMenuEntry("Get forecast humidity by city name", "forecastByCityName");
-        menu.addMenuEntry("Get past humidity statistics (only for saved cities)", "pastStatistics");
-        menu.addMenuEntry("Get forecast humidity statistics (only for saved cities)", "forecastStatistics");
-        menu.addMenuEntry("Close UmidityCli", "quit");
+        menu.addMenuEntry("Current humidity", "currentByCityName");
+        menu.addMenuEntry("Forecast humidity", "forecastByCityName");
+        menu.addMenuEntry((Main.userSettings.isGuiEnabled()?"Disable" : "Enable") + " GUI", "toggleGui");
+        //menu.addMenuEntry("Get past humidity statistics (only for saved cities)", "pastStatistics");
+        //menu.addMenuEntry("Get forecast humidity statistics (only for saved cities)", "forecastStatistics");
+        menu.addMenuEntry("Close Umidity", "quit");
         menu.updateMenu();
+        append = false;
         input.enable();
         if(input.isInput()){
             try{
@@ -138,8 +147,10 @@ public class MainCli extends FrameManager implements InputFormListener {
         if(next){
             var inputs = input.getInputs();
             try {
-                message.setText("Humidity for " + inputs[0] + " is: " +
-                        caller.getByCityName(inputs[0], inputs[1], inputs[2]).getHumidity() + "%");
+                var r = caller.getByCityName(inputs[0], inputs[1], inputs[2]);
+                String unit = (caller.getUnit().equals(EUnits.Metric)? "°C" : "°F");
+                String text = "Humidity for %s, %s (%s) is: %02d%% \n Temperature: %03.02f" + unit +"\n Feels Like: %03.02f" + unit;
+                message.setText(String.format(text, r.getCityName(),r.getCityCountry(),r.getCoord().toString(),r.getHumidity(), r.getTemp(), r.getFeels_like()));
             } catch (IOException e) {
                 message.setText("Ooops, something went wrong :( ... Maybe you typed the wrong city?");
             }finally {
@@ -167,11 +178,18 @@ public class MainCli extends FrameManager implements InputFormListener {
         if(next){
             var inputs = input.getInputs();
             try {
-                String text = "Forecast for " + inputs[0] + " is: \n";
-                SimpleDateFormat format = new SimpleDateFormat("dd-MM hh-mm");
-                for(var h:caller.getForecastByCityName(inputs[0], inputs[1], inputs[2]).getHumidities()){
-                    text += "(" + format.format(new Date(new Timestamp(h.getKey()*1000).getTime())) + ")"
-                            + " : " + h.getValue() + "% \n";
+                var r = caller.getByCityName(inputs[0], inputs[1], inputs[2]);
+                String unit = (caller.getUnit().equals(EUnits.Metric)? "°C" : "°F");
+                String text = "Forecast for %s, %s (%s) is: \n";
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh-mm");
+                boolean first =true;
+                for(var h:caller.getForecastByCityName(inputs[0], inputs[1], inputs[2]).getSingles()){
+                    if(first){
+                        first =false;
+                        text = String.format(text, r.getCityName(),r.getCityCountry(),r.getCoord().toString());
+                    }
+                    String pre = "(%s) Humidity: %02d%% ~ Temperature: %03.02f \n";
+                    text += String.format(pre, format.format(new Date(new Timestamp(h.getTimestamp()*1000).getTime())), h.getHumidity(), h.getTemp());
                 }
                 message.setText(text);
             } catch (IOException e) {
@@ -197,6 +215,7 @@ public class MainCli extends FrameManager implements InputFormListener {
             if(input.isInput())
                 menu.addHistory(input.getInputs()[0]);
         }if(input.getLength() > 1){
+            menu.clearMenuEntries();
             menu.addMenuEntry("Last 7 days", "last7Days");
             menu.addMenuEntry("Last 30 days", "last30Days");
             //menu.addMenuEntry("Custom range", "customRange");
