@@ -1,4 +1,3 @@
-[logo] [badges]
 #You and me, Umidity!
 Umidity permette all'utente di selezionare diverse città per le quali viusalizzare l'umidità corrente e, se desiderato,
 salvarne i dati periodicamente per generare poi statistiche sull'umidità.
@@ -8,7 +7,7 @@ Umidity si presenta con due modalità di utilizzo: il primo (funzionante) è tra
 ###### Getting started: GUI
 L'interfaccia è estremamente compatta ed intuitiva.
 [immagine gui]
-Come prima cosa, inserire il nome di una città (per non rischiare ambiguità, è consigliato inserire anche stato [link al paragrafo sotto]
+Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato inserire anche stato [link al paragrafo sotto]
  e codice postale [Link al paragrafo sotto] ) e premere "Search".
 [immagine gui con precedenti passaggi effettuati]
 Sulla destra compariranno i risultati della ricerca che mostrano umidità e temperatura corrente, ma anche previsioni dei
