@@ -35,7 +35,37 @@ media e varianza dell'umidità. Infatti, si potranno calcolare statistiche SOLO 
 ![immagine gui - statistiche disponibili](img/umidity_gui_statistics_enabled.png)
 
 
+Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l'utente di visualizzare velocemente massimo, minimmo, media e varianza d'umidità degli scorsi 7 giorni.
+Il lasso di tempo è tuttavia personalizzabile:
+
+* Dal menu a tendina si può selezionare "last 7 days" e "last 30 days" (ultimi 7/30 giorni).
+* Oppure, "Custom range" (lasso di tempo personalizzato) che attiverà l'utilizzo dei selettori di data sottostanti.
+
+
+![immagine gui - statistiche 7 giorni](img/umidity_gui_statistics_last-7.png)
+
+
+![immagine gui - statistiche lasso temporale personalizzato](img/umidity_gui_statistics_custom-range.png)
+
+
+è inoltre possibile visualizzare dei grafici riassuntivi delle statistiche mediante i bottoni "Simple graph" e "Record graph"
+
+###### Simple graph
+Permette di visualizzare massimo, minimo e media del lasso di tempo selezionato in maniera grafica.
+
+
+![immagine gui - statistiche simple graph](img/umidity_gui_statistics_pipe-graph.png)
+
+
+###### Record graph
+Permette di visualizzare l'andamento dell'umidità di tutti i record registrati.
+
+
+![immagine gui - statistiche record graph](img/umidity_gui_statistics_line-graph.png)
+
+
 #### Getting started: CLI
+WIP
 
 
 
