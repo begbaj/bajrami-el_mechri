@@ -127,5 +127,4 @@ Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Ra
 # Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
 Università Politecnica delle Marche, non lo si deve considerare come un programma commerciale e pertanto non garantisce
-il suo corretto funzionamento. Inoltre, non è consentito l'uso del programma e delle parti di codice ad esso correlato per
-scopi commerciali.
+il suo corretto funzionamento. L'utilizzo di Umidity è a rischio e pericolo del utente.
