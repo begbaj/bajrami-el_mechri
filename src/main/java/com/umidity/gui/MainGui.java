@@ -82,8 +82,6 @@ public class MainGui implements ApiListener, RecordsListener {
 
     public MainGui(){
 
-        //Main.dbms.loadUserSettings();
-
         recordColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
         statisticsColumnNames =new Vector<>(Arrays.asList("DateTime", "Temperature", "Humidity"));
 
@@ -159,23 +157,9 @@ public class MainGui implements ApiListener, RecordsListener {
         });
 
         timeStatsBox.addActionListener((e) -> {
-            Calendar cal;
-            Date fromDate;
-            if (timeStatsBox.getSelectedIndex() == 0) {
-                cal = Calendar.getInstance();
-                cal.add(5, -7);
-                fromDate = cal.getTime();
-                createStatistic(fromDate, new Date());
-            } else if (timeStatsBox.getSelectedIndex() == 1) {
-                cal = Calendar.getInstance();
-                cal.add(5, -30);
-                fromDate = cal.getTime();
-                createStatistic(fromDate, new Date());
-            } else if (!datePickerFrom.getJFormattedTextField().getText().equals("") && !datePickerTo.getJFormattedTextField().getText().equals("")) {
-                fromDate = (Date)datePickerFrom.getModel().getValue();
-                Date toDate = (Date)datePickerTo.getModel().getValue();
-                createStatistic(fromDate, toDate);
-            }
+            Date[] dates=getDateRange();
+            if(dates[0]!=null && dates[1]!=null && dates[0].before(dates[1]))
+                createStatistic(dates[0], dates[1]);
         });
 
         datePickerFrom.addActionListener((e) -> {
@@ -339,27 +323,31 @@ public class MainGui implements ApiListener, RecordsListener {
         table.setDefaultEditor(Object.class, null);
     }
 
+
     public void createStatistic(Date fromDate, Date toDate) {
         if(realtimeResponse!=null){
             simpleGraphButton.setEnabled(true);
             recordsGraphButton.setEnabled(true);
             enoughLabel.setText("");
             List<HumidityRecord> records = Main.dbms.getHumidity(realtimeResponse.getCityId());
-            double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
-            double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
-            double avg = StatsCalculator.avg(records, fromDate, toDate);
-            double variance = StatsCalculator.variance(records, fromDate, toDate);
-            Vector<Vector<String>> statistics = new Vector<Vector<String>>();
-            statistics.add(new Vector<String>(Arrays.asList(Double.toString(min),
-                                                            Double.toString(max),
-                                                            df.format(avg),
-                                                            df.format(variance))));
-            updateTable(statisticsTable, statistics, statisticsColumnNames);
-        }else{
-            updateTable(statisticsTable, null, statisticsColumnNames);
-            enoughLabel.setText("Not enough records");
-            simpleGraphButton.setEnabled(false);
-            recordsGraphButton.setEnabled(false);
+            HumidityRecord record = StatsCalculator.min(records, fromDate, toDate);
+            if(record!=null){
+                double min = StatsCalculator.min(records, fromDate, toDate).getHumidity();
+                double max = StatsCalculator.max(records, fromDate, toDate).getHumidity();
+                double avg = StatsCalculator.avg(records, fromDate, toDate);
+                double variance = StatsCalculator.variance(records, fromDate, toDate);
+                Vector<Vector<String>> statistics = new Vector<Vector<String>>();
+                statistics.add(new Vector<String>(Arrays.asList(Double.toString(min),
+                        Double.toString(max),
+                        df.format(avg),
+                        df.format(variance))));
+                updateTable(statisticsTable, statistics, statisticsColumnNames);
+            }else{
+                updateTable(statisticsTable, null, statisticsColumnNames);
+                enoughLabel.setText("Not enough records");
+                simpleGraphButton.setEnabled(false);
+                recordsGraphButton.setEnabled(false);
+            }
         }
 
     }
@@ -419,8 +407,8 @@ public class MainGui implements ApiListener, RecordsListener {
 
     public static void changeTheme(String theme){
         try {
-            if(theme == "Light") UIManager.setLookAndFeel(new FlatLightLaf());
-            else if (theme == "Dark") UIManager.setLookAndFeel(new FlatDarkLaf());
+            if(theme.equals("Light")) UIManager.setLookAndFeel(new FlatLightLaf());
+            else if (theme.equals("Dark")) UIManager.setLookAndFeel(new FlatDarkLaf());
             else{
                 Debugger.println("Tema selezionato non valido");
                 UIManager.setLookAndFeel(new FlatLightLaf());

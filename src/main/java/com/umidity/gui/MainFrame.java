@@ -12,7 +12,7 @@ public class MainFrame extends JFrame {
         Main.dbms.addListener(maingui);
         this.setVisible(true);
         this.setTitle("Umidity");
-        this.setSize(700, 525);
+        this.setSize(700, 550);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //TODO: system tray
         this.setResizable(false);
