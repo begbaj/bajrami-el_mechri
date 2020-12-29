@@ -1,6 +1,6 @@
 # You and me, Umidity! ![Umidity Icon](img/icon32.png)
 
-Umidity permette all'utente di selezionare diverse città per le quali viusalizzare l'umidità corrente e, se desiderato, salvarne i dati periodicamente per generare poi statistiche sull'umidità.
+Umidity permette all' utente di selezionare diverse città per le quali visualizzare l' umidità corrente e, se desiderato, salvarne i dati periodicamente per generare poi statistiche.
 
 
 ### Overview
@@ -10,15 +10,15 @@ Umidity si presenta con due modalità di utilizzo:
 
 
 #### Getting started: GUI
-L'interfaccia è estremamente compatta ed intuitiva.
+L' interfaccia è estremamente compatta e intuitiva.
 
 
 ![immagine gui - primo avvio](img/umidity_gui_empty.png)
 
 
-Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato inserire anche [stato](#state-code)
+Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](#state-code)
  o [codice postale](#zip-code) ) e premere "Search".
- **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di stato poichè Openweather utilizzerà il formato nord americano se non indicato diversamente!**
+ **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
  
  
 ![immagine gui - ricerca effettuata](img/umidity_gui_searched.png)
@@ -28,18 +28,18 @@ Sulla destra compariranno i risultati della ricerca che mostrano umidità e temp
 prossimi 5 giorni, una ogni 3 ore.
 
 
-A questo punto possiamo decidere di inserire quest'ultima città nella lista delle "[città salvate](#saved-cities)" per le quali verranno
+A questo punto possiamo decidere d' inserire quest' ultima città nella lista delle "[città salvate](#saved-cities)" per le quali verranno
 salvate localmente e periodicamente le informazioni meteo sulle quali, poi, si potranno calcolare [statistiche](#statistics) sul massimo, minimo,
-media e varianza dell'umidità. Infatti, si potranno calcolare statistiche SOLO sulle città contrasegnate come "[città salvate](#saved-cities)".
+media e varianza dell' umidità. Infatti, si potranno calcolare statistiche SOLO sulle città contrassegnate come "[città salvate](#saved-cities)".
 
 ![immagine gui - statistiche disponibili](img/umidity_gui_statistics_enabled.png)
 
 
-Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l'utente di visualizzare velocemente massimo, minimmo, media e varianza d'umidità degli scorsi 7 giorni.
+Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l' utente di visualizzare velocemente massimo, minimo, media e varianza d' umidità degli scorsi 7 giorni.
 Il lasso di tempo è tuttavia personalizzabile:
 
 * Dal menu a tendina si può selezionare "last 7 days" e "last 30 days" (ultimi 7/30 giorni).
-* Oppure, "Custom range" (lasso di tempo personalizzato) che attiverà l'utilizzo dei selettori di data sottostanti.
+* Oppure, "Custom range" (lasso di tempo personalizzato) che attiverà l' utilizzo dei selettori di data sottostanti.
 
 
 ![immagine gui - statistiche 7 giorni](img/umidity_gui_statistics_last-7.png)
@@ -58,38 +58,37 @@ Permette di visualizzare massimo, minimo e media del lasso di tempo selezionato 
 
 
 ###### Record graph
-Permette di visualizzare l'andamento dell'umidità di tutti i record registrati.
+Permette di visualizzare l' andamento dell' umidità di tutti i record registrati.
 
 
 ![immagine gui - statistiche record graph](img/umidity_gui_statistics_line-graph.png)
 
 
 #### Getting started: CLI
-L'utilizzo di Umidity in versione cli è intesa per un utilizzo rapido, dove la quantità di operazioni rimane limitata alla sessione in corso.
-Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città alla volta, senza la possibilità di salvare le città nè di effettuare controlli periodici.
+L' utilizzo di Umidity in versione cli è intesa per una consultazione rapida, dove la quantità di operazioni rimane limitata alla sessione in corso.
+Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città alla volta, senza la possibilità di salvarli nè di effettuare controlli periodici.
 I dati non vengono dunque archiviati ma solo visualizzati al momento e poi cancellati.
 
 ![immagine cli - primo avvio]()
 
 
-All'avvio la cli presenta subito le operazioni disponibili:
+All' avvio la cli presenta subito le operazioni disponibili:
 1. Attuale
 2. Previsioni
 3. Passaggio a gui (Richiede riavvio)
 4. Chiudi
 
-###### Get by city name
-La ricerca per nome città avviene in tre passaggi:
-1. (Richiesto) Inserimento nome città
+Le richieste avvengono sempre ricercando per città, ed è svolto in tre passaggi:
+1. (Richiesto) Inserimento città
 2. (Opzionale) Inserimento [codice postale](#zip-code)
 3. (Opzionale) Inserimento [codice stato](#state-code)
 
-
 **Nei campi opzionali è sufficiente premere invio per andare avanti, tuttavia, se si inseriscono dati non corretti è probabile che non si visualizzeranno le informazioni corrette**
 
-![immagine cli - esempio risposta]()
+![immagine cli - esempio risposta attuale]()
 
 
+![immagine cli - esempio risposta previsioni]()
 
 
 # Project
