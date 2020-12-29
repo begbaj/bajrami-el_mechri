@@ -124,7 +124,7 @@ Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo s
 
 ### GUI
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
-ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker](##Dependencies),
+ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker](#Dependencies),
 e di quelli utilizzati per la creazioni di grafici [LIB. jFree, LINK ALLE DEPENDENCIES SOTTO].
 
 
