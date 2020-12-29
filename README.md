@@ -9,18 +9,19 @@ Umidity si presenta con due modalità di utilizzo:
 2. il secondo (in via di sviluppo), tramite linea di comando.
 
 
-###### Getting started: GUI
+#### Getting started: GUI
 L'interfaccia è estremamente compatta ed intuitiva.
 
 
-![immagine gui]()
+![immagine gui - primo avvio](img/umidity_gui_empty.png)
 
 
 Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato inserire anche [stato](#state-code)
- e [codice postale](#zip-code) ) e premere "Search".
+ o [codice postale](#zip-code) ) e premere "Search".
+ **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di stato poichè Openweather utilizzerà il formato nord americano se non indicato diversamente!**
  
  
-![immagine gui con precedenti passaggi effettuati]()
+![immagine gui - ricerca effettuata](img/umidity_gui_searched.png)
 
 
 Sulla destra compariranno i risultati della ricerca che mostrano umidità e temperatura corrente, ma anche previsioni dei
@@ -31,10 +32,10 @@ A questo punto possiamo decidere di inserire quest'ultima città nella lista del
 salvate localmente e periodicamente le informazioni meteo sulle quali, poi, si potranno calcolare [statistiche](#statistics) sul massimo, minimo,
 media e varianza dell'umidità. Infatti, si potranno calcolare statistiche SOLO sulle città contrasegnate come "[città salvate](#saved-cities)".
 
-[immagine gui con spunta sulla città salvata e evidenziamento delle statistiche]
+![immagine gui - statistiche disponibili](img/umidity_gui_statistics_enabled.png)
 
 
-###### Getting started: CLI
+#### Getting started: CLI
 
 
 
