@@ -1,4 +1,4 @@
-# You and me, Umidity! ![Umidity Icon](img/icon64.png)
+# You and me, Umidity! ![Umidity Icon](img/icon32.png)
 
 Umidity permette all'utente di selezionare diverse città per le quali viusalizzare l'umidità corrente e, se desiderato, salvarne i dati periodicamente per generare poi statistiche sull'umidità.
 
@@ -112,7 +112,7 @@ Città salvate:
 
 Name | Email | GitHub | Contributing | LinkedIn 
 --- | --- | --- | --- |--- 
-Began Bajrami | // |  [begbaj](https://github.com/begbaj)| <p align="center">1/2<p align="center"> | // 
+Began Bajrami | // |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | // 
 Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
 
 #Disclaimer
