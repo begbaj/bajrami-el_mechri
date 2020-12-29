@@ -172,6 +172,12 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 ## Software
 ## Dependencies
 
+* Jackson: utilizzata per la gestione dei JSON ([vedi repository](https://github.com/FasterXML/jackson-docs))
+* JFreeChart: utilizzata per la creazione dei grafici ([vedi repistory](https://github.com/jfree/jfreechart))
+* jDatePicker: aggiunge componenti da implementare nella GUI per la selezione delle date([vedi repository](https://github.com/JDatePicker/JDatePicker))
+* FlatLaf: aggiunge diversi SystemLookAndFeel, utilizzati per l'aspetto della GUI ([vedi repository](https://github.com/JFormDesigner/FlatLaf))
+* JUnit 5: utilizzata per il testing ([vedi repository](https://github.com/junit-team/junit5))
+
 # Contributors
 
 Name | Email | GitHub | Contributing | LinkedIn 
