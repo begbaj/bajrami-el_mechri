@@ -1,7 +1,6 @@
 package com.umidity.api.caller;
 
-import com.fasterxml.jackson.databind.*;
-import com.umidity.api.Single;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umidity.api.response.ApiResponse;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallHistoricalResponse;
@@ -340,6 +339,12 @@ public class ApiCaller extends Caller {
      * @return
      */
     public EUnits getUnit(){ return eunits; }
+
+    void launchException(Exception e){
+        for(var l: apiListeners){
+            l.onException(this, e);
+        }
+    }
 
     /**
      * Set response Mode

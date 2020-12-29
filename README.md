@@ -1,6 +1,7 @@
 # You and me, Umidity! ![Umidity Icon](img/icon32.png)
 
-Umidity permette all' utente di selezionare diverse città per le quali visualizzare l' umidità corrente e, se desiderato, salvarne i dati periodicamente per generare poi statistiche.
+Umidity permette all' utente di selezionare diverse città per le quali visualizzare l' umidità corrente e, se desiderato,
+salvarne i dati periodicamente per generare poi statistiche.
 
 
 ### Overview
@@ -18,7 +19,8 @@ L' interfaccia è estremamente compatta e intuitiva.
 
 Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](#state-code)
  o [codice postale](#zip-code) ) e premere "Search".
- **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
+ **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di
+ stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
  
  
 ![immagine gui - ricerca effettuata](img/umidity_gui_searched.png)
@@ -28,14 +30,17 @@ Sulla destra compariranno i risultati della ricerca che mostrano umidità e temp
 prossimi 5 giorni, una ogni 3 ore.
 
 
-A questo punto possiamo decidere d' inserire quest' ultima città nella lista delle "[città salvate](#saved-cities)" per le quali verranno
-salvate localmente e periodicamente le informazioni meteo sulle quali, poi, si potranno calcolare [statistiche](#statistics) sul massimo, minimo,
-media e varianza dell' umidità. Infatti, si potranno calcolare statistiche SOLO sulle città contrassegnate come "[città salvate](#saved-cities)".
+A questo punto possiamo decidere d' inserire quest' ultima città nella lista delle "[città salvate](#saved-cities)"
+per le quali verranno salvate localmente e periodicamente le informazioni meteo sulle quali, poi, si potranno calcolare
+[statistiche](#statistics) sul massimo, minimo,media e varianza dell' umidità. Infatti, si potranno calcolare statistiche
+SOLO sulle città contrassegnate come "[città salvate](#saved-cities)".
 
 ![immagine gui - statistiche disponibili](img/umidity_gui_statistics_enabled.png)
 
 
-Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l' utente di visualizzare velocemente massimo, minimo, media e varianza d' umidità degli scorsi 7 giorni.
+Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l' utente di visualizzare velocemente
+massimo, minimo, media e varianza d' umidità degli scorsi 7 giorni.
+
 Il lasso di tempo è tuttavia personalizzabile:
 
 * Dal menu a tendina si può selezionare "last 7 days" e "last 30 days" (ultimi 7/30 giorni).
@@ -48,7 +53,7 @@ Il lasso di tempo è tuttavia personalizzabile:
 ![immagine gui - statistiche lasso temporale personalizzato](img/umidity_gui_statistics_custom-range.png)
 
 
-è inoltre possibile visualizzare dei grafici riassuntivi delle statistiche mediante i bottoni "Simple graph" e "Record graph"
+è inoltre possibile visualizzare dei grafici riassuntivi delle statistiche mediante i bottoni "Simple graph" e "Record graph":
 
 ###### Simple graph
 Permette di visualizzare massimo, minimo e media del lasso di tempo selezionato in maniera grafica.
@@ -65,8 +70,12 @@ Permette di visualizzare l' andamento dell' umidità di tutti i record registrat
 
 
 #### Getting started: CLI
-L' utilizzo di Umidity in versione cli è intesa per una consultazione rapida, dove la quantità di operazioni rimane limitata alla sessione in corso.
-Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città alla volta, senza la possibilità di salvarli nè di effettuare controlli periodici.
+L' utilizzo di Umidity in versione cli è intesa per una consultazione rapida, dove la quantità di operazioni rimane
+limitata alla sessione in corso.
+
+Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città
+alla volta, senza la possibilità di salvarli nè di effettuare controlli periodici.
+
 I dati non vengono dunque archiviati ma solo visualizzati al momento e poi cancellati.
 
 ![immagine cli - primo avvio](img/umidity_cli_main_menu.png)
@@ -83,7 +92,8 @@ Le richieste avvengono sempre ricercando per città, ed è svolto in tre passagg
 2. (Opzionale) Inserimento [codice postale](#zip-code)
 3. (Opzionale) Inserimento [codice stato](#state-code)
 
-**Nei campi opzionali è sufficiente premere invio per andare avanti, tuttavia, se si inseriscono dati non corretti è probabile che non si visualizzeranno le informazioni corrette**
+**Nei campi opzionali è sufficiente premere invio per andare avanti, tuttavia, se si inseriscono dati non corretti è
+probabile che non si visualizzeranno le informazioni corrette**
 
 ![immagine cli - esempio risposta attuale](img/umidity_cli_current.png)
 
@@ -92,11 +102,18 @@ Le richieste avvengono sempre ricercando per città, ed è svolto in tre passagg
 
 
 # Project
-Il programma nasce come progetto d'esame, perciò il nostro obiettivo è stato quello di soddisfare tutte le richieste finendo, poi, per implementare anche funzioni aggiuntive.
-La consegna prevede, in origine, che il programma implementi un servizio meteo dove, data una città, permetta di visualizzare l'umidità attuale e archiviare il dato periodicamente (una volta all'ora) per permettere il calcolo di alcune semplici statistiche con la possibilità di selezionare su quale periodo calcolarle.
-Alla consegna originale, abbiamo aggiunto anche la possibilità di fare richieste per le previsioni dei prossimi 5 giorni e richieste dei 5 giorni precedenti, oltre che visualizzare anche la temperatura.
+Il programma nasce come progetto d'esame, perciò il nostro obiettivo è stato quello di soddisfare tutte le richieste
+finendo, poi, per implementare anche funzioni aggiuntive.
 
-I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e poi salvati come oggetti JSON su un "[database](#database)" (ovvero una directory sul file system).
+La consegna prevede, in origine, che il programma implementi un servizio meteo dove, data una città, permetta di
+visualizzare l'umidità attuale e archiviare il dato periodicamente (una volta all'ora) per permettere il calcolo di
+alcune semplici statistiche con la possibilità di selezionare su quale periodo calcolarle.
+
+Alla consegna originale, abbiamo aggiunto anche la possibilità di fare richieste per le previsioni dei prossimi 5 giorni
+e richieste dei 5 giorni precedenti, oltre che visualizzare anche la temperatura.
+
+I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e poi salvati come oggetti JSON su un 
+"[database](#database)" (ovvero una directory sul file system).
 
 ## Diagrams and Designing
 
@@ -115,10 +132,37 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 
 
 ## Source documentation
-Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md come questo (per una documentazione dettagliata andare al seguente [link](doc) ), perciò di seguito vederemo solo le parti che consideriamo di notevole importanza:
+Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md
+come questo (per una documentazione dettagliata andare al seguente [link](doc) ), perciò di seguito vedremo solo le
+parti che consideriamo di notevole importanza:
 
 
 ### API
+Il package API contiene tutte le classi essenziali per effettuare le chiamate alle API offerte da OpenWeather su piano gratuito.
+Le chiamate vengono effettuate dalla classe ApiCaller che permette di effettuare tutte le chiamate possibili
+(fatta eccezione per alcune api che non sarebbero mai risultate utili ai fini di Umidity, ovvero: "Get in rectangle" e "Get in circle" delle API sulla current weather).
+
+#### Async Caller
+AsyncCaller è una classe che estende Thread (da cui il nome "AsyncCaller") che permette di effettuare singole chiamate alle
+api in maniera asincrona oppure periodiche. Essendo AsyncCaller un processo avviato in un thread a parte, non è possibile
+avere un valore di ritorno dalle chiamate in maniera diretta; per questo motivo, abbiamo utilizzato una gestione di eventi
+personalizzata:
+`
+ public interface ApiListener {
+ 
+     void onReceiveCurrent(Object sender, ApiArgument arg);
+     void onReceiveForecast(Object sender, ApiArgument arg);
+     void onReceiveHistorical(Object sender, ApiArgument arg);
+     void onReceive(Object sender, ApiArgument arg);
+ 
+     void onRequestCurrent(Object sender, ApiArgument arg);
+     void onRequestForecast(Object sender, ApiArgument arg);
+     void onRequestHistorical(Object sender, ApiArgument arg);
+     void onRequest(Object sender, ApiArgument arg);
+ 
+ }
+ `
+
 
 
 

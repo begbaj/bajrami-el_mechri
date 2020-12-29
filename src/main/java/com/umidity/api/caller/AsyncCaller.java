@@ -149,7 +149,7 @@ public class AsyncCaller extends Thread {
                 }
             }
         }catch (IOException e){
-            e.printStackTrace();
+            caller.launchException(e);
         } finally {
             close = false;
             isRunning = false;

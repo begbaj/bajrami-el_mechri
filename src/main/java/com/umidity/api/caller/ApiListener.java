@@ -56,4 +56,5 @@ public interface ApiListener {
      */
     void onRequest(Object sender, ApiArgument arg);
 
+    void onException(Object sender, Exception e);
 }
