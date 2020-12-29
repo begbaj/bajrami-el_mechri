@@ -39,38 +39,38 @@ media e varianza dell'umidità. Infatti, si potranno calcolare statistiche SOLO 
 
 
 
-## Project
+# Project
 Il programma nasce come progetto d'esame, perciò il nostro obiettivo è stato quello di soddisfare tutte le richieste finendo, poi, per implementare anche funzioni aggiuntive.
 La consegna prevede, in origine, che il programma implementi un servizio meteo dove, data una città, permetta di visualizzare l'umidità attuale e archiviare il dato periodicamente (una volta all'ora) per permettere il calcolo di alcune semplici statistiche con la possibilità di selezionare su quale periodo calcolarle.
 Alla consegna originale, abbiamo aggiunto anche la possibilità di fare richieste per le previsioni dei prossimi 5 giorni e richieste dei 5 giorni precedenti, oltre che visualizzare anche la temperatura.
 
 I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e poi salvati come oggetti JSON su un "[database](#database)" (ovvero una directory sul file system).
 
-### Diagrams and Designing
+## Diagrams and Designing
 
 
-#### Use case diagram
+### Use case diagram
 
 
-#### Class diagram
+### Class diagram
 
 
-#### Sequence diagram
+### Sequence diagram
 
 
-#### Some ideas
+### Some ideas
 [lista di idee scritte in progettazione coon spunta su quelle implementate]
 
 
-### Source documentation
+## Source documentation
 Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md come questo (per una documentazione dettagliata andare al seguente [link](doc) ), perciò di seguito vederemo solo le parti che consideriamo di notevole importanza:
 
 
-#### API
+### API
 
 
 
-#### GUI
+### GUI
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
 ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker, LINK ALLE DEPENDENCIES SOTTO],
 e di quelli utilizzati per la creazioni di grafici [LIB. jFree, LINK ALLE DEPENDENCIES SOTTO].
@@ -93,14 +93,14 @@ degli eventi che aggiornassero lo stato della City List su entrambi i Frame, qua
 [GIF MAIN+SETTINGS AGGIORNAMENTO CITTA'???]
 
 
-##### Area Selection
+#### Area Selection
 <a name="state-code"></a>
 Nota Bene: lo stato va indicato tramite lo "State Code"
 <a name="saved-cities"></a>
 
 
-#### CLI
-#### Database Manager
+### CLI
+### Database Manager
 Il Database Manager si occupa di salvare su file, come oggetti JSON, le impostazioni e la lista delle città salvate 
 con relativi dati acquisiti. 
 Per la serializzazione/deserializzazione di questi è stata utilizzata una libreria esterna[LIB. Jackson, LINK DEPENDENCIES]
@@ -111,11 +111,11 @@ Per la serializzazione/deserializzazione di questi è stata utilizzata una libre
 
 
 Città salvate:
-#### Statistics
-### Tests
-## Resources
-### Software
-### Dependencies
+### Statistics
+## Tests
+# Resources
+## Software
+## Dependencies
 
 # Contributors
 
