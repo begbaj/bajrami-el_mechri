@@ -32,18 +32,49 @@ I dati riguardanti l'umidità sono ottenuti attraverso richieste effettuate alle
 ### Source documentation
 #### API
 #### GUI
-La GUI è stata sviluppata 
+La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
+ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker, LINK ALLE DEPENDENCIES SOTTO],
+e di quelli utilizzati per la creazioni di grafici [LIB. jFree, LINK ALLE DEPENDENCIES SOTTO].
+
+[MOSTRA JDATEPICKER][MOSTRA GRAFICI]
+
+E' stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
+[LIB. FlatLaf, LINK ALLE DEPENDENCIES SOTTO]
+
+[MOSTRA LIGHT][MOSTRA DARK][GIF CAMBIAMENTO DA SETTINGS?]
+
+Per l'aggiornamento sincrono delle città salvate è stata implementata un'interfaccia, utilizzata per lanciare
+degli eventi che aggiornassero lo stato della City List su entrambi i Frame, qualora ci siano cambiamenti.
+
+[GIF MAIN+SETTINGS AGGIORNAMENTO CITTA'???]
+
 ##### Area Selection
 Nota Bene: lo stato va indicato tramite lo "State Code"
 #### CLI
 #### Database Manager
+Il Database Manager si occupa di salvare su file, come oggetti JSON, le impostazioni e la lista delle città salvate 
+con relativi dati acquisiti. 
+Per la serializzazione/deserializzazione di questi è stata utilizzata una libreria esterna[LIB. Jackson, LINK DEPENDENCIES]
+
+[MOSTRA CODICE SERIALIZZAZIONE/DESERIALLIZZAZIONE]
+[MOSTRA IL CONTENUTO DI TUTTI I FILE]
+
+
+
 Città salvate:
 #### Statistics
 ### Tests
 ## Resources
 ### Software
 ### Dependencies
+
 #Contributors
+[Formattato come DDC dagli un occhio begannio] [Email studente o personale?]
+
+Name | Email | GitHub | Contributing | LinkedIn 
+--- | --- | --- | --- |--- 
+Began Bajrami | // |  [begbaj](https://github.com/begbaj)| <p align="center">1/2<p align="center"> | // 
+Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
 
 #Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al

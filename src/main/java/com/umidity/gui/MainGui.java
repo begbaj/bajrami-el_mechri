@@ -284,7 +284,6 @@ public class MainGui implements ApiListener, RecordsListener {
             public void actionPerformed(ActionEvent e) {
                 Thread thread = new Thread(){
                     public void run(){
-                        System.out.println("Thread Running");
                         Calendar cal = Calendar.getInstance();
                         try {
                             List<HumidityRecord> records=new ArrayList<>();
