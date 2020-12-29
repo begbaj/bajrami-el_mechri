@@ -124,7 +124,7 @@ Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo s
 
 ### GUI
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
-ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker, LINK ALLE DEPENDENCIES SOTTO],
+ad eccezione di quelli utilizzati per la selezione delle date [LIB. jDatePicker](##Dependencies),
 e di quelli utilizzati per la creazioni di grafici [LIB. jFree, LINK ALLE DEPENDENCIES SOTTO].
 
 
@@ -182,8 +182,8 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 
 Name | Email | GitHub | Contributing | LinkedIn 
 --- | --- | --- | --- |--- 
-Began Bajrami | beganbajrami@outlook.it |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
-Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
+Began Bajrami | <beganbajrami@outlook.it> |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
+Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
 
 # Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
