@@ -112,7 +112,7 @@ Città salvate:
 
 Name | Email | GitHub | Contributing | LinkedIn 
 --- | --- | --- | --- |--- 
-Began Bajrami | // |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | // 
+Began Bajrami | beganbajrami@outlook.it |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
 Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
 
 #Disclaimer
