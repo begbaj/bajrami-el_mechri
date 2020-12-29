@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-
+//TODO: JAVADOC!
 public class DatabaseManager {
 
     ArrayList<RecordsListener> listeners=new ArrayList<>();
@@ -268,7 +268,6 @@ public class DatabaseManager {
         }
         return records;
     }
-
 
     public boolean cityisSaved(CityRecord city){
         List<CityRecord> records = getCities();

@@ -111,7 +111,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
                     firstRow.add(format.format(new Date(realtimeResponse.getTimestamp()*1000)));
-                    firstRow.add(df.format(realtimeResponse.getTemp()));
+                    firstRow.add(df.format(realtimeResponse.getTemp())+" C°");
                     firstRow.add(df.format(realtimeResponse.getHumidity()) + "%");
                     matrix.add(firstRow);
 
@@ -123,7 +123,7 @@ public class MainGui implements ApiListener, RecordsListener {
                         String datetimeString = format.format(datetime);
                         Vector<String> nextRow = new Vector();
                         nextRow.add(datetimeString);
-                        nextRow.add(df.format(f_record.getTemp()));
+                        nextRow.add(df.format(f_record.getTemp())+" C°");
                         nextRow.add((df.format(f_record.getHumidity()) + "%"));
                         matrix.add(nextRow);
                     }
