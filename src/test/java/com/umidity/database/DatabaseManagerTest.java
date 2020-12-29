@@ -21,7 +21,6 @@ class DatabaseManagerTest {
 
         settings.setUnits(EUnits.Metric);
         settings.setGuiEnabled(true);
-        settings.setCliTheme("default");
         settings.setGuiTheme("default");
         settings.setCliPrompt(">");
         dbms.recreate();

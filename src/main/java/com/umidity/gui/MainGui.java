@@ -148,7 +148,7 @@ public class MainGui implements ApiListener, RecordsListener {
             } catch (FileNotFoundException ex) {
                 nosuchLabel.setText("Can't find any area with such parameters");
             } catch (IOException ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Invalid API key! Please change it in the settings.");
             }
         });
 
@@ -286,6 +286,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     public void run(){
                         Calendar cal = Calendar.getInstance();
                         try {
+                            if(realtimeResponse!=null){
                             List<HumidityRecord> records=new ArrayList<>();
                             CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                             for(int i=0; i<6; i++){
@@ -296,8 +297,11 @@ public class MainGui implements ApiListener, RecordsListener {
                                 cal.add(5, -1);
                             }
                             Main.dbms.addHumidity(records);
+                            }else{
+                                nosuchLabel.setText("You have to search for an area first");
+                            }
                         } catch (IOException ioException) {
-                            ioException.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Invalid API key! Please change it in the settings.");
                         }
                         timeStatsBox.setSelectedIndex(0);
                     }
@@ -492,6 +496,8 @@ public class MainGui implements ApiListener, RecordsListener {
         ChartPanel chartpanel=new ChartPanel(jChart);
         chartpanel.setPreferredSize(dimension);
         JFrame chartFrame = new JFrame();
+        ImageIcon icon = new ImageIcon("assets/icon64.png");
+        chartFrame.setIconImage(icon.getImage());
         chartFrame.setTitle(title);
         chartFrame.add(chartpanel);
         chartFrame.setVisible(true);

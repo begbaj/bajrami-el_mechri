@@ -15,9 +15,8 @@ public class SettingsFrame extends JFrame {
         this.setSize(300, 300 );
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
-        ImageIcon icon = new ImageIcon("icon.png");
+        ImageIcon icon = new ImageIcon("assets/icon64.png");
         this.setIconImage(icon.getImage());
         this.setLocationRelativeTo(null);
-        //this.pack();
     }
 }

@@ -21,10 +21,6 @@ public class UserSettings {
      */
     private String guiTheme;
     /**
-     * Theme used by the user
-     */
-    private String cliTheme;
-    /**
      * Custom prompt for cli
      */
     private String cliPrompt;
@@ -45,7 +41,6 @@ public class UserSettings {
     public UserSettings(){
         guiEnabled=true;
         guiTheme ="Light";
-        cliTheme ="Light";
         apikey="";
     }
 
@@ -54,9 +49,6 @@ public class UserSettings {
     }
     public void setGuiEnabled(boolean guiEnabled) {
         this.guiEnabled = guiEnabled;
-    }
-    public void setCliTheme(String cliUserTheme) {
-        this.cliTheme = cliUserTheme;
     }
     public void setCliPrompt(String cliPrompt) {
         this.cliPrompt = cliPrompt;
@@ -78,10 +70,6 @@ public class UserSettings {
     @JsonProperty("gui_theme")
     public String getGuiTheme() {
         return guiTheme;
-    }
-    @JsonProperty("cli_theme")
-    public String getCliTheme() {
-        return cliTheme;
     }
     @JsonProperty("cli_prompt")
     @JsonIgnore

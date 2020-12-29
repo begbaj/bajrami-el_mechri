@@ -2,12 +2,9 @@ package com.umidity.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import com.formdev.flatlaf.*;
 import com.umidity.Main;
 import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
@@ -18,12 +15,11 @@ public class SettingsGui implements RecordsListener {
     //region JTools
     private JComboBox guiComboBox;
     public JPanel panelSettings;
-    private JTabbedPane tabbedPane1;
+    private JTabbedPane tabbedSettings;
     private JTable cityTable;
     private JButton deleteButton;
     private JPanel Graphics;
     private JPanel User;
-    private JComboBox cliComboBox;
     private JComboBox interfaceComboBox;
     private JLabel noCityLabel;
     //endregion
@@ -46,8 +42,8 @@ public class SettingsGui implements RecordsListener {
         }});
 
 
-        tabbedPane1.addChangeListener(e -> {
-            if(tabbedPane1.getSelectedIndex()==1){
+        tabbedSettings.addChangeListener(e -> {
+            if(tabbedSettings.getSelectedIndex()==1){
                 createCityTable();
                 noCityLabel.setText("");
             }
@@ -62,15 +58,7 @@ public class SettingsGui implements RecordsListener {
             }
 
         });
-        cliComboBox.addActionListener(e -> {
-            if (cliComboBox.getSelectedIndex() == 0) {
-                Main.userSettings.setGuiTheme("Light");
 
-            } else {
-                Main.userSettings.setGuiTheme("Dark");
-            }
-            Main.dbms.saveUserSettings();
-        });
         interfaceComboBox.addActionListener(e -> {
             if(interfaceComboBox.getSelectedIndex()==0){
                 Main.userSettings.setGuiEnabled(true);
@@ -89,10 +77,6 @@ public class SettingsGui implements RecordsListener {
         switch (Main.userSettings.getGuiTheme()){
             case "Dark" -> guiComboBox.setSelectedIndex(1);
             default -> guiComboBox.setSelectedIndex(0);
-        }
-        switch (Main.userSettings.getCliTheme()){
-            case "Dark" -> cliComboBox.setSelectedIndex(1);
-            default -> cliComboBox.setSelectedIndex(0);
         }
         if (Main.userSettings.isGuiEnabled()) {
             interfaceComboBox.setSelectedIndex(0);
