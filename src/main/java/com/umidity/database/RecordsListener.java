@@ -4,5 +4,5 @@ public interface RecordsListener {
     /**
      * Launches when the saved city list is changed
      */
-    public void onChangedCities();
+    void onChangedCities();
 }
