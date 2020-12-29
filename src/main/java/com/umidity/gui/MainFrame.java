@@ -21,9 +21,8 @@ private MainGui maingui;
         this.setTitle("Umidity");
         this.setSize(700, 550);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        //TODO: system tray
         this.setResizable(false);
-        ImageIcon icon= new ImageIcon("assets/icon.png");
+        ImageIcon icon= new ImageIcon("assets/icon64.png");
         this.setIconImage(icon.getImage());
         this.setLocationRelativeTo(null);
 
