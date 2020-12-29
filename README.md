@@ -69,7 +69,7 @@ L' utilizzo di Umidity in versione cli è intesa per una consultazione rapida, d
 Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città alla volta, senza la possibilità di salvarli nè di effettuare controlli periodici.
 I dati non vengono dunque archiviati ma solo visualizzati al momento e poi cancellati.
 
-![immagine cli - primo avvio]()
+![immagine cli - primo avvio](img/umidity_cli_main_menu.png)
 
 
 All' avvio la cli presenta subito le operazioni disponibili:
@@ -85,10 +85,10 @@ Le richieste avvengono sempre ricercando per città, ed è svolto in tre passagg
 
 **Nei campi opzionali è sufficiente premere invio per andare avanti, tuttavia, se si inseriscono dati non corretti è probabile che non si visualizzeranno le informazioni corrette**
 
-![immagine cli - esempio risposta attuale]()
+![immagine cli - esempio risposta attuale](img/umidity_cli_current.png)
 
 
-![immagine cli - esempio risposta previsioni]()
+![immagine cli - esempio risposta previsioni](img/umidity_cli_forecast.png)
 
 
 # Project
