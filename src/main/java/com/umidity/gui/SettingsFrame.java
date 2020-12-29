@@ -12,7 +12,7 @@ public class SettingsFrame extends JFrame {
         Main.dbms.addListener(settingsGui);
         this.setVisible(true);
         this.setTitle("Settings");
-        this.setSize(300, 300 );
+        this.setSize(450, 300 );
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
         ImageIcon icon = new ImageIcon("assets/icon64.png");

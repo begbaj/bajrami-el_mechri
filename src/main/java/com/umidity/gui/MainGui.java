@@ -301,7 +301,7 @@ public class MainGui implements ApiListener, RecordsListener {
                                 nosuchLabel.setText("You have to search for an area first");
                             }
                         } catch (IOException ioException) {
-                            JOptionPane.showMessageDialog(null, "Invalid API key! Please change it in the settings.");
+                            JOptionPane.showMessageDialog(null, "Something went wrong. Please retry.");
                         }
                         timeStatsBox.setSelectedIndex(0);
                     }
@@ -546,6 +546,11 @@ public class MainGui implements ApiListener, RecordsListener {
     @Override
     public void onRequest(Object sender, ApiArgument arg) {
 
+    }
+
+    @Override
+    public void onException(Object sender, Exception e) {
+        JOptionPane.showMessageDialog(null, "Invalid API key! Please change it in the settings.");
     }
 
     @Override

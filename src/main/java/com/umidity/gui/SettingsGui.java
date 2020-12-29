@@ -2,6 +2,8 @@ package com.umidity.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -22,6 +24,8 @@ public class SettingsGui implements RecordsListener {
     private JPanel User;
     private JComboBox interfaceComboBox;
     private JLabel noCityLabel;
+    private JTextField textField_API;
+    private JButton apiKeyButton;
     //endregion
 
     public SettingsGui(){
@@ -68,6 +72,14 @@ public class SettingsGui implements RecordsListener {
             }
             Main.dbms.saveUserSettings();
         });
+        apiKeyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.userSettings.setApikey(textField_API.getText());
+                Main.caller.setAppid(textField_API.getText());
+                Main.asyncCaller.setAppid(textField_API.getText());
+            }
+        });
     }
 
     /**
@@ -83,6 +95,7 @@ public class SettingsGui implements RecordsListener {
         } else {
             interfaceComboBox.setSelectedIndex(1);
         }
+        textField_API.setText(Main.userSettings.getApikey());
     }
 
     public void createCityTable(){
