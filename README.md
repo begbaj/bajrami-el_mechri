@@ -40,20 +40,30 @@ media e varianza dell'umidità. Infatti, si potranno calcolare statistiche SOLO 
 
 
 ## Project
-Il programma nasce come progetto d'esame, perciò il nostro obiettivo è stato quello di soddisfare tutte le richieste, implementando funzioni aggiuntive a nostro piacimento.
-La consegna prevede che il programma implementi un servizio meteo che, data una città, permetta di visualizzare tutte le informazioni relative all'umidità attuale,
-a cui abbiamo aggiunto anche una funzione di forecasting(previsioni meteo).
-Inoltre il progetto richiede che il servizio salvi le informazioni ogni ora,
-quindi generare delle statistiche su quest'ultime, permettendo anche di decidere su che lasso di tempo calcolarle.
-I dati riguardanti l'umidità sono ottenuti attraverso richieste effettuate alle API di OpenWeather, e poi salvati come oggetti JSON su un database.
+Il programma nasce come progetto d'esame, perciò il nostro obiettivo è stato quello di soddisfare tutte le richieste finendo, poi, per implementare anche funzioni aggiuntive.
+La consegna prevede, in origine, che il programma implementi un servizio meteo dove, data una città, permetta di visualizzare l'umidità attuale e archiviare il dato periodicamente (una volta all'ora) per permettere il calcolo di alcune semplici statistiche con la possibilità di selezionare su quale periodo calcolarle.
+Alla consegna originale, abbiamo aggiunto anche la possibilità di fare richieste per le previsioni dei prossimi 5 giorni e richieste dei 5 giorni precedenti, oltre che visualizzare anche la temperatura.
+
+I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e poi salvati come oggetti JSON su un "[database](#database)" (ovvero una directory sul file system).
+
+### Diagrams and Designing
 
 
-### Diagrams
+#### Use case diagram
 
+
+#### Class diagram
+
+
+#### Sequence diagram
+
+
+#### Some ideas
+[lista di idee scritte in progettazione coon spunta su quelle implementate]
 
 
 ### Source documentation
-
+Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md come questo (per una documentazione dettagliata andare al seguente [link](doc) ), perciò di seguito vederemo solo le parti che consideriamo di notevole importanza:
 
 
 #### API
@@ -107,15 +117,14 @@ Città salvate:
 ### Software
 ### Dependencies
 
-#Contributors
-[Formattato come DDC dagli un occhio begannio] [Email studente o personale?]
+# Contributors
 
 Name | Email | GitHub | Contributing | LinkedIn 
 --- | --- | --- | --- |--- 
 Began Bajrami | beganbajrami@outlook.it |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
 Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
 
-#Disclaimer
+# Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
 Università Politecnica delle Marche, non lo si deve considerare come un programma commerciale e pertanto non garantisce
 il suo corretto funzionamento. Inoltre, non è consentito l'uso del programma e delle parti di codice ad esso correlato per
