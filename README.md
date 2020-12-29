@@ -133,14 +133,17 @@ Nota Bene: lo stato va indicato tramite lo "State Code"
 ### Database Manager
 Il Database Manager si occupa di salvare su file, come oggetti JSON, le impostazioni e la lista delle città salvate 
 con relativi dati acquisiti. 
-Per la serializzazione/deserializzazione di questi è stata utilizzata una libreria esterna[LIB. Jackson, LINK DEPENDENCIES]
+Per riuscirci ci siamo serviti della classe ObjectMapper della [LIB. Jackson, LINK DEPENDENCIES]
+usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di serializzare e deserializzare gli oggetti.
+
+Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
+* HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
+* CityRecord: identifica una città di cui l'utente ha deciso di salvare i record, da aggiungere poi nel files cities.json [vedi come dirlo bene]
+* UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, deserializzata nel file config.json
 
 [MOSTRA CODICE SERIALIZZAZIONE/DESERIALLIZZAZIONE]
 [MOSTRA IL CONTENUTO DI TUTTI I FILE]
 
-
-
-Città salvate:
 ### Statistics
 ## Tests
 # Resources
@@ -157,4 +160,4 @@ Rahmi El Mechri | rahmmi.elmechri@gmail.com |  [OT-Rax](https://github.com/OT-Ra
 # Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
 Università Politecnica delle Marche, non lo si deve considerare come un programma commerciale e pertanto non garantisce
-il suo corretto funzionamento. L'utilizzo di Umidity è a rischio e pericolo del utente.
+il suo corretto funzionamento. L'utilizzo di Umidity è a rischio e pericolo dell'utente.
