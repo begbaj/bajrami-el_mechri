@@ -82,8 +82,8 @@ public class MainGui implements ApiListener, RecordsListener {
 
     public MainGui(){
 
-        recordColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
-        statisticsColumnNames =new Vector<>(Arrays.asList("DateTime", "Temperature", "Humidity"));
+        statisticsColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
+        recordColumnNames =new Vector<>(Arrays.asList("DateTime", "Temperature", "Humidity"));
 
         listenerOn = true;
 
@@ -111,11 +111,11 @@ public class MainGui implements ApiListener, RecordsListener {
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
                     firstRow.add(format.format(new Date(realtimeResponse.getTimestamp()*1000)));
-                    firstRow.add(Double.toString(realtimeResponse.getTemp()));
-                    firstRow.add(realtimeResponse.getHumidity() + "%");
+                    firstRow.add(df.format(realtimeResponse.getTemp()));
+                    firstRow.add(df.format(realtimeResponse.getHumidity()) + "%");
                     matrix.add(firstRow);
 
-                    ForecastResponse forecastResponse = Main.caller.getForecastByCityName(textField_City.getText(), textField_State.getText(), textField_ZIP.getText());
+                    ForecastResponse forecastResponse = Main.caller.getForecastByCityName(realtimeResponse.getCityName(), realtimeResponse.getCityCountry(), textField_ZIP.getText());
                     Single[] forecastRecords = forecastResponse.getSingles();
                     for (int counter = 0; counter < forecastRecords.length; ++counter) {
                         Single f_record = forecastRecords[counter];
@@ -123,8 +123,8 @@ public class MainGui implements ApiListener, RecordsListener {
                         String datetimeString = format.format(datetime);
                         Vector<String> nextRow = new Vector();
                         nextRow.add(datetimeString);
-                        nextRow.add(Double.toString(f_record.getTemp()));
-                        nextRow.add(((float) f_record.getHumidity()) + "%");
+                        nextRow.add(df.format(f_record.getTemp()));
+                        nextRow.add((df.format(f_record.getHumidity()) + "%"));
                         matrix.add(nextRow);
                     }
 
@@ -308,7 +308,17 @@ public class MainGui implements ApiListener, RecordsListener {
             }
         });
 
-        favouriteCityStart();
+        /**
+         * favourite city inizialitation
+         */
+        CityRecord favouriteCity = Main.dbms.getFavouriteCity();
+        if (favouriteCity.getId() != -1) {
+            textField_City.setText(favouriteCity.getName());
+            searchButton.doClick();
+        }
+        else{
+            setPanelEnabled(statisticPanel, false);
+        }
     }
 
     /**
@@ -323,7 +333,11 @@ public class MainGui implements ApiListener, RecordsListener {
         table.setDefaultEditor(Object.class, null);
     }
 
-
+    /**
+     * Creates and shows the statistics using the records within the Date range
+     * @param fromDate minimum Date
+     * @param toDate maximum Date
+     */
     public void createStatistic(Date fromDate, Date toDate) {
         if(realtimeResponse!=null){
             simpleGraphButton.setEnabled(true);
@@ -337,8 +351,8 @@ public class MainGui implements ApiListener, RecordsListener {
                 double avg = StatsCalculator.avg(records, fromDate, toDate);
                 double variance = StatsCalculator.variance(records, fromDate, toDate);
                 Vector<Vector<String>> statistics = new Vector<Vector<String>>();
-                statistics.add(new Vector<String>(Arrays.asList(Double.toString(min),
-                        Double.toString(max),
+                statistics.add(new Vector<String>(Arrays.asList(df.format(min),
+                        df.format(max),
                         df.format(avg),
                         df.format(variance))));
                 updateTable(statisticsTable, statistics, statisticsColumnNames);
@@ -352,6 +366,11 @@ public class MainGui implements ApiListener, RecordsListener {
 
     }
 
+    /**
+     * Enables/Disables the given panel, and all of its components
+     * @param panel panel to enable/disable
+     * @param isEnabled true: enable, false: disable
+     */
     void setPanelEnabled(JPanel panel, Boolean isEnabled) {
         panel.setEnabled(isEnabled);
         Component[] components = panel.getComponents();
@@ -367,21 +386,9 @@ public class MainGui implements ApiListener, RecordsListener {
 
     }
 
-    private void favouriteCityStart() {
-        CityRecord favouriteCity = Main.dbms.getFavouriteCity();
-        if (favouriteCity.getId() != -1) {
-            textField_City.setText(favouriteCity.getName());
-            searchButton.doClick();
-        }
-        else{
-            setPanelEnabled(statisticPanel, false);
-        }
-    }
-
-    public void themeSetup(){
-
-    }
-
+    /**
+     * Mandatory method needed to create components not included in Java.Swing
+     */
     private void createUIComponents() {
         UtilDateModel modelFrom = new UtilDateModel();
         UtilDateModel modelTo = new UtilDateModel();
@@ -397,6 +404,9 @@ public class MainGui implements ApiListener, RecordsListener {
         datePickerTo.setEnabled(false);
     }
 
+    /**
+     * Updates the AsynCaller list of cities to search for
+     */
     public void updateAsynCaller(){
         Vector<Integer> ids = new Vector<>();
         for(var city:Main.dbms.getCities()){
@@ -405,6 +415,10 @@ public class MainGui implements ApiListener, RecordsListener {
          Main.asyncCaller.setArgs((Object) ids.toArray(Integer[]::new));
     }
 
+    /**
+     * Applies the given theme
+     * @param theme theme to apply
+     */
     public static void changeTheme(String theme){
         try {
             if(theme.equals("Light")) UIManager.setLookAndFeel(new FlatLightLaf());
@@ -420,6 +434,10 @@ public class MainGui implements ApiListener, RecordsListener {
         }
     }
 
+    /**
+     * Based on the date components builds a date range
+     * @return Dates in this order: range start, range ending
+     */
     public Date[] getDateRange(){
         Calendar cal=Calendar.getInstance();
         Date[] dates= new Date[2];
@@ -438,20 +456,19 @@ public class MainGui implements ApiListener, RecordsListener {
         return dates;
     }
 
-    @Override
-    public void onReceiveCurrent(Object sender, ApiArgument arg) {
-        if(realtimeResponse!=null){
-            if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
-                Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
-            }
-    }
-
+    /**
+     * Creates graphic
+     * @param title Frame Title
+     * @param dimension Graphic Dimension
+     * @param dcd Dataset
+     * @param isRecordsGraph false: create a BarChart (Based on statistics), true: create a LineChart (Based on records)
+     */
     private void createGraph(String title, Dimension dimension, DefaultCategoryDataset dcd, boolean isRecordsGraph){
         JFreeChart jChart;
 
         if(isRecordsGraph)
             jChart = ChartFactory.createLineChart("Humidity", null, null, dcd,
-                                                    PlotOrientation.VERTICAL, false, false, false);
+                    PlotOrientation.VERTICAL, false, false, false);
         else
             jChart = ChartFactory.createBarChart("Humidity", null, null, dcd,
                     PlotOrientation.VERTICAL, false, false, false);
@@ -483,6 +500,13 @@ public class MainGui implements ApiListener, RecordsListener {
         chartFrame.setLocationRelativeTo(null);
     }
 
+    @Override
+    public void onReceiveCurrent(Object sender, ApiArgument arg) {
+        if(realtimeResponse!=null){
+            if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
+                Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
+            }
+    }
 
     @Override
     public void onReceiveForecast(Object sender, ApiArgument arg) {
@@ -518,10 +542,8 @@ public class MainGui implements ApiListener, RecordsListener {
 
     }
 
-    //TODO: realtimecity?????????
     @Override
     public void onChangedCities() {
-        if(recordColumnNames!=null){
             if(!Main.dbms.cityisSaved(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord())))
             {
                 listenerOn=false;
@@ -531,6 +553,6 @@ public class MainGui implements ApiListener, RecordsListener {
                 updateTable(statisticsTable, null, statisticsColumnNames);
                 listenerOn=true;
             }
-        }
+            updateAsynCaller();
     }
 }
