@@ -113,12 +113,15 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 
 
 ### Use case diagram
+<img src="img/usecase_diagram.png" alt="use case diagram" width="600"/>
 
 
 ### Class diagram
+<img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
 
 
 ### Sequence diagram
+<img src="img/class_diagram.png" alt="class diagram" width="600"/>
 
 
 ### Some ideas
@@ -143,11 +146,10 @@ gratuito. Le chiamate vengono effettuate dalla classe ApiCaller che permette di 
 
 #### Async Caller
 AsyncCaller è una classe che estende Thread (da cui il nome "AsyncCaller") che permette di effettuare singole o
-periodiche chiamate alle API in maniera asincrona. Per effettuare le chiamate, AsyncCaller crea un ApiCaller che gli
-permetterà di effettuare poi le chiamate alle API. Una alternativa alla creazione di una istanza di ApiCaller è quella
-di estendere ApiCaller in AsyncCaller, ma cosi facendo non potremmo poi farlo con la classe Thread, poichè Java non
-permette la multipla ereditarietà (una alternativa valida sarebbe stata quella di estendere ApiCaller e di implementare
-Runnable).
+periodiche chiamate alle API in maniera asincrona. Per effettuare le chiamate, AsyncCaller crea un ApiCaller.
+Una alternativa a questo metodo è quella di estendere ApiCaller in AsyncCaller, ma cosi facendo non potremmo poi farlo
+con la classe Thread, poichè Java non permette la multipla ereditarietà (una alternativa valida sarebbe stata quella di
+estendere ApiCaller e d' implementare Runnable).
 
 Essendo AsyncCaller un processo avviato in un thread a parte, non è possibile avere un valore di ritorno dalle chiamate
 in maniera diretta, per questo motivo abbiamo utilizzato una gestione di eventi personalizzata (di seguito, il contenuto
