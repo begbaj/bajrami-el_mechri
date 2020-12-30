@@ -138,30 +138,71 @@ parti che consideriamo di notevole importanza:
 
 
 ### API
-Il package API contiene tutte le classi essenziali per effettuare le chiamate alle API offerte da OpenWeather su piano gratuito.
-Le chiamate vengono effettuate dalla classe ApiCaller che permette di effettuare tutte le chiamate possibili
-(fatta eccezione per alcune api che non sarebbero mai risultate utili ai fini di Umidity, ovvero: "Get in rectangle" e "Get in circle" delle API sulla current weather).
+Il package API contiene tutte le classi essenziali per effettuare le chiamate alle API offerte da OpenWeather su piano
+gratuito. Le chiamate vengono effettuate dalla classe ApiCaller che permette di effettuare tutte le chiamate possibili
+(fatta eccezione per alcune api che non sarebbero mai risultate utili ai fini di Umidity, ovvero: "Get in rectangle" e
+"Get in circle" delle API sulla current weather).
 
 #### Async Caller
-AsyncCaller è una classe che estende Thread (da cui il nome "AsyncCaller") che permette di effettuare singole chiamate alle
-api in maniera asincrona oppure periodiche. Essendo AsyncCaller un processo avviato in un thread a parte, non è possibile
-avere un valore di ritorno dalle chiamate in maniera diretta; per questo motivo, abbiamo utilizzato una gestione di eventi
-personalizzata:
-`
+AsyncCaller è una classe che estende Thread (da cui il nome "AsyncCaller") che permette di effettuare singole o
+periodiche chiamate alle API in maniera asincrona. Per effettuare le chiamate, AsyncCaller crea un ApiCaller che gli
+permetterà di effettuare poi le chiamate alle API. Una alternativa alla creazione di una istanza di ApiCaller è quella
+di estendere ApiCaller in AsyncCaller, ma cosi facendo non potremmo poi farlo con la classe Thread, poichè Java non
+permette la multipla ereditarietà (una alternativa valida sarebbe stata quella di estendere ApiCaller e di implementare
+Runnable).
 
-    void onReceiveCurrent(Object sender, ApiArgument arg);
-    void onReceiveForecast(Object sender, ApiArgument arg);
-    void onReceiveHistorical(Object sender, ApiArgument arg);
-    void onReceive(Object sender, ApiArgument arg);
-    void onRequestCurrent(Object sender, ApiArgument arg);
-    void onRequestForecast(Object sender, ApiArgument arg);
-    void onRequestHistorical(Object sender, ApiArgument arg);
-    void onRequest(Object sender, ApiArgument arg);
-    
-`
+Essendo AsyncCaller un processo avviato in un thread a parte, non è possibile avere un valore di ritorno dalle chiamate
+in maniera diretta, per questo motivo abbiamo utilizzato una gestione di eventi personalizzata (di seguito, il contenuto
+dell' interfaccia "ApiListener"):
 
+```java
+    public interface ApiListener {
+        void onReceiveCurrent(Object sender, ApiArgument arg);
+        void onReceiveForecast(Object sender, ApiArgument arg);
+        void onReceiveHistorical(Object sender, ApiArgument arg);
+        void onReceive(Object sender, ApiArgument arg);
+        void onRequestCurrent(Object sender, ApiArgument arg);
+        void onRequestForecast(Object sender, ApiArgument arg);
+        void onRequestHistorical(Object sender, ApiArgument arg);
+        void onRequest(Object sender, ApiArgument arg);
+        void onException(Object sender, Exception e);
+    }
+```
+ApiListener contiene dunque una definizione dei metodi che possono essere richiamati.
+Tale interfaccia andrà poi implementata alle classi che dovranno effettivamente gestire tali eventi.
 
+Gli eventi vengono lanciati da ApiCaller a seconda di quando sia giusto lanciarne uno o l' altro.
+Esempio metodo ApiCaller:
 
+```java
+public class ApiCaller extends Caller {
+        [...]
+        public ApiCaller getByCityName(String cityName, String stateCode, String countryCode) throws IOException {
+            for(ApiListener l:apiListeners){
+                l.onRequest(this, null);
+                l.onRequestCurrent(this, null);
+            }
+        
+            String url = "https://api.openweathermap.org/data/2.5/weather?q="
+                    + cityName
+                    + (!stateCode.equals("") ? "," + stateCode : "")
+                    + (!countryCode.equals("") ? "," + countryCode : "")
+                    + endParams;
+        
+            ApiResponse response = new ObjectMapper().readerFor(ApiResponse.class).readValue(new URL(url));
+            ApiArgument apiArg = new ApiArgument(response.getSingles());
+            for(ApiListener l:apiListeners){
+                l.onReceiveCurrent(this, apiArg);
+                l.onReceive(this, apiArg);
+            }
+            return response;
+        }
+        [...]
+}
+```
+
+Come posiamo notare, il metodo fa una chiamata al evento da lanciare per ogni classe aggiunta ai "listeners".
+In questa maniera possiamo dunque ottenere periodicamente aggiornamenti da AsyncCaller.
 
 ### GUI
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
@@ -193,6 +234,59 @@ Nota Bene: lo stato va indicato tramite lo "State Code"
 
 
 ### CLI
+La CLI (Command Line Interface) è partita con l'idea di sviluppare un framework per sviluppare interfacce a linea di comando
+basandosi sul concetto di form. Il progetto però, poichè andava troppo oltre le richieste della consegna originale, è stato
+poi sospeso in quanto richiedeva molto tempo di progettazione e di implementazione. Tuttavia, siamo riusciti ad avere una
+"prima versione" funzionante.
+
+Il progetto si basa sul gestire le varie sezioni da visualizzare nella linea di comando tramite dei Frame, che a loro volta
+contengono i Form (moduli). I Frame vengono trattati come contenitori di Form, ma il vero protagonista è il FrameManager:
+esso infatti gestisce tutto cio che riguarda la visualizzazione dei form e l' interfacciamento con l' utente tramite la
+gestione del input, oltre che essere anche lui un contenitore di frame.
+
+Esempio di struttura:
+```text
+    FrameManager :
+    [
+        FrameMainMenu:
+        [
+            TitleForm,
+            MessageForm,
+            InputForm
+        ],
+        FrameSettings:
+        [
+            TitleForm,
+            MessageForm,
+            InputForm
+        ],
+        ...
+    ]
+```
+
+Per fare ciò, il FrameManager esegue ciclicamente una serie di metodi che aggiornano la visuale del utente:
+
+```java
+public class FrameManager {
+    [...]
+    public void refresh() {
+        if(!inited) init();
+        beforeUpdate();
+        update();
+        afterUpdate();
+    }
+    [...]
+}
+```
+Le fasi del refresh:
+0. Se questa è la prima iterazione, il FrameManager esegue una serie d' istruzioni presenti nel `init()` per non eseguirle
+poi nuovamente nelle iterazioni successive
+1. `beforeUpdate()`: istruzioni da eseguire prima del aggiornamento della schermata
+2. `update()`: istruzioni da eseguire durante l' aggiornamento della schermata
+3. `afterUpdate()`: istruzioni da eseguire in seguito all' aggiornamento della schermata (solitamente operazioni d'input)
+
+Dopo la prima iterazione, i passaggio 1,2 e 3 verranno eseguiti ciclicamente.
+
 ### Database Manager
 Il Database Manager si occupa di salvare su file, come oggetti JSON, le impostazioni e la lista delle città salvate 
 con relativi dati acquisiti. 

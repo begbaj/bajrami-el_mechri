@@ -19,7 +19,7 @@ public class ApiCaller extends Caller {
     /**
      * Api key used for making api calls
      */
-    private String    appid;
+    private String          appid;
     private EMode           emode;
     private EUnits         eunits;
     private String      endParams;
