@@ -127,7 +127,7 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 
 ## Source documentation
 Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md
-come questo (per una documentazione dettagliata andare al seguente [link](doc) ), perciò di seguito vedremo solo le
+come questo (per una documentazione dettagliata andare al seguente [link](docs) ), perciò di seguito vedremo solo le
 parti che consideriamo di notevole importanza.
 
 **è importante sottolineare che il codice è stato pensato in maniera "modulare", ovvero che ogni package che fa parte
