@@ -110,7 +110,8 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 "[database](#database)" (ovvero una directory sul file system).
 
 ## Diagrams and Designing
-
+I seguenti diagrammi sono stati disegnati in fase di progettazione, per tanto non rispecchiano esattamente la situazione attuale di Umidity. Ci sembra comunque importante notare
+quanto risulti utile, sopratutto se si lavora in compagnia, utilizzare questa tipologia di schemi per rendere chiaro a tutti i membri del gruppo quali siano le idee e come si ha intenzione di realizzarle.
 
 ### Use case diagram ([ingrandisci](img/usecase_diagram.png))
 <img src="img/usecase_diagram.png" alt="use case diagram" width="600"/>
