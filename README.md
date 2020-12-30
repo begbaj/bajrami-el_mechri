@@ -258,7 +258,7 @@ public void onChangedCities() {
     }
 ```
 
-*Esempio
+* Esempio
 ![Cambiamento città salvate](img/changed_cities.gif)
 
 #### System Tray
@@ -336,12 +336,49 @@ usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di 
 
 Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
 * HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
-* CityRecord: identifica una città di cui l'utente ha deciso di salvare i record, da aggiungere poi nel files cities.json [vedi come dirlo bene]
+* CityRecord: identifica una città di cui l'utente ha deciso di salvare i record, da aggiungere poi nel files cities.json [vedi come dirlo bene, favourite]
+ * Esmepio cities.json
+```JSON
+[ {
+  "id" : 5128581,
+  "name" : "New York",
+  "coord" : {
+    "lat" : 40.71,
+    "lon" : -74.01
+  }
+}, {
+  "id" : 4164138,
+  "name" : "Miami",
+  "coord" : {
+    "lat" : 25.77,
+    "lon" : -80.19
+  }
+}, {
+  "id" : 5368361,
+  "name" : "Los Angeles",
+  "coord" : {
+    "lat" : 34.05,
+    "lon" : -118.24
+  }
+}, {
+  "id" : 4930956,
+  "name" : "Boston",
+  "coord" : {
+    "lat" : 42.36,
+    "lon" : -71.06
+  }
+} ]
+```
+ * Esmepio favourite.json
+```JSON
+{
+"gui" : true,
+"gui_theme" : "Light",
+"api_key" : "beb62ff92c75eefce173edf69bacd835"
+}
+```
+
 * UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, deserializzata nel file config.json
-
-[MOSTRA CODICE SERIALIZZAZIONE/DESERIALLIZZAZIONE]
-[MOSTRA IL CONTENUTO DI TUTTI I FILE]
-
 
 ## Tests
 # Resources
