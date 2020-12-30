@@ -11,7 +11,6 @@ import com.umidity.api.Single;
 
 import java.util.Map;
 
-//TODO: documentazione
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OneCallResponse extends OneCall{
 

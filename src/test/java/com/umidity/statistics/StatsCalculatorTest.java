@@ -91,11 +91,19 @@ class StatsCalculatorTest {
 
     @Test
     void testVariance1() {
-        //TODO: da fare test
+        System.out.println(StatsCalculator.variance(records, new Date(), true));
+        assertEquals(768.35, StatsCalculator.variance(records, new Date(), true));
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -4);
+        assertEquals(31.25, StatsCalculator.variance(records, cal.getTime(), false));
     }
 
     @Test
     void testVariance2() {
-        //TODO: da fare test
+//        Calendar cal1 = Calendar.getInstance();
+//        Calendar cal2 = Calendar.getInstance();
+//        cal1.add(Calendar.DATE, -3);
+//        cal2.add(Calendar.DATE, -7);
+//        assertEquals(31.25, StatsCalculator.avg(records, cal2.getTime(), cal1.getTime()));
     }
 }

@@ -122,9 +122,16 @@ quanto risulti utile, sopratutto se si lavora in compagnia, utilizzare questa ti
 ### Class diagram ([ingrandisci](img/class_diagram.png))
 <img src="img/class_diagram.png" alt="class diagram" width="600"/>
 
+**Nota:** Il _"Class Diagram"_ mostra la struttura alla base del nostro progetto. Sono numerose le modifiche effettuate, nonostante ciò, il diagramma rimane
+comunque fedele al programma, anche nella sua forma finale. 
+
 
 ### Sequence diagram ([ingrandisci](img/sequence_diagram.png))
 <img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
+
+**Nota:** Il _"Sequence Diagram"_ mostra le interazione che sin dall'inizio del progetto abbiamo immaginato potessero esserci. 
+Nonostante non abbia subito notevoli cambiamenti, è possibile comunque notare delle differenze col progetto finale.
+
 
 
 ### Some ideas
