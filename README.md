@@ -110,17 +110,20 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 "[database](#database)" (ovvero una directory sul file system).
 
 ## Diagrams and Designing
+I seguenti diagrammi sono stati disegnati in fase di progettazione, per tanto non rispecchiano esattamente la situazione attuale di Umidity. Ci sembra comunque importante notare
+quanto risulti utile, sopratutto se si lavora in compagnia, utilizzare questa tipologia di schemi per rendere chiaro a tutti i membri del gruppo quali siano le idee e come si ha intenzione di realizzarle.
 
-
-### Use case diagram
+### Use case diagram ([ingrandisci](img/usecase_diagram.png))
 <img src="img/usecase_diagram.png" alt="use case diagram" width="600"/>
 
+**Nota:** Lo _"Use case diagram"_ è volutamente semplice perchè in fase di progettazione ci sembrava poco producente complicare tale schema poichè eravamo consapevoli dei possibili numerosi cambiamenti che si sarebbero susseguiti. Tuttavia, a differenza degli altri due diagrammi, lo _"Use case"_ sembra essere rimasto realmente l'unico a non aver subito cambiamenti dall'inizio alla fine del progetto, proprio per la sua semplicità e capacità di generalizzare al massimo i casi d'uso di Umidity.
 
-### Class diagram
+
+### Class diagram ([ingrandisci](img/class_diagram.png))
 <img src="img/class_diagram.png" alt="class diagram" width="600"/>
 
 
-### Sequence diagram
+### Sequence diagram ([ingrandisci](img/sequence_diagram.png))
 <img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
 
 
