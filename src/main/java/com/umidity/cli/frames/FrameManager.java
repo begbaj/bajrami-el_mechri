@@ -11,11 +11,11 @@ import java.util.Vector;
  * </p>
  *
  * <p>
- * "Refresh methods" are those executed every "frame update" to perform update actions; more specifically:
- * 1 - init(): executed only the first time <em>refresh()</em> is called. it's suitable for initialization actions.
- * 2 - beforeUpdate(): actions executed before frame update. Suitable for changing the view.
- * 3 - update(): during frame update. Override this to update the view.
- * 4 - afterUpdate(): actions performed after frame update. Suitable for input management.
+ * "Refresh methods" are those executed every "frame update" to perform update actions; more specifically:<br>
+ * 1 - init(): executed only the first time <em>refresh()</em> is called. it's suitable for initialization actions.<br>
+ * 2 - beforeUpdate(): actions executed before frame update. Suitable for changing the view.<br>
+ * 3 - update(): during frame update. Override this to update the view.<br>
+ * 4 - afterUpdate(): actions performed after frame update. Suitable for input management.<br>
  * </p>
  *
  */
