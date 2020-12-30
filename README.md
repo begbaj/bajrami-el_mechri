@@ -226,10 +226,33 @@ E'stata utilizzata una libreria esterna anche per la personalizzazione del tema 
 
 
 Per l'aggiornamento sincrono delle città salvate è stata implementata un'interfaccia, utilizzata per lanciare
-degli eventi che aggiornassero lo stato della City List su entrambi i Frame, qualora ci siano cambiamenti.
+degli eventi che aggiornino lo stato della City List su entrambi i Frame, qualora ci siano cambiamenti.
+
+* Evento nel Frame principale
+```java
+    public void onChangedCities() {
+            if(!Main.dbms.cityIsSaved(realtimeResponse.getCityId()))
+            {
+                listenerOn=false;
+                saveCityRecordsCheckBox.setSelected(false);
+                setPanelEnabled(statisticPanel, false);
+                nosuchLabel.setText("City removed!");
+                updateTable(statisticsTable, null, statisticsColumnNames);
+                listenerOn=true;
+            }
+            updateAsynCaller();
+    }
+```
 
 
-[GIF MAIN+SETTINGS AGGIORNAMENTO CITTA'???]
+* Evento nel Frame delle impostazioni
+```java
+public void onChangedCities() {
+            createCityTable();
+    }
+```
+
+![Cambiamento città salvate](img/changed_cities.gif)
 
 Data la natura del programma, è necessario che il processo rimanga aperto per poter raccogliere più dati possibili.
 Per questa ragione, abbiamo deciso di implementare la minimizzazione del programma, accessibile poi dal System Tray,
