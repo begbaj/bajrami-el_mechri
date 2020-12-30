@@ -415,7 +415,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 {
 "gui" : true,
 "gui_theme" : "Light",
-"api_key" : "beb62ff92c75eefce173edf69bacd835"
+"api_key" : "b1b15e88fa797225412429c1c50c122a1"
 }
 ```
 
