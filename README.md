@@ -1,6 +1,6 @@
 # You and me, Umidity! ![Umidity Icon](img/icon32.png)
 
-Umidity permette all' utente di selezionare diverse città per le quali visualizzare l' umidità corrente e, se desiderato,
+Umidity permette all'utente di selezionare diverse città per le quali visualizzare l'umidità corrente e, se desiderato,
 salvarne i dati periodicamente per generare poi statistiche.
 
 
@@ -11,7 +11,7 @@ Umidity si presenta con due modalità di utilizzo:
 
 
 ## Getting started: GUI
-L' interfaccia è estremamente compatta e intuitiva.
+L'interfaccia è estremamente compatta e intuitiva.
 
 <img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
 
@@ -29,22 +29,22 @@ Sulla destra compariranno i risultati della ricerca che mostrano umidità e temp
 prossimi 5 giorni, una ogni 3 ore.
 
 
-A questo punto possiamo decidere d' inserire quest' ultima città nella lista delle "[città salvate](#saved-cities)"
+A questo punto possiamo decidere d'inserire quest'ultima città nella lista delle "[città salvate](#saved-cities)"
 per le quali verranno salvate localmente e periodicamente le informazioni meteo sulle quali, poi, si potranno calcolare
-[statistiche](#statistics) sul massimo, minimo,media e varianza dell' umidità. Infatti, si potranno calcolare statistiche
+[statistiche](#statistics) sul massimo, minimo,media e varianza dell'umidità. Infatti, si potranno calcolare statistiche
 SOLO sulle città contrassegnate come "[città salvate](#saved-cities)".
 
 
 <img src="img/umidity_gui_statistics_enabled.png" alt="immagine gui - statistiche disponibili" width="500"/>
 
 
-Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l' utente di visualizzare velocemente
-massimo, minimo, media e varianza d' umidità degli scorsi 7 giorni.
+Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l'utente di visualizzare velocemente
+massimo, minimo, media e varianza d'umidità degli scorsi 7 giorni.
 
 Il lasso di tempo è tuttavia personalizzabile:
 
 * Dal menu a tendina si può selezionare "last 7 days" e "last 30 days" (ultimi 7/30 giorni).
-* Oppure, "Custom range" (lasso di tempo personalizzato) che attiverà l' utilizzo dei selettori di data sottostanti.
+* Oppure, "Custom range" (lasso di tempo personalizzato) che attiverà l'utilizzo dei selettori di data sottostanti.
 
 <img src="img/umidity_gui_statistics_last-7.png" alt="immagine gui - statistiche 7 giorni\" width="500"/>
 <img src="img/umidity_gui_statistics_custom-range.png" alt="immagine gui - statistiche lasso temporale personalizzato" width="500"/>
@@ -58,13 +58,13 @@ Permette di visualizzare massimo, minimo e media del lasso di tempo selezionato 
 
 
 #### Record graph
-Permette di visualizzare l' andamento dell' umidità di tutti i record registrati.
+Permette di visualizzare l'andamento dell'umidità di tutti i record registrati.
 
 <img src="img/umidity_gui_statistics_line-graph.png" alt="immagine gui - statistiche record graph" width="600"/>
 
 
 ## Getting started: CLI
-L' utilizzo di Umidity in versione cli è intesa per una consultazione rapida, dove la quantità di operazioni rimane
+L'utilizzo di Umidity in versione cli è intesa per una consultazione rapida, dove la quantità di operazioni rimane
 limitata alla sessione in corso.
 
 Infatti, nella versione corrente della CLI è possibile visualizzare solo i dati correnti e le previsioni di una città
@@ -74,7 +74,7 @@ I dati non vengono dunque archiviati ma solo visualizzati al momento e poi cance
 
 <img src="img/umidity_cli_main_menu.png" alt="immagine cli - primo avvio" width="600"/>
 
-All' avvio la cli presenta subito le operazioni disponibili:
+All'avvio la cli presenta subito le operazioni disponibili:
 1. Attuale
 2. Previsioni
 3. Passaggio a gui (Richiede riavvio)
@@ -149,11 +149,11 @@ AsyncCaller è una classe che estende Thread (da cui il nome "AsyncCaller") che 
 periodiche chiamate alle API in maniera asincrona. Per effettuare le chiamate, AsyncCaller crea un ApiCaller.
 Una alternativa a questo metodo è quella di estendere ApiCaller in AsyncCaller, ma cosi facendo non potremmo poi farlo
 con la classe Thread, poichè Java non permette la multipla ereditarietà (una alternativa valida sarebbe stata quella di
-estendere ApiCaller e d' implementare Runnable).
+estendere ApiCaller e d'implementare Runnable).
 
 Essendo AsyncCaller un processo avviato in un thread a parte, non è possibile avere un valore di ritorno dalle chiamate
 in maniera diretta, per questo motivo abbiamo utilizzato una gestione di eventi personalizzata (di seguito, il contenuto
-dell' interfaccia "ApiListener"):
+dell'interfaccia "ApiListener"):
 
 ```java
     public interface ApiListener {
@@ -172,7 +172,7 @@ ApiListener contiene dunque una definizione dei metodi che possono essere richia
 
 Tale interfaccia andrà poi implementata alle classi che dovranno effettivamente gestire tali eventi.
 
-Gli eventi vengono lanciati da ApiCaller a seconda di quando sia giusto lanciarne uno oppure l' altro.
+Gli eventi vengono lanciati da ApiCaller a seconda di quando sia giusto lanciarne uno oppure l'altro.
 
 Esempio metodo ApiCaller:
 
@@ -215,7 +215,7 @@ e di quelli utilizzati per la creazioni di grafici ([jFreeChart](#Dependencies))
 [MOSTRA JDATEPICKER][MOSTRA GRAFICI]
 
 
-E' stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
+E'stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
 ([FlatLaf](#Dependencies))
 
 
@@ -236,7 +236,7 @@ poi sospeso in quanto richiedeva molto tempo di progettazione e di implementazio
 
 Il progetto si basa sul gestire le varie sezioni da visualizzare nella linea di comando tramite dei Frame, che a loro volta
 contengono i Form (moduli). I Frame vengono trattati come contenitori di Form, ma il vero protagonista è il FrameManager:
-esso infatti gestisce tutto cio che riguarda la visualizzazione dei form e l' interfacciamento con l' utente tramite la
+esso infatti gestisce tutto cio che riguarda la visualizzazione dei form e l'interfacciamento con l'utente tramite la
 gestione del input, oltre che essere anche lui un contenitore di frame.
 
 Esempio di struttura:
@@ -275,11 +275,11 @@ public class FrameManager {
 ```
 Le fasi del refresh:
 
-0. Se questa è la prima iterazione, il FrameManager esegue una serie d' istruzioni presenti nel `init()` per non eseguirle
+0. Se questa è la prima iterazione, il FrameManager esegue una serie d'istruzioni presenti nel `init()` per non eseguirle
 poi nuovamente nelle iterazioni successive
 1. `beforeUpdate()`: istruzioni da eseguire prima del aggiornamento della schermata
-2. `update()`: istruzioni da eseguire durante l' aggiornamento della schermata
-3. `afterUpdate()`: istruzioni da eseguire in seguito all' aggiornamento della schermata (solitamente operazioni d'input)
+2. `update()`: istruzioni da eseguire durante l'aggiornamento della schermata
+3. `afterUpdate()`: istruzioni da eseguire in seguito all'aggiornamento della schermata (solitamente operazioni d'input)
 
 Dopo la prima iterazione, i passaggio 1,2 e 3 verranno eseguiti ciclicamente.
 
