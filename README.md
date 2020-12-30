@@ -220,13 +220,6 @@ degli eventi che aggiornassero lo stato della City List su entrambi i Frame, qua
 
 [GIF MAIN+SETTINGS AGGIORNAMENTO CITTA'???]
 
-
-#### Area Selection
-<a name="state-code"></a>
-Nota Bene: lo stato va indicato tramite lo "State Code"
-<a name="saved-cities"></a>
-
-
 ### CLI
 La CLI (Command Line Interface) è partita con l'idea di sviluppare un framework per sviluppare interfacce a linea di comando
 basandosi sul concetto di form. Il progetto però, poichè andava troppo oltre le richieste della consegna originale, è stato
@@ -296,11 +289,17 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 [MOSTRA CODICE SERIALIZZAZIONE/DESERIALLIZZAZIONE]
 [MOSTRA IL CONTENUTO DI TUTTI I FILE]
 
-### Statistics
 ## Tests
 # Resources
 ## Software
+* IntelliJ IDEA: IDE utilizzaaato per lo sviluppo del codice
+* Star UML: software di progettazione dei diagrammi UML
+* Postman: strumento utile per testare le chiamate alle API
+* OpenWeather API: tutte le informazioni riguardanti l'umidità e il meteo vengono prese da OpenWeather
+
 ## Dependencies
+Tutte le dipendenze sono state gestite con Maven:
+
 
 * Jackson: utilizzata per la gestione dei JSON ([vedi repository](https://github.com/FasterXML/jackson-docs))
 * JFreeChart: utilizzata per la creazione dei grafici ([vedi repistory](https://github.com/jfree/jfreechart))
