@@ -14,7 +14,8 @@ Umidity si presenta con due modalità di utilizzo:
 L' interfaccia è estremamente compatta e intuitiva.
 
 
-![immagine gui - primo avvio](img/umidity_gui_empty.png)
+<img src="img/umidity_gui_empty.png" alt="drawing" width="200"/>
+
 
 
 Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](#state-code)
