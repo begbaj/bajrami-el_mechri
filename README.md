@@ -117,11 +117,11 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 
 
 ### Class diagram
-<img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
+<img src="img/class_diagram.png" alt="class diagram" width="600"/>
 
 
 ### Sequence diagram
-<img src="img/class_diagram.png" alt="class diagram" width="600"/>
+<img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
 
 
 ### Some ideas
