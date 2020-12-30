@@ -4,13 +4,13 @@ Umidity permette all' utente di selezionare diverse città per le quali visualiz
 salvarne i dati periodicamente per generare poi statistiche.
 
 
-### Overview
+## Overview
 Umidity si presenta con due modalità di utilizzo:
 1. il primo (funzionante) è tramite una interfaccia grafica;
 2. il secondo (in via di sviluppo), tramite linea di comando.
 
 
-#### Getting started: GUI
+## Getting started: GUI
 L' interfaccia è estremamente compatta e intuitiva.
 
 <img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
@@ -51,19 +51,19 @@ Il lasso di tempo è tuttavia personalizzabile:
 
 è inoltre possibile visualizzare dei grafici riassuntivi delle statistiche mediante i bottoni "Simple graph" e "Record graph":
 
-###### Simple graph
+#### Simple graph
 Permette di visualizzare massimo, minimo e media del lasso di tempo selezionato in maniera grafica.
 
 <img src="img/umidity_gui_statistics_pipe-graph.png" alt="immagine gui - statistiche simple graph" width="300"/>
 
 
-###### Record graph
+#### Record graph
 Permette di visualizzare l' andamento dell' umidità di tutti i record registrati.
 
 <img src="img/umidity_gui_statistics_line-graph.png" alt="immagine gui - statistiche record graph" width="600"/>
 
 
-#### Getting started: CLI
+## Getting started: CLI
 L' utilizzo di Umidity in versione cli è intesa per una consultazione rapida, dove la quantità di operazioni rimane
 limitata alla sessione in corso.
 
