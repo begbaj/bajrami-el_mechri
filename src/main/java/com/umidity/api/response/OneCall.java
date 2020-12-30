@@ -30,11 +30,11 @@ public abstract class OneCall extends Response {
     @JsonProperty("lat")
     public void setLat(Number lat){
         if(coord == null) coord = new Coordinates();
-        coord.setLat((double)lat);
+        coord.setLat(Double.parseDouble(String.valueOf(lat)));
     }
     @JsonProperty("lon")
     public void setLon(Number lon){
         if(coord == null) coord = new Coordinates();
-        coord.setLon((double)lon);
+        coord.setLon(Double.parseDouble(String.valueOf(lon)));
     }
 }

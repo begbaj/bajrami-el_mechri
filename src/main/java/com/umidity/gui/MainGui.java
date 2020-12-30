@@ -7,7 +7,9 @@ import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.api.Single;
 import com.umidity.api.caller.ApiArgument;
+import com.umidity.api.caller.ApiCaller;
 import com.umidity.api.caller.ApiListener;
+import com.umidity.api.caller.EUnits;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.database.CityRecord;
@@ -209,13 +211,14 @@ public class MainGui implements ApiListener, RecordsListener {
 
         saveCityRecordsCheckBox.addActionListener((e) -> {
             if (listenerOn) {
-                try {
+                if(realtimeResponse!=null){
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                     if (saveCityRecordsCheckBox.isSelected()) {
                         boolean flag = Main.dbms.addCity(city);
                         if (flag) {
                             nosuchLabel.setText("City added!");
-                            searchButton.doClick();
+                            HumidityRecord record=new HumidityRecord(realtimeResponse.getHumidity(), realtimeResponse.getTimestamp(), city);
+                            Main.dbms.addHumidity(record);
                             setPanelEnabled(statisticPanel, true);
                             timeStatsBox.setSelectedIndex(0);
                             updateAsynCaller();
@@ -233,7 +236,7 @@ public class MainGui implements ApiListener, RecordsListener {
                         saveCityRecordsCheckBox.setSelected(true);
                         listenerOn = true;
                     }
-                } catch (Exception ex) {
+                } else {
                     nosuchLabel.setText("You have to search for an area first");
                     listenerOn = false;
                     saveCityRecordsCheckBox.setSelected(false);
@@ -294,8 +297,8 @@ public class MainGui implements ApiListener, RecordsListener {
         getLast5DaysButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread thread = new Thread(){
-                    public void run(){
+//                Thread thread = new Thread(){
+//                    public void run(){
                         Calendar cal = Calendar.getInstance();
                         try {
                             if(realtimeResponse!=null){
@@ -313,14 +316,15 @@ public class MainGui implements ApiListener, RecordsListener {
                                 nosuchLabel.setText("You have to search for an area first");
                             }
                         } catch (IOException ioException) {
-                            JOptionPane.showMessageDialog(null, "Something went wrong. Please retry.");
+                            ioException.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Server is busy. Please wait 1 minute then retry.");
                         }
                         timeStatsBox.setSelectedIndex(0);
                     }
-                };
-
-                thread.start();
-            }
+//                };
+//
+//                thread.start();
+//            }
         });
 
         /**
@@ -571,15 +575,16 @@ public class MainGui implements ApiListener, RecordsListener {
      */
     @Override
     public void onChangedCities() {
-            if(!Main.dbms.cityIsSaved(realtimeResponse.getCityId()))
-            {
-                listenerOn=false;
+        if(realtimeResponse!=null) {
+            if (!Main.dbms.cityIsSaved(realtimeResponse.getCityId())) {
+                listenerOn = false;
                 saveCityRecordsCheckBox.setSelected(false);
                 setPanelEnabled(statisticPanel, false);
                 nosuchLabel.setText("City removed!");
                 updateTable(statisticsTable, null, statisticsColumnNames);
-                listenerOn=true;
+                listenerOn = true;
             }
             updateAsynCaller();
+        }
     }
 }
