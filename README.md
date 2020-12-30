@@ -212,10 +212,10 @@ In questa maniera possiamo dunque ottenere periodicamente aggiornamenti da Async
 ### GUI
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
 ad eccezione di quelli utilizzati per la selezione delle date ([jDatePicker](#Dependencies)),
-e di quelli utilizzati per la creazioni di grafici ([jFreeChart](#Dependencies)).
+e di quelli utilizzati per la creazioni dei grafici già mostrati sopra([jFreeChart](#Dependencies)).
 
-
-[MOSTRA JDATEPICKER][MOSTRA GRAFICI]
+* JDatePicker
+  <img src="img/jdatepicker.png" alt="jdatepicker" width="600"/>
 
 
 E'stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
