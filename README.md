@@ -112,15 +112,15 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 ## Diagrams and Designing
 
 
-### Use case diagram
+### Use case diagram ([ingrandisci](img/usecase_diagram.png))
 <img src="img/usecase_diagram.png" alt="use case diagram" width="600"/>
 
 
-### Class diagram
+### Class diagram ([ingrandisci](img/class_diagram.png))
 <img src="img/class_diagram.png" alt="class diagram" width="600"/>
 
 
-### Sequence diagram
+### Sequence diagram ([ingrandisci](img/sequence_diagram.png))
 <img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
 
 
