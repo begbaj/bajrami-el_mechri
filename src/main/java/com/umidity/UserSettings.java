@@ -85,7 +85,7 @@ public class UserSettings {
     public String getApikey() {
         return apikey;
     }
-    @JsonProperty("cities")
+    @JsonIgnore
     public Vector<String> getCityIds() {
         return cityIds;
     }

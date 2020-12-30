@@ -128,8 +128,10 @@ quanto risulti utile, sopratutto se si lavora in compagnia, utilizzare questa ti
 
 
 ### Some ideas
-[lista di idee scritte in progettazione coon spunta su quelle implementate]
-
+- [x] Forecasting
+- [x] Tema GUI
+- [x] Implementazione System Tray
+- [ ] Interchangeable Unit System
 
 ## Source documentation
 Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md
@@ -256,6 +258,7 @@ public void onChangedCities() {
     }
 ```
 
+*Esempio
 ![Cambiamento città salvate](img/changed_cities.gif)
 
 #### System Tray
@@ -339,10 +342,11 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 [MOSTRA CODICE SERIALIZZAZIONE/DESERIALLIZZAZIONE]
 [MOSTRA IL CONTENUTO DI TUTTI I FILE]
 
+
 ## Tests
 # Resources
 ## Software
-* IntelliJ IDEA: IDE utilizzaaato per lo sviluppo del codice
+* IntelliJ IDEA: IDE utilizzato per lo sviluppo del codice
 * Star UML: software di progettazione dei diagrammi UML
 * Postman: strumento utile per testare le chiamate alle API
 * OpenWeather API: tutte le informazioni riguardanti l'umidità e il meteo vengono prese da OpenWeather
