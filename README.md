@@ -273,6 +273,7 @@ public class FrameManager {
 }
 ```
 Le fasi del refresh:
+
 0. Se questa è la prima iterazione, il FrameManager esegue una serie d' istruzioni presenti nel `init()` per non eseguirle
 poi nuovamente nelle iterazioni successive
 1. `beforeUpdate()`: istruzioni da eseguire prima del aggiornamento della schermata
