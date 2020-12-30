@@ -336,8 +336,35 @@ usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di 
 
 Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
 * HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
+  *Esempio records 
+```JSON
+[ {
+"humidity" : 44.0,
+"timestamp" : 1609349610,
+"city" : {
+"id" : 5128581,
+"name" : "New York",
+"coord" : {
+"lat" : 40.71,
+"lon" : -74.01
+}
+}
+}, {
+"humidity" : 64.0,
+"timestamp" : 1609344227,
+"city" : {
+"id" : 5128581,
+"name" : "New York",
+"coord" : {
+"lat" : 40.71,
+"lon" : -74.01
+}
+}
+} ]
+```
+
 * CityRecord: identifica una città di cui l'utente ha deciso di salvare i record, da aggiungere poi nel files cities.json [vedi come dirlo bene, favourite]
- * Esmepio cities.json
+  * Esmepio cities.json
 ```JSON
 [ {
   "id" : 5128581,
@@ -369,16 +396,27 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
   }
 } ]
 ```
- * Esmepio favourite.json
+  * Esmepio favourite.json
 ```JSON
+    {
+    "id" : 3183087,
+    "name" : "Provincia di Ancona",
+    "coord" : {
+    "lat" : 43.55,
+    "lon" : 13.17
+    }
+    }
+```
+
+* UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, deserializzata nel file config.json
+  * Esempio config.json
+ ```JSON
 {
 "gui" : true,
 "gui_theme" : "Light",
 "api_key" : "beb62ff92c75eefce173edf69bacd835"
 }
 ```
-
-* UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, deserializzata nel file config.json
 
 ## Tests
 # Resources
