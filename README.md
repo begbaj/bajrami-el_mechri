@@ -129,7 +129,7 @@ comunque fedele al programma, anche nella sua forma finale.
 ### Sequence diagram ([ingrandisci](img/sequence_diagram.png))
 <img src="img/sequence_diagram.png" alt="sequence diagram" width="600"/>
 
-**Nota:** Il _"Sequence Diagram"_ mostra le interazione che sin dall'inizio del progetto abbiamo immaginato potessero esserci. 
+**Nota:** Il _"Sequence Diagram"_ definisce le interazione che sin dall'inizio del progetto abbiamo immaginato potessero esserci. 
 Nonostante non abbia subito notevoli cambiamenti, è possibile comunque notare delle differenze col progetto finale.
 
 
@@ -449,7 +449,7 @@ Tutte le dipendenze sono state gestite con Maven:
 Name | Email | GitHub | Contributing | LinkedIn 
 --- | --- | --- | --- |--- 
 Began Bajrami | <beganbajrami@outlook.it> |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
-Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-elmechri
+Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-elmechri/
 
 # Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
