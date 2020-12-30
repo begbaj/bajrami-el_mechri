@@ -12,7 +12,11 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 /**
- * This class handles every connection to the API.
+ * This class handles every connection to the OpenWeather API.<br>
+ *
+ * Important! Currently. the EMode property is generally ignored as Ummidity only uses Jackson to parse JSON responses.
+ * Moreover, in future versions EMode may be totally deprecated.<br>
+ *
  */
 public class ApiCaller extends Caller {
 
@@ -37,8 +41,11 @@ public class ApiCaller extends Caller {
         updateEndParams();
     }
     /**
-     * Api caller constructor
+     * Api caller constructor<br>
+     * This constructor is now Deprecated because EMode property is generally ignored.
      * @param appid Api key
+     * @param emode response mode
+     * @param eunits response units
      */
     @Deprecated
     public ApiCaller(String appid, EMode emode, EUnits eunits){

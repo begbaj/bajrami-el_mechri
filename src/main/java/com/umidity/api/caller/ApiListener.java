@@ -1,7 +1,10 @@
 package com.umidity.api.caller;
 
 /**
- * Api event listener interface
+ * Api event listener interface.<br>
+ *
+ * Implement this interface whenever you need to handle ApiCaller events. This may find real usage when using an AsyncCaller.<br>
+ * To add your listener to the "list of listeners" of an ApiCaller instance, just call the <em>addListener(yourListener)</em> method.
  */
 public interface ApiListener {
 

@@ -11,6 +11,12 @@ import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.Vector;
 
+/**
+ * AsyncCaller lets you make asynchronous calls to the OpenWeather API.<br>
+ *
+ * Because you can't get responses directly form the AsyncCaller, you should add a listener using the <em>addListener()</em> method
+ * before any call is performed.
+ */
 public class AsyncCaller extends Thread {
     public enum AsyncMethod{
         /**
@@ -125,12 +131,12 @@ public class AsyncCaller extends Thread {
 
     /**
      * Adds a listener to the listeners
-     * @param listener
+     * @param listener a class the implements ApiListener interface
      */
     public void addListener(ApiListener listener){caller.addListener(listener);}
 
     /**
-     * You should not run this
+     * You should not call this by yourself
      */
     public void run(){
         long lastExecution = 0;
@@ -164,7 +170,7 @@ public class AsyncCaller extends Thread {
         }
     }
     /**
-     * Stop the thread.
+     * Stops the thread.
      */
     public void close(){ close = true; }
 

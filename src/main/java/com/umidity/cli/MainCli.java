@@ -22,7 +22,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * This is the main FrameManager for the CLI version of Umidity.<br>
+ * The CLI version is still under development and therefore still not much optimized nor well documented.
+ */
 public class MainCli extends FrameManager implements InputFormListener {
+
+    //region Properties
     protected ApiCaller caller = new ApiCaller("a8f213a93e1af4abd8aa6ea20941cb9b", EUnits.Metric);
     protected boolean close;
     protected ScreenMenu menu;
@@ -30,7 +36,11 @@ public class MainCli extends FrameManager implements InputFormListener {
     protected ScreenText title;
     protected ScreenText message;
     protected boolean append;
+    //endregion
 
+    /**
+     * Constructor for MainCli. Use <em>start()</em> to stat the CLI
+     */
     public MainCli(){
         TextInput txtInput = new TextInput();
         txtInput.setName("input");
@@ -74,12 +84,7 @@ public class MainCli extends FrameManager implements InputFormListener {
         }
     }
 
-    @Override
-    public void setPath(String newPath){
-        super.setPath(newPath);
-        changePath();
-    }
-
+    //region Views
     private void changePath(){
         switch (path){
             case "main" -> mainMenu();
@@ -93,18 +98,6 @@ public class MainCli extends FrameManager implements InputFormListener {
             case "quit" -> this.close = true;
             default -> path = "main";
         }
-    }
-    @Override
-    protected void beforeUpdate(){
-        title.enable();
-        title.setVisibility(true);
-    }
-
-    @Override
-    protected void afterUpdate(){
-        if(!append) input.openStream();
-        else input.appendStream();
-        changePath();
     }
 
     private void mainMenu(){
@@ -129,7 +122,6 @@ public class MainCli extends FrameManager implements InputFormListener {
             }
         }
     }
-
     private void currentByCityName(){
         menu.disable();
         message.enable();
@@ -160,7 +152,6 @@ public class MainCli extends FrameManager implements InputFormListener {
             }
         }
     }
-
     private void forecastByCityName(){
         menu.disable();
         message.enable();
@@ -201,7 +192,6 @@ public class MainCli extends FrameManager implements InputFormListener {
             }
         }
     }
-
     private void pastStatistics(){
         message.disable();
         menu.enable();
@@ -271,14 +261,45 @@ public class MainCli extends FrameManager implements InputFormListener {
 
 
     }
+    //endregion
 
+    //region Events
     @Override
     public void onSubmit(Object obj, InputFormArgument arg) {
         Debugger.println(arg.getMessage());
     }
-
     @Override
     public void onNotValidCharacter(Object obj, InputFormArgument arg) {
         Debugger.println(arg.getMessage());
     }
+    //endregion
+
+    /**
+     * Overrides beforeUpdate operations
+     */
+    @Override
+    protected void beforeUpdate(){
+        title.enable();
+        title.setVisibility(true);
+    }
+    /**
+     * Overrides afterUpdate operations
+     */
+    @Override
+    protected void afterUpdate(){
+        if(!append) input.openStream();
+        else input.appendStream();
+        changePath();
+    }
+
+    /**
+     * Set new path for the next iteration
+     * @param newPath
+     */
+    @Override
+    public void setPath(String newPath){
+        super.setPath(newPath);
+        changePath();
+    }
+
 }

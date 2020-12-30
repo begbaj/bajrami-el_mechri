@@ -1,14 +1,18 @@
 package com.umidity.api;
 
 import com.umidity.Coordinates;
-import com.umidity.ICoordinates;
-import com.umidity.IHumidity;
-import com.umidity.api.response.*;
+import com.umidity.api.response.Response;
 
 import java.util.Vector;
 
 /**
- * Contains all useful information about a single response.
+ * Contains all useful information about a single response.<br>
+ * Generally, this should be the correct alternative for each Response type for Umidity, as this contains the really
+ * essential information.<br>
+ *
+ * However, sometimes it may be useful to directly use the "raw" response classes, in which case you should visit the
+ * OpenWeather official documentation as some part of the code is left undocumented to avoid redundancy.
+ *
  */
 public class Single extends Response {
     private boolean isReadOnly;

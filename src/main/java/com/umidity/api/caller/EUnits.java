@@ -1,10 +1,10 @@
 package com.umidity.api.caller;
 
 /**
- * Enumeration for units. This is needed when an Api call is made to determine the used units by Openweather.
- * Standard: Standard units applied in the location you're looking for
- * Metric: metric units (meter, celsius, ...)
- * Imperial: imperial unuits (miles, Fahrenheit, ...)
+ * Enumeration for units. This is needed when an Api call is made to determine the used units by Openweather.<br>
+ * Standard: Standard units applied in the location you're looking for<br>
+ * Metric: metric units (meter, celsius, ...)<br>
+ * Imperial: imperial unuits (miles, Fahrenheit, ...)<br>
  */
 public enum EUnits {
     /**

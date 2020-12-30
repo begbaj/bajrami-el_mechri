@@ -1,9 +1,11 @@
 package com.umidity.cli.frames;
+
 import com.umidity.Debugger;
 import com.umidity.cli.frames.forms.Form;
 import com.umidity.cli.frames.forms.formEvents.Callable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Vector;
 
 public class Frame {
     Vector<Form> forms;
@@ -14,6 +16,9 @@ public class Frame {
         this.forms = new Vector<>();
     }
 
+    /**
+     * Show to screen each form in the list
+     */
     public void show(){
         for(Form f:forms){
             f.show();
@@ -23,6 +28,10 @@ public class Frame {
         }
     }
 
+    /**
+     * Used to invoke events on each Form
+     * @param callable
+     */
     private static void invoke(Callable callable){
         try{
             callable.call();
@@ -31,10 +40,34 @@ public class Frame {
         }
     }
 
+    /**
+     * Add a new Form to the Form list
+     * @param newForm
+     * @return
+     */
     public Frame addForm(Form newForm){ forms.add(newForm); return this; }
+
+    /**
+     * Add a list of Forms in the Form list
+     * @param forms
+     * @return
+     */
     public Frame addForms(Collection<Form> forms){ forms.addAll(forms); return this; }
 
+    /**
+     * Get the list of forms in this frame
+     * @return
+     */
     public Vector<Form> getForms(){ return forms; }
+
+    /**
+     * Gets a single Form by the given name
+     *
+     * Usage Example: ((InputForm)frame.getForm("userInput"))
+     * @param formName name of the form to search for
+     * @param <T> Cast type for the Form
+     * @return
+     */
     public <T> T getForm(String formName){
         for(Form f:forms){
             if(f.getName() == formName) return (T)f;
@@ -43,6 +76,16 @@ public class Frame {
     }
 
 
+    /**
+     * Gets this Frame name
+     * @return this frame's name
+     */
     public String getName() { return name; }
+
+    /**
+     * Sets this frame name
+     * @param name new name
+     * @return
+     */
     public Frame setName(String name) { this.name = name; return this; }
 }

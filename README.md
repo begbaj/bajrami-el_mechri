@@ -128,7 +128,11 @@ I dati riguardanti l'umidità sono ottenuti attraverso le API di OpenWeather e p
 ## Source documentation
 Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md
 come questo (per una documentazione dettagliata andare al seguente [link](doc) ), perciò di seguito vedremo solo le
-parti che consideriamo di notevole importanza:
+parti che consideriamo di notevole importanza.
+
+**è importante sottolineare che il codice è stato pensato in maniera "modulare", ovvero che ogni package che fa parte
+del "motore" (api e database per intenderci, ma anche cli.frames) di Umidity è in realtà un package facilmente esportabile e funzionante
+senza la necessità del resto del codice(fatta eccezione per alcune dipendenze come Jackson)**
 
 
 ### API
@@ -163,9 +167,11 @@ dell' interfaccia "ApiListener"):
     }
 ```
 ApiListener contiene dunque una definizione dei metodi che possono essere richiamati.
+
 Tale interfaccia andrà poi implementata alle classi che dovranno effettivamente gestire tali eventi.
 
-Gli eventi vengono lanciati da ApiCaller a seconda di quando sia giusto lanciarne uno o l' altro.
+Gli eventi vengono lanciati da ApiCaller a seconda di quando sia giusto lanciarne uno oppure l' altro.
+
 Esempio metodo ApiCaller:
 
 ```java
@@ -274,6 +280,10 @@ poi nuovamente nelle iterazioni successive
 3. `afterUpdate()`: istruzioni da eseguire in seguito all' aggiornamento della schermata (solitamente operazioni d'input)
 
 Dopo la prima iterazione, i passaggio 1,2 e 3 verranno eseguiti ciclicamente.
+
+Seppur ancora in fase di sviluppo e sicuramente nemmeno lontanamente vicino alla sua forma finale, il package contenente
+tutto il sistema di "Frame Management" è **esportabile in un qualsiasi progetto Java** poichè il codice non è dipendente
+dal resto del programma (caratteristica rispettata anche in altre parti del codice di Umidity).
 
 ### Database Manager
 Il Database Manager si occupa di salvare su file, come oggetti JSON, le impostazioni e la lista delle città salvate 

@@ -1,0 +1,12 @@
+com.umidity
+com.umidity.api
+com.umidity.api.caller
+com.umidity.api.response
+com.umidity.cli
+com.umidity.cli.frames
+com.umidity.cli.frames.eventHandlers
+com.umidity.cli.frames.forms
+com.umidity.cli.frames.forms.formEvents
+com.umidity.database
+com.umidity.gui
+com.umidity.statistics

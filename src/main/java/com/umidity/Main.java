@@ -9,7 +9,9 @@ import com.umidity.gui.MainFrame;
 
 import java.util.Vector;
 
-
+/**
+ * main entry to program.
+ */
 public class Main{
     public static UserSettings userSettings = new UserSettings();
     public static DatabaseManager dbms = new DatabaseManager();
@@ -36,7 +38,7 @@ public class Main{
 
 
     public static void main(String[] args){
-        Debugger.setActive(false); //TODO: da rimuovere in release
+        Debugger.setActive(false);
 
         dbms.loadUserSettings();
         caller = new ApiCaller(userSettings.getApikey(), EUnits.Metric);

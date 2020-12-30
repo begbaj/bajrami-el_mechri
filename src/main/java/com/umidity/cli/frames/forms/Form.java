@@ -5,6 +5,9 @@ import com.umidity.cli.frames.forms.formEvents.Callable;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+/**
+ * Form generalized class.
+ */
 public abstract class Form {
     boolean enabled = true;
     boolean isVisible = false;
