@@ -13,8 +13,7 @@ Umidity si presenta con due modalità di utilizzo:
 #### Getting started: GUI
 L' interfaccia è estremamente compatta e intuitiva.
 
-<img src="img/umidity_gui_empty.png" alt="drawing" width="200"/>
-![immagine gui - primo avvio](img/umidity_gui_empty.png)
+<img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
 
 
 Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](#state-code)
@@ -23,7 +22,7 @@ Come prima cosa, inserire il nome di una città (per evitare ambiguità, è cons
  stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
  
  
-![immagine gui - ricerca effettuata](img/umidity_gui_searched.png)
+<img src="img/umidity_gui_searched.png" alt="immagine gui - ricerca effettuata" width="500"/>
 
 
 Sulla destra compariranno i risultati della ricerca che mostrano umidità e temperatura corrente, ma anche previsioni dei
@@ -35,7 +34,8 @@ per le quali verranno salvate localmente e periodicamente le informazioni meteo 
 [statistiche](#statistics) sul massimo, minimo,media e varianza dell' umidità. Infatti, si potranno calcolare statistiche
 SOLO sulle città contrassegnate come "[città salvate](#saved-cities)".
 
-![immagine gui - statistiche disponibili](img/umidity_gui_statistics_enabled.png)
+
+<img src="img/umidity_gui_statistics_enabled.png" alt="immagine gui - statistiche disponibili" width="500"/>
 
 
 Dopo aver salvato la città, il pannello delle statistiche si attiverà consentendo l' utente di visualizzare velocemente
@@ -46,27 +46,21 @@ Il lasso di tempo è tuttavia personalizzabile:
 * Dal menu a tendina si può selezionare "last 7 days" e "last 30 days" (ultimi 7/30 giorni).
 * Oppure, "Custom range" (lasso di tempo personalizzato) che attiverà l' utilizzo dei selettori di data sottostanti.
 
-
-![immagine gui - statistiche 7 giorni](img/umidity_gui_statistics_last-7.png)
-
-
-![immagine gui - statistiche lasso temporale personalizzato](img/umidity_gui_statistics_custom-range.png)
-
+<img src="img/umidity_gui_statistics_last-7.png" alt="immagine gui - statistiche 7 giorni\" width="500"/>
+<img src="img/umidity_gui_statistics_custom-range.png" alt="immagine gui - statistiche lasso temporale personalizzato" width="500"/>
 
 è inoltre possibile visualizzare dei grafici riassuntivi delle statistiche mediante i bottoni "Simple graph" e "Record graph":
 
 ###### Simple graph
 Permette di visualizzare massimo, minimo e media del lasso di tempo selezionato in maniera grafica.
 
-
-![immagine gui - statistiche simple graph](img/umidity_gui_statistics_pipe-graph.png)
+<img src="img/umidity_gui_statistics_pipe-graph.png" alt="immagine gui - statistiche simple graph" width="300"/>
 
 
 ###### Record graph
 Permette di visualizzare l' andamento dell' umidità di tutti i record registrati.
 
-
-![immagine gui - statistiche record graph](img/umidity_gui_statistics_line-graph.png)
+<img src="img/umidity_gui_statistics_line-graph.png" alt="immagine gui - statistiche record graph" width="600"/>
 
 
 #### Getting started: CLI
@@ -78,8 +72,7 @@ alla volta, senza la possibilità di salvarli nè di effettuare controlli period
 
 I dati non vengono dunque archiviati ma solo visualizzati al momento e poi cancellati.
 
-![immagine cli - primo avvio](img/umidity_cli_main_menu.png)
-
+<img src="img/umidity_cli_main_menu.png" alt="immagine cli - primo avvio" width="600"/>
 
 All' avvio la cli presenta subito le operazioni disponibili:
 1. Attuale
@@ -95,10 +88,11 @@ Le richieste avvengono sempre ricercando per città, ed è svolto in tre passagg
 **Nei campi opzionali è sufficiente premere invio per andare avanti, tuttavia, se si inseriscono dati non corretti è
 probabile che non si visualizzeranno le informazioni corrette**
 
-![immagine cli - esempio risposta attuale](img/umidity_cli_current.png)
+
+<img src="img/umidity_cli_current.png" alt="immagine cli - esempio risposta attuale" width="600"/>
 
 
-![immagine cli - esempio risposta previsioni](img/umidity_cli_forecast.png)
+<img src="img/umidity_cli_forecast.png" alt="immagine cli - esempio risposta previsioni" width="600"/>
 
 
 # Project
