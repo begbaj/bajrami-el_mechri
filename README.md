@@ -215,7 +215,9 @@ ad eccezione di quelli utilizzati per la selezione delle date ([jDatePicker](#De
 e di quelli utilizzati per la creazioni dei grafici già mostrati sopra([jFreeChart](#Dependencies)).
 
 * JDatePicker
-  <img src="img/jdatepicker.png" alt="jdatepicker" width="600"/>
+
+
+<img src="img/jdatepicker.png" alt="jdatepicker" width="200"/>
 
 
 E'stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
