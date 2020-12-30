@@ -13,7 +13,7 @@ Umidity si presenta con due modalità di utilizzo:
 #### Getting started: GUI
 L' interfaccia è estremamente compatta e intuitiva.
 
-
+<img src="img/umidity_gui_empty.png" alt="drawing" width="200"/>
 ![immagine gui - primo avvio](img/umidity_gui_empty.png)
 
 
