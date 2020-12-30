@@ -222,7 +222,7 @@ E'stata utilizzata una libreria esterna anche per la personalizzazione del tema 
 ([FlatLaf](#Dependencies))
 
 
-![](img/name-of-giphy.gif)
+![Cambiamento Tema](img/theme_change.gif)
 
 
 Per l'aggiornamento sincrono delle città salvate è stata implementata un'interfaccia, utilizzata per lanciare
