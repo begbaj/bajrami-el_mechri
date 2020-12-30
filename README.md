@@ -210,6 +210,9 @@ Come posiamo notare, il metodo fa una chiamata al evento da lanciare per ogni cl
 In questa maniera possiamo dunque ottenere periodicamente aggiornamenti da AsyncCaller.
 
 ### GUI
+
+
+#### Components
 La GUI è stata sviluppata utilizzando Java Swing. I componenti utilizzati provengono dalla libreria Swing,
 ad eccezione di quelli utilizzati per la selezione delle date ([jDatePicker](#Dependencies)),
 e di quelli utilizzati per la creazioni dei grafici già mostrati sopra([jFreeChart](#Dependencies)).
@@ -219,14 +222,14 @@ e di quelli utilizzati per la creazioni dei grafici già mostrati sopra([jFreeCh
 
 <img src="img/jdatepicker.png" alt="jdatepicker" width="200"/>
 
-
+#### Themes
 E'stata utilizzata una libreria esterna anche per la personalizzazione del tema dell'interfaccia.
 ([FlatLaf](#Dependencies))
 
 
 ![Cambiamento Tema](img/theme_change.gif)
 
-
+#### Synchronization
 Per l'aggiornamento sincrono delle città salvate è stata implementata un'interfaccia, utilizzata per lanciare
 degli eventi che aggiornino lo stato della City List su entrambi i Frame, qualora ci siano cambiamenti.
 
@@ -246,7 +249,6 @@ degli eventi che aggiornino lo stato della City List su entrambi i Frame, qualor
     }
 ```
 
-
 * Evento nel Frame delle impostazioni
 ```java
 public void onChangedCities() {
@@ -256,11 +258,13 @@ public void onChangedCities() {
 
 ![Cambiamento città salvate](img/changed_cities.gif)
 
+#### System Tray
 Data la natura del programma, è necessario che il processo rimanga aperto per poter raccogliere più dati possibili.
 Per questa ragione, abbiamo deciso di implementare la minimizzazione del programma, accessibile poi dal System Tray,
 affinché questi non venga chiuso.
 
 ![Minimizzazione](img/system_tray.gif)
+
 
 ### CLI
 La CLI (Command Line Interface) è partita con l'idea di sviluppare un framework per sviluppare interfacce a linea di comando
@@ -358,7 +362,7 @@ Tutte le dipendenze sono state gestite con Maven:
 Name | Email | GitHub | Contributing | LinkedIn 
 --- | --- | --- | --- |--- 
 Began Bajrami | <beganbajrami@outlook.it> |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
-Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-el-mechri-7891701a1
+Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-elmechri
 
 # Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
