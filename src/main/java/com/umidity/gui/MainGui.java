@@ -143,9 +143,8 @@ public class MainGui implements ApiListener, RecordsListener {
 
                     updateTable(recordsTable, matrix, recordColumnNames);
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
-                    CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                     listenerOn = false;
-                    if (Main.dbms.cityIsSaved(city)) {
+                    if (Main.dbms.cityIsSaved(realtimeResponse.getCityId())) {
                         saveCityRecordsCheckBox.setSelected(true);
                         timeStatsBox.setSelectedIndex(0);
                         setPanelEnabled(statisticPanel, true);
@@ -155,7 +154,7 @@ public class MainGui implements ApiListener, RecordsListener {
                         setPanelEnabled(statisticPanel, false);
                     }
 
-                    setFavouriteCityCheckBox.setSelected(Main.dbms.getFavouriteCity().getId() == city.getId());
+                    setFavouriteCityCheckBox.setSelected(Main.dbms.getFavouriteCity().getId() == realtimeResponse.getCityId());
                     listenerOn = true;
                 }
             } catch (FileNotFoundException ex) {
@@ -519,18 +518,14 @@ public class MainGui implements ApiListener, RecordsListener {
     }
 
     /**
-     * When launched if received record is the shown one, uodates table
+     * When launched if received record is in the saved city list, the record is saved
      * @param sender caller that launched event
      * @param arg response with record
      */
     @Override
     public void onReceiveCurrent(Object sender, ApiArgument arg) {
-        if(realtimeResponse!=null){
-            if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
-                Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
-                searchButton.doClick();
-                Debugger.println("Richiesta effettuata: " + arg.getResponse().getCityName() + " " + arg.getResponse().getHumidity());
-            }
+        if(Main.dbms.cityIsSaved(arg.getResponse().getCityId()))
+            Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
     }
 
     @Override
@@ -576,7 +571,7 @@ public class MainGui implements ApiListener, RecordsListener {
      */
     @Override
     public void onChangedCities() {
-            if(!Main.dbms.cityIsSaved(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord())))
+            if(!Main.dbms.cityIsSaved(realtimeResponse.getCityId()))
             {
                 listenerOn=false;
                 saveCityRecordsCheckBox.setSelected(false);

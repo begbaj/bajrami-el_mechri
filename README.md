@@ -231,6 +231,12 @@ degli eventi che aggiornassero lo stato della City List su entrambi i Frame, qua
 
 [GIF MAIN+SETTINGS AGGIORNAMENTO CITTA'???]
 
+Data la natura del programma, è necessario che il processo rimanga aperto per poter raccogliere più dati possibili.
+Per questa ragione, abbiamo deciso di implementare la minimizzazione del programma, accessibile poi dal System Tray,
+affinché questi non venga chiuso.
+
+![Minimizzazione](img/system_tray.gif)
+
 ### CLI
 La CLI (Command Line Interface) è partita con l'idea di sviluppare un framework per sviluppare interfacce a linea di comando
 basandosi sul concetto di form. Il progetto però, poichè andava troppo oltre le richieste della consegna originale, è stato

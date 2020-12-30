@@ -322,10 +322,10 @@ public class DatabaseManager {
      * @param city city to check
      * @return true if saved, false is not
      */
-    public boolean cityIsSaved(CityRecord city){
+    public boolean cityIsSaved(int city_id){
         List<CityRecord> records = getCities();
         for (CityRecord record : records) {
-            if (record.getId() == city.getId()) {
+            if (record.getId() == city_id) {
                 return true;
             }
         }

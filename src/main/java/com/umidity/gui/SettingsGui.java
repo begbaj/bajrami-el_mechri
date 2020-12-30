@@ -92,6 +92,7 @@ public class SettingsGui implements RecordsListener {
                 Main.userSettings.setApikey(textField_API.getText());
                 Main.caller.setAppid(textField_API.getText());
                 Main.asyncCaller.setAppid(textField_API.getText());
+                Main.dbms.saveUserSettings();
             }
         });
     }
