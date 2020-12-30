@@ -336,7 +336,7 @@ usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di 
 
 Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
 * HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
-  *Esempio records 
+  * Esempio records 
 ```JSON
 [ {
 "humidity" : 44.0,
@@ -363,8 +363,9 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 } ]
 ```
 
-* CityRecord: identifica una città di cui l'utente ha deciso di salvare i record, da aggiungere poi nel files cities.json [vedi come dirlo bene, favourite]
-  * Esmepio cities.json
+* CityRecord: identifica una città, se l'utente decide di salvarsi i record della città, essa verrà serializzata e aggiunta al file cities.json.
+  Una solo città può inoltre essere impostata come preferita, e quindi serializzata e salvata nel file favourite.json.
+  * Esempio cities.json
 ```JSON
 [ {
   "id" : 5128581,
@@ -396,7 +397,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
   }
 } ]
 ```
-  * Esmepio favourite.json
+  * Esempio favourite.json
 ```JSON
     {
     "id" : 3183087,
@@ -408,7 +409,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
     }
 ```
 
-* UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, deserializzata nel file config.json
+* UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, serializzata nel file config.json
   * Esempio config.json
  ```JSON
 {
