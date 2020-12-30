@@ -12,9 +12,12 @@ import com.umidity.Coordinates;
 import com.umidity.database.CityRecord;
 import com.umidity.database.RecordsListener;
 
+/**
+ * This class handles SettngsFrame GUI
+ */
 public class SettingsGui implements RecordsListener {
 
-    //region JTools
+    //region Components
     private JComboBox guiComboBox;
     public JPanel panelSettings;
     private JTabbedPane tabbedSettings;
@@ -26,10 +29,15 @@ public class SettingsGui implements RecordsListener {
     private JLabel noCityLabel;
     private JTextField textField_API;
     private JButton apiKeyButton;
+    private JLabel interfaceLabel;
     //endregion
 
+    /**
+     * SettingsGui constructor
+     */
     public SettingsGui(){
         init();
+
         guiComboBox.addActionListener(e -> {
                     try {
                         if (guiComboBox.getSelectedIndex() == 0) {
@@ -45,13 +53,17 @@ public class SettingsGui implements RecordsListener {
                         System.err.println( "Failed to initialize LaF" );
         }});
 
-
         tabbedSettings.addChangeListener(e -> {
-            if(tabbedSettings.getSelectedIndex()==1){
+            if(tabbedSettings.getSelectedIndex()==0){
+                createCityTable();
+                interfaceLabel.setText("");
+                textField_API.setText(Main.userSettings.getApikey());
+            }else if(tabbedSettings.getSelectedIndex()==1){
                 createCityTable();
                 noCityLabel.setText("");
             }
         });
+
         deleteButton.addActionListener(e -> {
             try {
                 Main.dbms.removeCity(new CityRecord(Integer.parseInt((String)cityTable.getValueAt(cityTable.getSelectedRow(), 1)), "", new Coordinates(-1,-1)));
@@ -71,7 +83,9 @@ public class SettingsGui implements RecordsListener {
                 Main.userSettings.setGuiEnabled(false);
             }
             Main.dbms.saveUserSettings();
+            interfaceLabel.setText("Changes will be applied on next startup.");
         });
+
         apiKeyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,6 +112,9 @@ public class SettingsGui implements RecordsListener {
         textField_API.setText(Main.userSettings.getApikey());
     }
 
+    /**
+     * Creates the saved cities table in the user tab
+     */
     public void createCityTable(){
         List<CityRecord> cities= Main.dbms.getCities();
         Vector<Vector<String>>data=new Vector<>();
@@ -115,6 +132,9 @@ public class SettingsGui implements RecordsListener {
         cityTable.setDefaultEditor(Object.class, null);
     }
 
+    /**
+     * When launched updates cityTable
+     */
     @Override
     public void onChangedCities() {
             createCityTable();

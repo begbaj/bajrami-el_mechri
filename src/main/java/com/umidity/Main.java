@@ -17,25 +17,6 @@ public class Main{
     public static DatabaseManager dbms = new DatabaseManager();
     public static ApiCaller caller;
     public static AsyncCaller asyncCaller;
-    //TODO: unit tests [quasi]
-    //TODO: JavaDocs [da fare]
-    //TODO: README.md [da fare]
-
-    //TODO: apicaller comune [fatto]
-    //TODO: api key nascosta [fatto, eccezioni?]
-    //TODO: Main asyncaller [fatto]
-    //TODO: Maingui eventi asyncaller
-    //TODO: Maingui Utilizza Single [fatto]
-    //TODO: Depreca cose inutili
-    //TODO: Gestisci eccezioni grafici [fatto]
-    //TODO: Tema grafici [fatto]
-    //TODO: Sistema search [fatto]
-    //TODO: Date easter egg [fatto]
-    //TODO: OneCall utilizzo??
-    //TODO: Humidity Record TimeStamp [fatto!]
-
-    //TODO: PUSH(
-
 
     public static void main(String[] args){
         Debugger.setActive(false);

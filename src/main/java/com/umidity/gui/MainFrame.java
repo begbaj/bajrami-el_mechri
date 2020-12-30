@@ -1,17 +1,23 @@
 package com.umidity.gui;
-import com.formdev.flatlaf.ui.FlatPopupFactory;
 import com.umidity.Main;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * This class is used to handle program's main Frame<br>
+ *
+ * MainFrame allows you to add the program into the System Tray instead of closing it.
+ */
 public class MainFrame extends JFrame {
-//TODO:DOCUMENTA
 private TrayIcon trayIcon;
 private PopupMenu popupMenu;
 private MainGui maingui;
 
+    /**
+     * Frame's constructor
+     */
     public MainFrame(){
         maingui=new MainGui();
         this.setContentPane(maingui.panelMain);
@@ -36,14 +42,17 @@ private MainGui maingui;
                         return;
                     }
                     MainFrame.this.setVisible(false);
-                    create();
+                    createSystemTray();
                 }
                 if(i==1) System.exit(0);
             }
         });
     }
 
-    private void create() {
+    /**
+     * Adds program into System Tray
+     */
+    private void createSystemTray() {
         try {
             if (SystemTray.isSupported()) {
                 popupMenu = createPopupMenu();
@@ -59,6 +68,10 @@ private MainGui maingui;
         }
     }
 
+    /**
+     * Creates standard PopupMenu
+     * @return the PopupMenu
+     */
     private PopupMenu createPopupMenu() {
 
         PopupMenu p = new PopupMenu();
@@ -85,10 +98,13 @@ private MainGui maingui;
         return p;
     }
 
+    /**
+     * Listener used to open program when clicked with left mouse button
+     */
     private class SystemTrayMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (e.getButton() == 1) { //Pulsante sinistro del mouse
+            if (e.getButton() == 1) {
                 if (isVisible()) {
                     setVisible(false);
                 } else {

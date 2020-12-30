@@ -2,10 +2,15 @@ package com.umidity.gui;
 import com.umidity.Main;
 
 import javax.swing.*;
-import java.awt.*;
 
+/**
+ * This clas is used to handle Settings Frame
+ */
 public class SettingsFrame extends JFrame {
 
+    /**
+     * SettingsFrame Constructor
+     */
     public SettingsFrame() {
         SettingsGui settingsGui=new SettingsGui();
         this.setContentPane(settingsGui.panelSettings);

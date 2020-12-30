@@ -39,8 +39,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
+/**
+ * This class handles the MainFrame GUI
+ */
 public class MainGui implements ApiListener, RecordsListener {
-    //region JTools
+    //region Components
     public JPanel panelMain;
     private JTextField textField_City;
     private JButton searchButton;
@@ -80,6 +83,9 @@ public class MainGui implements ApiListener, RecordsListener {
     JDatePanelImpl datePanelTo;
     SimpleDateFormat format;
 
+    /**
+     * MainGui constructor, components listeners are defined in here
+     */
     public MainGui(){
 
         statisticsColumnNames =new Vector<>(Arrays.asList("Min", "Max", "Avg", "Variance"));
@@ -110,8 +116,14 @@ public class MainGui implements ApiListener, RecordsListener {
                 if(!nosuchLabel.getText().equals("You must specify the area!")) {
                     Vector<Vector<String>> matrix = new Vector();
                     Vector<String> firstRow = new Vector();
+                    String degrees;
+                    switch(Main.caller.getUnit()){
+                        case Metric -> degrees= "C°";
+                        case Imperial -> degrees="F°";
+                        default -> degrees="K°";
+                    }
                     firstRow.add(format.format(new Date(realtimeResponse.getTimestamp()*1000)));
-                    firstRow.add(df.format(realtimeResponse.getTemp())+" C°");
+                    firstRow.add(df.format(realtimeResponse.getTemp())+ " " + degrees);
                     firstRow.add(df.format(realtimeResponse.getHumidity()) + "%");
                     matrix.add(firstRow);
 
@@ -122,8 +134,9 @@ public class MainGui implements ApiListener, RecordsListener {
                         Date datetime = new Date((new Timestamp(f_record.getTimestamp() * 1000)).getTime());
                         String datetimeString = format.format(datetime);
                         Vector<String> nextRow = new Vector();
+
                         nextRow.add(datetimeString);
-                        nextRow.add(df.format(f_record.getTemp())+" C°");
+                        nextRow.add(df.format(f_record.getTemp())+ " " + degrees);
                         nextRow.add((df.format(f_record.getHumidity()) + "%"));
                         matrix.add(nextRow);
                     }
@@ -132,7 +145,7 @@ public class MainGui implements ApiListener, RecordsListener {
                     cityLabel.setText(realtimeResponse.getCityName().toUpperCase()+ ", " + realtimeResponse.getCityCountry().toUpperCase());
                     CityRecord city = new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                     listenerOn = false;
-                    if (Main.dbms.cityisSaved(city)) {
+                    if (Main.dbms.cityIsSaved(city)) {
                         saveCityRecordsCheckBox.setSelected(true);
                         timeStatsBox.setSelectedIndex(0);
                         setPanelEnabled(statisticPanel, true);
@@ -505,11 +518,17 @@ public class MainGui implements ApiListener, RecordsListener {
         chartFrame.setLocationRelativeTo(null);
     }
 
+    /**
+     * When launched if received record is the shown one, uodates table
+     * @param sender caller that launched event
+     * @param arg response with record
+     */
     @Override
     public void onReceiveCurrent(Object sender, ApiArgument arg) {
         if(realtimeResponse!=null){
             if(arg.getResponse().getCityId()==realtimeResponse.getCityId())
                 Main.dbms.addHumidity(HumidityRecord.singleToHumidityRecord(arg.getResponse()));
+                searchButton.doClick();
                 Debugger.println("Richiesta effettuata: " + arg.getResponse().getCityName() + " " + arg.getResponse().getHumidity());
             }
     }
@@ -530,7 +549,6 @@ public class MainGui implements ApiListener, RecordsListener {
 
     @Override
     public void onRequestCurrent(Object sender, ApiArgument arg) {
-
     }
 
     @Override
@@ -553,9 +571,12 @@ public class MainGui implements ApiListener, RecordsListener {
         JOptionPane.showMessageDialog(null, "Invalid API key! Please change it in the settings.");
     }
 
+    /**
+     * When launched updates shown city state, and calls updateAsynCaller method to update its cities.
+     */
     @Override
     public void onChangedCities() {
-            if(!Main.dbms.cityisSaved(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord())))
+            if(!Main.dbms.cityIsSaved(new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord())))
             {
                 listenerOn=false;
                 saveCityRecordsCheckBox.setSelected(false);

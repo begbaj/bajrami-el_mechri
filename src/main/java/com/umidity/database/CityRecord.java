@@ -6,24 +6,45 @@ import com.umidity.Coordinates;
 
 import java.util.Objects;
 
+/**
+ * This class represents a City, and is stored as Json object in the Database.
+ */
 public class CityRecord {
     private int id;
     private String name;
     private Coordinates coord;
 
+    /**
+     * City id getter
+     * @return city's id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * City name getter
+     * @return city's id
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * City coordinates getter
+     * @return city's coordinates as a Coordinates object
+     */
     public Coordinates getCoord() {
         return coord;
     }
 
-    @JsonCreator //Permette di specifiare quali attributi vengono scritti su file se l'oggetto viene salvato su file
+    /**
+     * CityRecord constructor
+     * @param id city's id
+     * @param name city's name
+     * @param coord city's coordinates
+     */
+    @JsonCreator //when serializing/deserializing Jackson's objectMapper uses this constructor
     public CityRecord(@JsonProperty("id") int id,
                       @JsonProperty("name") String name,
                       @JsonProperty("coord") Coordinates coord) {
