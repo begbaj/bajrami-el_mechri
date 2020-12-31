@@ -1,4 +1,4 @@
-# You and me, Umidity! ![Umidity Icon](img/icon32.png)
+# Umidity! ![Umidity Icon](img/icon32.png)
 
 Umidity permette all'utente di selezionare diverse città per le quali visualizzare l'umidità corrente e, se desiderato,
 salvarne i dati periodicamente per generare poi statistiche.
