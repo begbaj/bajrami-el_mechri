@@ -305,7 +305,7 @@ public class MainGui implements ApiListener, RecordsListener {
                             List<HumidityRecord> records=new ArrayList<>();
                             CityRecord city=new CityRecord(realtimeResponse.getCityId(), realtimeResponse.getCityName(), realtimeResponse.getCoord());
                             for(int i=0; i<6; i++){
-                                OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, cal.getTime().getTime()/1000);
+                                OneCallHistoricalResponse response= Main.caller.oneCall(realtimeResponse.getCoord().lat, realtimeResponse.getCoord().lon, (cal.getTimeInMillis()/1000)-100);
                                 for(var x:response.hourly){
                                     records.add(new HumidityRecord(x.humidity, x.dt, city));
                                 }
