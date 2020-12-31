@@ -15,8 +15,11 @@ L'interfaccia è estremamente compatta e intuitiva.
 
 <img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
 
+Come prima cosa, impostare nei Settings la vostra API Key di OpenWeather, inserendola nel campo sotto indicato.
 
-Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](https://en.wikipedia.org/wiki/ISO_3166-2#Current_codes)
+<img src="img/InsertKeyRed.png" alt="Inserimento Api Key" width="500"/>
+
+Ora che il programma è pronto, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](https://en.wikipedia.org/wiki/ISO_3166-2#Current_codes)
  o [codice postale](https://en.wikipedia.org/wiki/List_of_postal_codes) ) e premere "Search".
  **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di
  stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
