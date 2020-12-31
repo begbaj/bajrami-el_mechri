@@ -91,7 +91,6 @@ class StatsCalculatorTest {
 
     @Test
     void testVariance1() {
-        System.out.println(StatsCalculator.variance(records, new Date(), true));
         assertEquals(768.35, StatsCalculator.variance(records, new Date(), true));
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -4);
@@ -100,10 +99,6 @@ class StatsCalculatorTest {
 
     @Test
     void testVariance2() {
-//        Calendar cal1 = Calendar.getInstance();
-//        Calendar cal2 = Calendar.getInstance();
-//        cal1.add(Calendar.DATE, -3);
-//        cal2.add(Calendar.DATE, -7);
-//        assertEquals(31.25, StatsCalculator.avg(records, cal2.getTime(), cal1.getTime()));
+
     }
 }

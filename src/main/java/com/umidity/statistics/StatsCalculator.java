@@ -173,10 +173,10 @@ public class StatsCalculator {
             for (HumidityRecord record : records) {
                 if(inverse)
                     if(new Date(record.getTimestamp()*1000).before(date))
-                        sum = Math.pow(record.getHumidity() - avg, 2);
+                        sum += Math.pow(record.getHumidity() - avg, 2);
                 else
                     if(new Date(record.getTimestamp()*1000).after(date))
-                        sum = Math.pow(record.getHumidity() - avg, 2);
+                        sum += Math.pow(record.getHumidity() - avg, 2);
             }
             return sum / records.size();
         }
@@ -197,7 +197,7 @@ public class StatsCalculator {
         if (!records.isEmpty()) {
             for (HumidityRecord record : records) {
                     if(new Date(record.getTimestamp()*1000).after(from) && new Date(record.getTimestamp()*1000).before(to)  )
-                        sum = Math.pow(record.getHumidity() - avg, 2);
+                        sum += Math.pow(record.getHumidity() - avg, 2);
             }
             return sum / records.size();
         }
