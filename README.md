@@ -426,7 +426,6 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 }
 ```
 
-## Tests
 # Resources
 ## Software
 * IntelliJ IDEA: IDE utilizzato per lo sviluppo del codice

@@ -106,7 +106,7 @@ public class MainGui implements ApiListener, RecordsListener {
         updateTable(recordsTable, null, recordColumnNames);
         updateTable(statisticsTable, null, statisticsColumnNames);
 
-        searchButton.addActionListener((e) -> {
+        this.searchButton.addActionListener((e) -> {
             try {
                 nosuchLabel.setText("");
                 if(!textField_City.getText().equals(""))

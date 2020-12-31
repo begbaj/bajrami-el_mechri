@@ -101,9 +101,10 @@ public class SettingsGui implements RecordsListener {
      * Perform initialization actions
      */
     private void init(){
-        switch (Main.userSettings.getGuiTheme()){
-            case "Dark" -> guiComboBox.setSelectedIndex(1);
-            default -> guiComboBox.setSelectedIndex(0);
+        if ("Dark".equals(Main.userSettings.getGuiTheme())) {
+            guiComboBox.setSelectedIndex(1);
+        } else {
+            guiComboBox.setSelectedIndex(0);
         }
         if (Main.userSettings.isGuiEnabled()) {
             interfaceComboBox.setSelectedIndex(0);

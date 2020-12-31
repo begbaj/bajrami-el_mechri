@@ -91,10 +91,10 @@ class StatsCalculatorTest {
 
     @Test
     void testVariance1() {
-        assertEquals( 768.35, ((double)((int)(StatsCalculator.variance(records, new Date(), true) *100.0)))/100.0);
+        assertEquals( 768.35, StatsCalculator.variance(records, new Date(), true), 2);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -4);
-        assertEquals(Math.floor(31.25 * 100)/100, ((double)((int)(StatsCalculator.variance(records, cal.getTime(), false) *100.0)))/100.0);
+        assertEquals(31.25, StatsCalculator.variance(records, cal.getTime(), false), 2);
     }
 
     @Test
