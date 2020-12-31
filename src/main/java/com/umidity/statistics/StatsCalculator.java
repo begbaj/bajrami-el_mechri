@@ -2,7 +2,10 @@ package com.umidity.statistics;
 
 import com.umidity.database.HumidityRecord;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Calculate Humidity statistics such as Minimum, Maximum, Average and Variance.
@@ -169,16 +172,23 @@ public class StatsCalculator {
     public static double variance(List<HumidityRecord> records, Date date, boolean inverse) {
         double avg = avg(records, date, inverse);
         double sum = 0;
+        int count = 0;
         if (!records.isEmpty()) {
             for (HumidityRecord record : records) {
-                if(inverse)
+                if(inverse){
                     if(new Date(record.getTimestamp()*1000).before(date))
+                    {
                         sum += Math.pow(record.getHumidity() - avg, 2);
-                else
-                    if(new Date(record.getTimestamp()*1000).after(date))
+                        count++;
+                    }
+                } else {
+                    if(new Date(record.getTimestamp()*1000).after(date)){
                         sum += Math.pow(record.getHumidity() - avg, 2);
+                        count++;
+                    }
+                }
             }
-            return sum / records.size();
+            return sum / count;
         }
         else{
             return -1;

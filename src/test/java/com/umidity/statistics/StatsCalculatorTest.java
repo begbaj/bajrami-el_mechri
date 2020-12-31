@@ -6,9 +6,11 @@ import com.umidity.database.HumidityRecord;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StatsCalculatorTest {
     private static List<HumidityRecord> records;
@@ -57,8 +59,8 @@ class StatsCalculatorTest {
 
     @Test
     void testMax1() {
-        assertEquals(90.0, StatsCalculator.max(records, new Date(), true).getHumidity());
         Calendar cal = Calendar.getInstance();
+        assertEquals(90.0, StatsCalculator.max(records, cal.getTime(), true).getHumidity());
         cal.add(Calendar.DATE, -4);
         assertEquals(20.0, StatsCalculator.max(records, cal.getTime(), false).getHumidity());
     }
@@ -91,9 +93,9 @@ class StatsCalculatorTest {
 
     @Test
     void testVariance1() {
-        assertEquals( 768.35, StatsCalculator.variance(records, new Date(), true), 2);
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -4);
+        assertEquals( 768.35, StatsCalculator.variance(records, cal.getTime() , true), 2);
+        cal.add(Calendar.DATE, -5);
         assertEquals(31.25, StatsCalculator.variance(records, cal.getTime(), false), 2);
     }
 
