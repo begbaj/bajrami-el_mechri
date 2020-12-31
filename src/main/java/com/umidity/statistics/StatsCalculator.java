@@ -204,12 +204,17 @@ public class StatsCalculator {
     public static double variance(List<HumidityRecord> records, Date from, Date to) {
         double avg = avg(records, from, to);
         double sum = 0;
+        int count = 0;
         if (!records.isEmpty()) {
             for (HumidityRecord record : records) {
                     if(new Date(record.getTimestamp()*1000).after(from) && new Date(record.getTimestamp()*1000).before(to)  )
+                    {
                         sum += Math.pow(record.getHumidity() - avg, 2);
+                        count++;
+                    }
+
             }
-            return sum / records.size();
+            return sum / count;
         }
         else{
             return -1;

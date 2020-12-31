@@ -3,13 +3,6 @@ package com.umidity.api.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.umidity.Coordinates;
-import com.umidity.ICoordinates;
-import com.umidity.IHumidity;
-import com.umidity.api.Single;
-
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OneCallResponse extends OneCall{

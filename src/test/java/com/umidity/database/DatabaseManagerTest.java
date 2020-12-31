@@ -1,15 +1,15 @@
 package com.umidity.database;
 
+import com.umidity.Coordinates;
 import com.umidity.UserSettings;
 import com.umidity.api.caller.EUnits;
-import com.umidity.Coordinates;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DatabaseManagerTest {
     static DatabaseManager dbms;
@@ -63,21 +63,5 @@ class DatabaseManagerTest {
 
         assertEquals(1, dbms.getHumidity(cityRecord1.getId()).size());
         assertEquals(1, dbms.getHumidity(cityRecord2.getId()).size());
-    }
-
-    @Test
-    void test() {
-        dbms.saveUserSettings();
-        dbms.addCity(new CityRecord(3166740,"Senigallia", new Coordinates(13.21667f, 43.709259f)));
-        dbms.addCity(new CityRecord(3183089,"Ancona", new Coordinates(13.51008f, 43.59816f)));
-        dbms.addCity(new CityRecord(3169070,"Roma", new Coordinates(12.4839f, 41.894741f)));
-
-        //TODO: test
-
-    }
-
-    @Test
-    void test1(){
-
     }
 }

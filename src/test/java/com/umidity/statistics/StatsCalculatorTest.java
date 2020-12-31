@@ -101,6 +101,11 @@ class StatsCalculatorTest {
 
     @Test
     void testVariance2() {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
 
+        cal2.add(Calendar.DATE, -5);
+
+        assertEquals( 31.25, StatsCalculator.variance(records, cal2.getTime(), cal1.getTime()), 2);
     }
 }
