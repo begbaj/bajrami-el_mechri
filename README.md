@@ -16,8 +16,8 @@ L'interfaccia è estremamente compatta e intuitiva.
 <img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
 
 
-Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](#state-code)
- o [codice postale](#zip-code) ) e premere "Search".
+Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](https://en.wikipedia.org/wiki/ISO_3166-2#Current_codes)
+ o [codice postale](https://en.wikipedia.org/wiki/List_of_postal_codes) ) e premere "Search".
  **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di
  stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
  
@@ -373,7 +373,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 }
 } ]
 ```
-
+<a name="saved-cities"><a/>
 * CityRecord: identifica una città, se l'utente decide di salvarsi i record della città, essa verrà serializzata e aggiunta al file cities.json.
   Una solo città può inoltre essere impostata come preferita, e quindi serializzata e salvata nel file favourite.json.
   * Esempio cities.json
