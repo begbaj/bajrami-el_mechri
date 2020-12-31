@@ -297,8 +297,8 @@ public class MainGui implements ApiListener, RecordsListener {
         getLast5DaysButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                Thread thread = new Thread(){
-//                    public void run(){
+                Thread thread = new Thread(){
+                    public void run(){
                         Calendar cal = Calendar.getInstance();
                         try {
                             if(realtimeResponse!=null){
@@ -317,14 +317,14 @@ public class MainGui implements ApiListener, RecordsListener {
                             }
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
-                            JOptionPane.showMessageDialog(null, "Server is busy. Please wait 1 minute then retry.");
+                            JOptionPane.showMessageDialog(null, "Invalid API key! Please change it in the settings.");
                         }
                         timeStatsBox.setSelectedIndex(0);
                     }
-//                };
-//
-//                thread.start();
-//            }
+               };
+
+                thread.start();
+            }
         });
 
         /**

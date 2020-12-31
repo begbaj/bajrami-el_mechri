@@ -139,6 +139,7 @@ Nonostante non abbia subito notevoli cambiamenti, è possibile comunque notare d
 - [x] Tema GUI
 - [x] Città preferita all'avvio
 - [x] Implementazione System Tray
+- [x] API Key impostabile
 - [x] Easter Eggs
 - [ ] Limite Dimensione File
 - [ ] Cambio unità di misura
