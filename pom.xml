@@ -20,9 +20,9 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainclass>
-                                        com.umidity.Main
-                                    </mainclass>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <mainclass> com.umidity.Main </mainclass>
                                 </manifest>
                             </archive>
                             <descriptionRefs>

@@ -17,6 +17,7 @@ import java.util.Vector;
  * Because you can't get responses directly form the AsyncCaller, you should add a listener using the <em>addListener()</em> method
  * before any call is performed.
  */
+@SuppressWarnings("unchecked")
 public class AsyncCaller extends Thread {
     public enum AsyncMethod{
         /**
