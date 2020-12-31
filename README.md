@@ -137,12 +137,15 @@ Nonostante non abbia subito notevoli cambiamenti, è possibile comunque notare d
 ### Some ideas
 - [x] Forecasting
 - [x] Tema GUI
+- [x] Città preferita all'avvio
 - [x] Implementazione System Tray
-- [ ] Interchangeable Unit System
+- [x] Easter Eggs
+- [ ] Limite Dimensione File
+- [ ] Cambio unità di misura
 
 ## Source documentation
 Scrivere una documentazione dettagliata del codice sorgente occuperebbe troppo spazio in un semplice file README.md
-come questo (per una documentazione dettagliata andare al seguente [link](docs) ), perciò di seguito vedremo solo le
+come questo (per una documentazione dettagliata andare al seguente [link](docs)), perciò di seguito vedremo solo le
 parti che consideriamo di notevole importanza.
 
 **è importante sottolineare che il codice è stato pensato in maniera "modulare", ovvero che ogni package che fa parte
@@ -160,7 +163,7 @@ gratuito. Le chiamate vengono effettuate dalla classe ApiCaller che permette di 
 AsyncCaller è una classe che estende Thread (da cui il nome "AsyncCaller") che permette di effettuare singole o
 periodiche chiamate alle API in maniera asincrona. Per effettuare le chiamate, AsyncCaller crea un ApiCaller.
 Una alternativa a questo metodo è quella di estendere ApiCaller in AsyncCaller, ma cosi facendo non potremmo poi farlo
-con la classe Thread, poichè Java non permette la multipla ereditarietà (una alternativa valida sarebbe stata quella di
+con la classe Thread, poiché Java non permette la multipla ereditarietà (una alternativa valida sarebbe stata quella di
 estendere ApiCaller e d'implementare Runnable).
 
 Essendo AsyncCaller un processo avviato in un thread a parte, non è possibile avere un valore di ritorno dalle chiamate
@@ -278,7 +281,7 @@ affinché questi non venga chiuso.
 
 ### CLI
 La CLI (Command Line Interface) è partita con l'idea di sviluppare un framework per sviluppare interfacce a linea di comando
-basandosi sul concetto di form. Il progetto però, poichè andava troppo oltre le richieste della consegna originale, è stato
+basandosi sul concetto di form. Il progetto però, poiché andava troppo oltre le richieste della consegna originale, è stato
 poi sospeso in quanto richiedeva molto tempo di progettazione e di implementazione. Tuttavia, siamo riusciti ad avere una
 "prima versione" funzionante.
 
@@ -451,6 +454,6 @@ Began Bajrami | <beganbajrami@outlook.it> |  [begbaj](https://github.com/begbaj)
 Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-elmechri/
 
 # Disclaimer
-Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 al
+Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 all'
 Università Politecnica delle Marche, non lo si deve considerare come un programma commerciale e pertanto non garantisce
 il suo corretto funzionamento. L'utilizzo di Umidity è a rischio e pericolo dell'utente.
