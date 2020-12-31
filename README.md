@@ -1,4 +1,4 @@
-# You and me, Umidity! ![Umidity Icon](img/icon32.png)
+# Umidity! ![Umidity Icon](img/icon32.png)
 
 Umidity permette all'utente di selezionare diverse città per le quali visualizzare l'umidità corrente e, se desiderato,
 salvarne i dati periodicamente per generare poi statistiche.
@@ -458,6 +458,8 @@ Name | Email | GitHub | Contributing | LinkedIn
 --- | --- | --- | --- |--- 
 Began Bajrami | <beganbajrami@outlook.it> |  [begbaj](https://github.com/begbaj) /  [dyrem](https://github.com/dyremm)| <p align="center">1/2<p align="center"> | https://www.linkedin.com/in/begbaj/ 
 Rahmi El Mechri | <rahmmi.elmechri@gmail.com>|  [OT-Rax](https://github.com/OT-Rax) | <p align="center">1/2<p align="center">|https://www.linkedin.com/in/rahmi-elmechri/
+
+# You and me, Umidity!
 
 # Disclaimer
 Umidity è un programma sviluppato ai fini del progetto d'esame del corso di "Programmazione ad Oggetti" A/A 2020-2021 all'
