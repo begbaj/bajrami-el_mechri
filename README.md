@@ -16,8 +16,8 @@ L'interfaccia è estremamente compatta e intuitiva.
 <img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
 
 
-Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](#state-code)
- o [codice postale](#zip-code) ) e premere "Search".
+Come prima cosa, inserire il nome di una città (per evitare ambiguità, è consigliato dire anche [stato](https://en.wikipedia.org/wiki/ISO_3166-2#Current_codes)
+ o [codice postale](https://en.wikipedia.org/wiki/List_of_postal_codes) ) e premere "Search".
  **è possibile fare anche una ricerca per solo codice postale. In tal caso, sarà necessario indicare anche il codice di
  stato poiché Openweather utilizzerà il formato nord americano se non indicato diversamente!**
  
@@ -346,7 +346,8 @@ Per riuscirci ci siamo serviti della classe ObjectMapper della libreria [Jackson
 usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di serializzare e deserializzare gli oggetti.
 
 Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
-* HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
+
+1. HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
   * Esempio records 
 ```JSON
 [ {
@@ -373,10 +374,11 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 }
 } ]
 ```
+<a name="saved-cities"><a/>
 
-* CityRecord: identifica una città, se l'utente decide di salvarsi i record della città, essa verrà serializzata e aggiunta al file cities.json.
-  Una solo città può inoltre essere impostata come preferita, e quindi serializzata e salvata nel file favourite.json.
-  * Esempio cities.json
+2. CityRecord: identifica una città, se l'utente decide di salvarsi i record della città, essa verrà serializzata e aggiunta al file cities.json.
+Una solo città può inoltre essere impostata come preferita, e quindi serializzata e salvata nel file favourite.json.
+ * Esempio cities.json
 ```JSON
 [ {
   "id" : 5128581,
@@ -408,7 +410,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
   }
 } ]
 ```
-  * Esempio favourite.json
+ * Esempio favourite.json
 ```JSON
     {
     "id" : 3183087,
@@ -420,8 +422,8 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
     }
 ```
 
-* UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, serializzata nel file config.json
-  * Esempio config.json
+3. UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, serializzata nel file config.json
+ * Esempio config.json
  ```JSON
 {
 "gui" : true,
