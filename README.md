@@ -15,8 +15,9 @@ L'interfaccia è estremamente compatta e intuitiva.
 
 <img src="img/umidity_gui_empty.png" alt="immagine gui - primo avvio" width="500"/>
 
-Come prima cosa, impostare nei Settings la vostra API Key di OpenWeather, inserendola nel campo sotto indicato, e premendo il bottone Apply.
-Questa procedura va effettuata una sola volta, a meno che non vogliate cambiare la key, dato che le impostazioni vengono salvate.
+Come prima cosa, configurare la vostra API Key di OpenWeather nella finestra delle impostazioni, accedibile premendo "Settings".
+Inserire nel campo sotto indicato la key, e premere "APPLY".
+Questa procedura va effettuata una sola volta, a meno che non si voglia cambiare la key, poiché le impostazioni vengono salvate.
 
 <img src="img/InsertKeyRed.png" alt="Inserimento Api Key" width="500"/>
 
