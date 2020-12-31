@@ -346,6 +346,7 @@ Per riuscirci ci siamo serviti della classe ObjectMapper della libreria [Jackson
 usufruendo dei metodi writeValue e readValue, che permettono rispettivamente di serializzare e deserializzare gli oggetti.
 
 Nel processo sono state create 3 classi, i cui attributi vengono serializzati se contraddistinti dal tag @JsonProperties:
+
 1. HumidityRecord: contiene le informazioni fondamentali sul singolo record sull'umidità, raggruppati poi su file divisi per città
   * Esempio records 
 ```JSON
@@ -374,9 +375,10 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 } ]
 ```
 <a name="saved-cities"><a/>
+
 2. CityRecord: identifica una città, se l'utente decide di salvarsi i record della città, essa verrà serializzata e aggiunta al file cities.json.
-  Una solo città può inoltre essere impostata come preferita, e quindi serializzata e salvata nel file favourite.json.
-  * Esempio cities.json
+Una solo città può inoltre essere impostata come preferita, e quindi serializzata e salvata nel file favourite.json.
+ * Esempio cities.json
 ```JSON
 [ {
   "id" : 5128581,
@@ -408,7 +410,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
   }
 } ]
 ```
-  * Esempio favourite.json
+ * Esempio favourite.json
 ```JSON
     {
     "id" : 3183087,
@@ -421,7 +423,7 @@ Nel processo sono state create 3 classi, i cui attributi vengono serializzati se
 ```
 
 3. UserSettings: classe usata come contenitore delle impostazioni scelte dall'utente, serializzata nel file config.json
-  * Esempio config.json
+ * Esempio config.json
  ```JSON
 {
 "gui" : true,
