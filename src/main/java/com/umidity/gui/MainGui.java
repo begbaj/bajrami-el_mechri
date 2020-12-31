@@ -7,9 +7,7 @@ import com.umidity.Debugger;
 import com.umidity.Main;
 import com.umidity.api.Single;
 import com.umidity.api.caller.ApiArgument;
-import com.umidity.api.caller.ApiCaller;
 import com.umidity.api.caller.ApiListener;
-import com.umidity.api.caller.EUnits;
 import com.umidity.api.response.ForecastResponse;
 import com.umidity.api.response.OneCallHistoricalResponse;
 import com.umidity.database.CityRecord;
@@ -101,7 +99,7 @@ public class MainGui implements ApiListener, RecordsListener {
         format = new SimpleDateFormat("dd-MM HH:00");
 
         changeTheme(Main.userSettings.getGuiTheme());
-        SwingUtilities.updateComponentTreeUI(panelMain);
+        SwingUtilities.updateComponentTreeUI(this.panelMain);
 
         updateTable(recordsTable, null, recordColumnNames);
         updateTable(statisticsTable, null, statisticsColumnNames);
